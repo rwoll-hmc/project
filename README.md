@@ -24,3 +24,9 @@ $ cabal install tasty tasty-hunit
 $ make test        # run all tests
 $ make test-<NAME> # run a specific test suite
 ```
+
+## Running
+
+```
+$ cat examples/example.txt | ./gp
+```
