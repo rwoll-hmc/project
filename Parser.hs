@@ -37,5 +37,8 @@ cuenumber = Parsec.char '{' *> (read <$> some Parsec.digit) <* Parsec.char '}'
 cue :: Parsec.Parsec String () AST.Cue
 cue = AST.Cue <$> (department <* Parsec.char ' ') <*> (cuenumber <* Parsec.char ' ') <*> command
 
+cuegroup :: Parsec.Parsec String () AST.CueGroup
+cuegroup = AST.CueGroup <$> some (indent 0 cue)
+
 cuesheet :: Parsec.Parsec String () AST.CueSheet
 cuesheet = AST.CueSheet <$> (characters <* Parsec.spaces) <*> departments
