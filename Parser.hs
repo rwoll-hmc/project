@@ -38,7 +38,7 @@ cue :: Parsec.Parsec String () AST.Cue
 cue = indent 3 (AST.Cue <$> (department <* Parsec.char ' ') <*> (cueNumber <* Parsec.char ' ') <*> command)
 
 action :: Parsec.Parsec String () AST.Action
-action =  Parsec.string "ENTR" *> pure AST.Enter
+action = Parsec.try (Parsec.string "ENTR" *> pure AST.Enter)
       <|> Parsec.string "EXIT" *> pure AST.Exit
 
 parens p = Parsec.char '(' *> p <* Parsec.char ')'
@@ -53,7 +53,7 @@ lineCueGroupMarker :: Parsec.Parsec String () AST.Marker
 lineCueGroupMarker = AST.Line <$> (parens (Parsec.string "line") *> Parsec.char ' ' *> character <* Parsec.char ':') <*> quotedString
 
 cueGroup :: Parsec.Parsec String () AST.CueGroup
-cueGroup = AST.CueGroup <$> indent 2 (visualCueGroupMarker) <*> Parsec.many1 cue <* Parsec.newline
+cueGroup = AST.CueGroup <$> indent 2 (Parsec.try visualCueGroupMarker <|> lineCueGroupMarker) <*> Parsec.many1 cue <* Parsec.newline
 
 scene :: Parsec.Parsec String () AST.Scene
 scene = AST.Scene <$> indent 1 (Parsec.string "Scene " *> (read <$> Parsec.many1 Parsec.digit) <* Parsec.char ':')

@@ -9,11 +9,11 @@ Departments:
 
 Act 1:
   Scene 1:
-    (visual) @ATHEN:ENTR
-      #LX {100000} GO
+    (visual) @ATHEN:EXIT
+      #LX {100000} STBY
 
     (visual) @ATHEN:ENTR
-      #LX {2222} GO
+      #LX {2222} WARN
 
   Scene 99999:
     (visual) @ATHEN:ENTR
@@ -27,7 +27,7 @@ Act 567890:
     (visual) @ATHEN:ENTR
       #LX {100000} GO
 
-    (visual) @ATHEN:ENTR
+    (line) @ATHEN:"asd"
       #LX {2222} GO
 
   Scene 99999:
