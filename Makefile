@@ -1,5 +1,5 @@
 gp: Main.hs AST.hs Parser.hs
-	ghc $^ -o $@
+	ghc $^ -Wall -o $@
 
 build-test: Tests.hs gp
 	ghc $< -o test

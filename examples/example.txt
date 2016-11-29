@@ -11,6 +11,7 @@ Act 1:
   Scene 1:
     (visual) @ATHEN:EXIT
       #LX {100000} STBY
+      #SD {2071231283712318} STBY
 
     (visual) @ATHEN:ENTR
       #LX {2222} WARN
