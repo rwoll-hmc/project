@@ -31,14 +31,14 @@ command =  Parsec.string "GO" *> pure AST.Go
        <|> Parsec.string "STBY" *> pure AST.Stby
        <|> Parsec.string "WARN" *> pure AST.Warn
 
-cuenumber :: Parsec.Parsec String () Int
-cuenumber = Parsec.char '{' *> (read <$> some Parsec.digit) <* Parsec.char '}'
+cueNumber :: Parsec.Parsec String () Int
+cueNumber = Parsec.char '{' *> (read <$> some Parsec.digit) <* Parsec.char '}'
 
 cue :: Parsec.Parsec String () AST.Cue
-cue = AST.Cue <$> (department <* Parsec.char ' ') <*> (cuenumber <* Parsec.char ' ') <*> command
+cue = AST.Cue <$> (department <* Parsec.char ' ') <*> (cueNumber <* Parsec.char ' ') <*> command
 
-cuegroup :: Parsec.Parsec String () AST.CueGroup
-cuegroup = AST.CueGroup <$> some (indent 0 cue)
+cueGroup :: Parsec.Parsec String () AST.CueGroup
+cueGroup = AST.CueGroup <$> some (indent 0 cue)
 
-cuesheet :: Parsec.Parsec String () AST.CueSheet
-cuesheet = AST.CueSheet <$> (characters <* Parsec.spaces) <*> departments
+cueSheet :: Parsec.Parsec String () AST.CueSheet
+cueSheet = AST.CueSheet <$> (characters <* Parsec.spaces) <*> departments
