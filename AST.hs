@@ -13,7 +13,18 @@ data CueScene = CueScene Int [CueGroup] deriving (Eq, Show)
 data CueAct = CueAct Int [CueScene] deriving (Eq, Show)
 data CueSheet = CueSheet { characters :: [Character], departments :: [Department], acts :: [CueAct] } deriving Eq
 
+data Script = Script
+  String            -- ^Title
+  Set.Set Character -- ^Characters
+  [Act]             -- ^Acts
 
+data Act = Act
+  Int     -- ^Act Index
+  [Scene] -- ^Scenes
+
+data Scene = Scene
+  Int      -- ^Scene Index
+  [Marker] -- ^Sequence of Events in a Scene
 
 instance Show Command where
   show Go = "GO"
