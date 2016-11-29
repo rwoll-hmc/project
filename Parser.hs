@@ -12,7 +12,7 @@ baseIndent = 2
 indentCalc :: Int -> String
 indentCalc lvl = replicate (lvl * baseIndent) ' '
 
-indent lvl p = (Parsec.string (indentCalc lvl) *> p) <* (Parsec.many (Parsec.char ' ') *> Parsec.newline)
+indent lvl p = Parsec.try $ (Parsec.string (indentCalc lvl) *> p) <* (Parsec.many (Parsec.char ' ') *> Parsec.newline)
 
 character :: Parsec.Parsec String () AST.Character
 character = AST.Character <$> (Parsec.char '@' *> Parsec.many1 Parsec.upper)
@@ -35,7 +35,7 @@ cueNumber :: Parsec.Parsec String () Int
 cueNumber = Parsec.char '{' *> (read <$> Parsec.many1 Parsec.digit) <* Parsec.char '}'
 
 cue :: Parsec.Parsec String () AST.Cue
-cue = Parsec.try $ indent 3 (AST.Cue <$> (department <* Parsec.char ' ') <*> (cueNumber <* Parsec.char ' ') <*> command)
+cue = indent 3 (AST.Cue <$> (department <* Parsec.char ' ') <*> (cueNumber <* Parsec.char ' ') <*> command)
 
 action :: Parsec.Parsec String () AST.Action
 action =  Parsec.string "ENTR" *> pure AST.Enter
@@ -53,10 +53,10 @@ lineCueGroupMarker :: Parsec.Parsec String () AST.Marker
 lineCueGroupMarker = AST.Line <$> (parens (Parsec.string "line") *> Parsec.char ' ' *> character <* Parsec.char ':') <*> quotedString
 
 cueGroup :: Parsec.Parsec String () AST.CueGroup
-cueGroup = Parsec.try $ AST.CueGroup <$> indent 2 (visualCueGroupMarker) <*> Parsec.many1 cue
+cueGroup = AST.CueGroup <$> indent 2 (visualCueGroupMarker) <*> Parsec.many1 cue <* Parsec.newline
 
 scene :: Parsec.Parsec String () AST.Scene
-scene = Parsec.try $ AST.Scene <$> indent 1 (Parsec.string "Scene " *> (read <$> Parsec.many1 Parsec.digit) <* Parsec.char ':')
+scene = AST.Scene <$> indent 1 (Parsec.string "Scene " *> (read <$> Parsec.many1 Parsec.digit) <* Parsec.char ':')
                   <*> Parsec.many1 cueGroup
 
 act :: Parsec.Parsec String () AST.Act
@@ -65,6 +65,6 @@ act = AST.Act <$> indent 0 (Parsec.string "Act " *> (read <$> Parsec.many1 Parse
 
 cueSheet :: Parsec.Parsec String () AST.CueSheet
 cueSheet = AST.CueSheet
-            <$> (characters)
-            <*> (departments)
-            <*> (Parsec.many1 act)
+            <$> (characters <* Parsec.newline)
+            <*> (departments <* Parsec.newline)
+            <*> (Parsec.many1 act <* indent 0 (Parsec.string "--- END ---"))
