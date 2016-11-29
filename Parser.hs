@@ -55,12 +55,12 @@ lineCueGroupMarker = AST.Line <$> (parens (Parsec.string "line") *> Parsec.char 
 cueGroup :: Parsec.Parsec String () AST.CueGroup
 cueGroup = AST.CueGroup <$> indent 2 (Parsec.try visualCueGroupMarker <|> lineCueGroupMarker) <*> Parsec.many1 cue <* Parsec.newline
 
-scene :: Parsec.Parsec String () AST.Scene
-scene = AST.Scene <$> indent 1 (Parsec.string "Scene " *> (read <$> Parsec.many1 Parsec.digit) <* Parsec.char ':')
+scene :: Parsec.Parsec String () AST.CueScene
+scene = AST.CueScene <$> indent 1 (Parsec.string "Scene " *> (read <$> Parsec.many1 Parsec.digit) <* Parsec.char ':')
                   <*> Parsec.many1 cueGroup
 
-act :: Parsec.Parsec String () AST.Act
-act = AST.Act <$> indent 0 (Parsec.string "Act " *> (read <$> Parsec.many1 Parsec.digit) <* Parsec.char ':')
+act :: Parsec.Parsec String () AST.CueAct
+act = AST.CueAct <$> indent 0 (Parsec.string "Act " *> (read <$> Parsec.many1 Parsec.digit) <* Parsec.char ':')
               <*> Parsec.many1 scene
 
 cueSheet :: Parsec.Parsec String () AST.CueSheet
