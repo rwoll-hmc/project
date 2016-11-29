@@ -1,14 +1,14 @@
 module AST where
-data Command = Go | Stby | Warn deriving (Eq)
-data Character = Character String deriving (Eq)
-data Action = Enter | Exit deriving (Eq)
-data Department = Department String deriving (Eq)
-data Cue = Cue { department :: Department, number :: Int, command :: Command } deriving (Eq)
+data Command = Go | Stby | Warn deriving Eq
+data Character = Character String deriving Eq
+data Action = Enter | Exit deriving Eq
+data Department = Department String deriving Eq
+data Cue = Cue { department :: Department, number :: Int, command :: Command } deriving Eq
 data CueGroup = CueGroup Marker [Cue] deriving (Eq, Show)
-data Marker = Visual Character Action | Line Character String deriving (Eq)
+data Marker = Visual Character Action | Line Character String deriving Eq
 data Scene = Scene Int [CueGroup] deriving (Eq, Show)
 data Act = Act Int [Scene] deriving (Eq, Show)
-data CueSheet = CueSheet { characters :: [Character], departments :: [Department], acts :: [Act] } deriving (Eq)
+data CueSheet = CueSheet { characters :: [Character], departments :: [Department], acts :: [Act] } deriving Eq
 
 instance Show Command where
   show Go = "GO"
@@ -31,7 +31,6 @@ instance Show Cue where
 instance Show Marker where
   show (Visual ch a) = "(visual) " ++ show ch ++ ":" ++ show a
   show (Line ch a) = "(line) " ++ show ch ++ ":" ++ show a
-
 
 instance Show CueSheet where
   show (CueSheet cs ds as) =
