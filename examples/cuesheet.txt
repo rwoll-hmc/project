@@ -1,0 +1,7 @@
+Characters:
+  @CECIL
+  @ATHENA
+
+Departments:
+  #LX
+  #SD
