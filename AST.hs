@@ -1,6 +1,6 @@
 module AST where
 
-import qualified Data.Set
+import qualified Data.Set as Set
 
 data Command = Go | Stby | Warn deriving Eq
 data Character = Character String deriving Eq
@@ -15,7 +15,7 @@ data CueSheet = CueSheet { characters :: [Character], departments :: [Department
 
 data Script = Script
   String            -- ^Title
-  Set.Set Character -- ^Characters
+  (Set.Set Character) -- ^Characters
   [Act]             -- ^Acts
 
 data Act = Act
@@ -25,6 +25,22 @@ data Act = Act
 data Scene = Scene
   Int      -- ^Scene Index
   [Marker] -- ^Sequence of Events in a Scene
+
+data PromptScript = PromptScript
+  String
+  (Set.Set Character)
+  (Set.Set Department)
+  [PromptAct]
+
+data PromptAct = PromptAct
+  Int
+  [PromptScene]
+
+data PromptScene = PromptScene
+  Int
+  [PromptMarker]
+
+data PromptMarker = PromptMarker Marker [Cue]
 
 instance Show Command where
   show Go = "GO"
