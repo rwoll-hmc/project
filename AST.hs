@@ -14,9 +14,9 @@ data CueAct = CueAct Int [CueScene] deriving (Eq, Show)
 data CueSheet = CueSheet { characters :: [Character], departments :: [Department], acts :: [CueAct] } deriving Eq
 
 data Script = Script
-  String            -- ^Title
+  String              -- ^Title
   (Set.Set Character) -- ^Characters
-  [Act]             -- ^Acts
+  [Act]               -- ^Acts
 
 data Act = Act
   Int     -- ^Act Index
@@ -27,18 +27,18 @@ data Scene = Scene
   [Marker] -- ^Sequence of Events in a Scene
 
 data PromptScript = PromptScript
-  String
-  (Set.Set Character)
-  (Set.Set Department)
-  [PromptAct]
+  { pTitle :: String
+  , pCharacters :: Set.Set Character
+  , pDepartments :: Set.Set Department
+  , pActs :: [PromptAct] }
 
 data PromptAct = PromptAct
-  Int
-  [PromptScene]
+  { pActId :: Int
+  , pActScenes :: [PromptScene] }
 
 data PromptScene = PromptScene
-  Int
-  [PromptMarker]
+  { pSceneId :: Int
+  , pMarkers :: [PromptMarker] }
 
 data PromptMarker = PromptMarker Marker [Cue]
 
@@ -73,3 +73,9 @@ instance Show CueSheet where
     showAct (CueAct i ss) = "Act " ++ show i ++ ":\n" ++ (concatMap showScene ss)
     showScene (CueScene i gs) = "  Scene " ++ show i ++ ":\n" ++ (unlines $ map showCG gs)
     showCG (CueGroup m cs) = "    " ++ show m ++ "\n" ++ (unlines $ map (("      " ++) . show) cs)
+
+instance Ord Department where
+  compare (Department a) (Department b) = compare a b
+
+instance Ord Character where
+  compare (Character a) (Character b) = compare a b

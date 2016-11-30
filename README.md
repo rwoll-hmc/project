@@ -1,12 +1,39 @@
 \> Prompt
 =========
 
+## Samples
+
+### Sample DSL Language
+
+```
+Characters:
+  @SARAH
+  @CECIL
+
+Departments:
+  #LX
+  #SD
+  #BS
+
+Act 1:
+  Scene 1:
+    (visual) @ATHEN:EXIT
+      #LX {100000} STBY
+      #SD {2071231283712318} STBY
+
+    (visual) @ATHEN:ENTR
+      #LX {2222} WARN
+```
+### Sample Rendering
+
+![example](/exampleRendering.png)
+
 ## Setup
 
 ```
 $ git clone $REPO_URL $REPO_DIR
 $ cd $REPO_DIR
-$ cabal install parsec
+$ cabal install parsec HaTeX
 $ make
 ```
 
