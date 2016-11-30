@@ -5,6 +5,7 @@ import Text.LaTeX.Base.Class
 import AST
 import qualified Data.Set as Set
 import Control.Monad
+import SampleScript
 
 main :: IO ()
 main = execLaTeXT simple >>= renderFile "script.tex"
@@ -51,13 +52,13 @@ formatScene scene = do
   mapM_ formatMarker (pMarkers scene)
 
 formatMarker :: Monad m => PromptMarker -> LaTeXT_ m
-formatMarker (PromptMarker (Visual (Character c) a) []) = do
+formatMarker (PromptMarker (Visual (Character c) a _) []) = do
   center $ textit $ fromString (c ++ " : " ++ show a)
-formatMarker (PromptMarker (Visual (Character c) a) cs) = do
+formatMarker (PromptMarker (Visual (Character c) a _) cs) = do
   center (addCueNotes cs <> comm1 "hl" (textit $ fromString (c ++ " : " ++ show a)))
-formatMarker (PromptMarker (Line (Character c) l) []) = do
+formatMarker (PromptMarker (Line (Character c) l _) []) = do
   flushleft (textbf (fromString (c ++ ": ")) <> fromString l)
-formatMarker (PromptMarker (Line (Character c) l) cs) = do
+formatMarker (PromptMarker (Line (Character c) l _) cs) = do
   flushleft (addCueNotes cs <> comm1 "hl" (textbf( fromString (c++": ")) <> fromString l))
 
 addCueNotes :: Monad m => [Cue] -> LaTeXT_ m
@@ -66,19 +67,3 @@ addCueNotes cs = do
   raw "\\marginnote{"
   mapM_ (\c -> (texttt $ fromString $ show c ++ " TODO") <> newline) cs
   raw "}"
-
--- Sample Script With Markup Injected
-theScript :: PromptScript
-theScript = PromptScript
-  "DSLs: A Play"
-  (Set.fromList [Character "ROSS", Character "PROF"])
-  (Set.fromList [Department "LX", Department "SD"])
-  (replicate 5 a)
-
-a = PromptAct 0 $ replicate 2 $ PromptScene 47 [
-    PromptMarker (Visual (Character "CECIL") Enter) $ [Cue (Department "LX") 10 Stby],
-    PromptMarker (Line (Character "CECIL") "Hello, world! This is great and it is a really really long sentance that is so long it will probably have to wrap around the page in an infinite loop forever and ever and ever.") $ [Cue (Department "LX") 10 Stby, Cue (Department "SD") 20 Warn],
-    PromptMarker (Line (Character "CECIL") "Hello, world! This is great and it is a really really long sentance that is so long it will probably have to wrap around the page in an infinite loop forever and ever and ever.") [],
-    PromptMarker (Line (Character "CECIL") "Hello, world! This is great and it is a really really long sentance that is so long it will probably have to wrap around the page in an infinite loop forever and ever and ever.") $ [Cue (Department "LX") 10 Stby, Cue (Department "SD") 20 Warn],
-    PromptMarker (Visual (Character "CECIL") Enter) []
-  ]
