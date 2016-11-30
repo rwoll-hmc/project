@@ -8,7 +8,7 @@ data Action = Enter | Exit deriving Eq
 data Department = Department String deriving Eq
 data Cue = Cue { department :: Department, number :: Int, command :: Command } deriving Eq
 data CueGroup = CueGroup Marker [Cue] deriving (Eq, Show)
-data Marker = Visual Character Action | Line Character String deriving Eq
+data Marker = Visual Character Action (Maybe Int) | Line Character String (Maybe Int) deriving Eq
 data CueScene = CueScene Int [CueGroup] deriving (Eq, Show)
 data CueAct = CueAct Int [CueScene] deriving (Eq, Show)
 data CueSheet = CueSheet { characters :: [Character], departments :: [Department], acts :: [CueAct] } deriving Eq
@@ -60,9 +60,12 @@ instance Show Department where
 instance Show Cue where
   show (Cue dp i cmd) = show dp ++ " {" ++ show i ++ "} " ++ show cmd
 
+showDisamb (Just i) = "(" ++ show i ++ ")"
+showDisamb Nothing = "(0)"
+
 instance Show Marker where
-  show (Visual ch a) = "(visual) " ++ show ch ++ ":" ++ show a
-  show (Line ch a) = "(line) " ++ show ch ++ ":" ++ show a
+  show (Visual ch a i) = "(visual) " ++ show ch ++ ":" ++ show a ++ " " ++ showDisamb i
+  show (Line ch a i) = "(line) " ++ show ch ++ ":" ++ show a ++ " " ++ showDisamb i
 
 instance Show CueSheet where
   show (CueSheet cs ds as) =

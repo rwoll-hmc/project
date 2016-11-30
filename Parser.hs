@@ -47,17 +47,23 @@ quotedString :: Parsec.Parsec String () String
 quotedString = Parsec.char '"' *> Parsec.many (Parsec.oneOf " <>?/.,:;'|\\{}[]~!@#$%^&*()_+=-`" <|> Parsec.alphaNum ) <* Parsec.char '"'
 
 visualCueGroupMarker :: Parsec.Parsec String () AST.Marker
-visualCueGroupMarker = AST.Visual <$> (parens (Parsec.string "visual") *> Parsec.char ' ' *> character <* Parsec.char ':') <*> action
+visualCueGroupMarker = AST.Visual
+  <$> (parens (Parsec.string "visual") *> Parsec.char ' ' *> character <* Parsec.char ':')
+  <*> action
+  <*> Parsec.optionMaybe (Parsec.char ' ' *> parens (read <$> Parsec.many1 Parsec.digit))
 
 lineCueGroupMarker :: Parsec.Parsec String () AST.Marker
-lineCueGroupMarker = AST.Line <$> (parens (Parsec.string "line") *> Parsec.char ' ' *> character <* Parsec.char ':') <*> quotedString
+lineCueGroupMarker =
+  AST.Line <$> (parens (Parsec.string "line") *> Parsec.char ' ' *> character <* Parsec.char ':')
+           <*> quotedString
+           <*> Parsec.optionMaybe (Parsec.char ' ' *> parens (read <$> Parsec.many1 Parsec.digit))
 
 cueGroup :: Parsec.Parsec String () AST.CueGroup
-cueGroup = AST.CueGroup <$> indent 2 (Parsec.try visualCueGroupMarker <|> lineCueGroupMarker) <*> Parsec.many1 cue <* Parsec.newline
+cueGroup = Parsec.try (AST.CueGroup <$> indent 2 (Parsec.try visualCueGroupMarker <|> lineCueGroupMarker) <*> Parsec.many1 cue <* Parsec.newline)
 
 scene :: Parsec.Parsec String () AST.CueScene
-scene = AST.CueScene <$> indent 1 (Parsec.string "Scene " *> (read <$> Parsec.many1 Parsec.digit) <* Parsec.char ':')
-                  <*> Parsec.many1 cueGroup
+scene = Parsec.try (AST.CueScene <$> indent 1 (Parsec.string "Scene " *> (read <$> Parsec.many1 Parsec.digit) <* Parsec.char ':')
+                  <*> Parsec.many1 cueGroup)
 
 act :: Parsec.Parsec String () AST.CueAct
 act = AST.CueAct <$> indent 0 (Parsec.string "Act " *> (read <$> Parsec.many1 Parsec.digit) <* Parsec.char ':')
