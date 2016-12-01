@@ -7,7 +7,7 @@ import qualified Text.Parsec as Parsec
 import qualified AST -- TODO: Remove qualified imports
 import AST
 import qualified Parser
-import Interp (fuzzyMatch, isAmbiguous, placeCueInScene, Error(..))
+import Interp (fuzzyMatch, isAmbiguous, placeCueInScene, Error(..), findDups)
 
 main = defaultMain tests
 
@@ -64,7 +64,7 @@ cueNumber = testGroup "Formatted Cue Number" $
   ]
 
 interpTests :: TestTree
-interpTests = testGroup "Interpreter Tests" [fuzzyMatchTests, isAmbiguousTests, placeCueInSceneTests]
+interpTests = testGroup "Interpreter Tests" [fuzzyMatchTests, isAmbiguousTests, placeCueInSceneTests, findDupTests]
 
 fuzzyMatchTests :: TestTree
 fuzzyMatchTests = testGroup "Fuzzy Match Tests"
@@ -156,6 +156,15 @@ placeCueInSceneTests = testGroup "Place Cue in Scene Tests" $
       placeCueInScene mockScene1 cueGroup1 @?= Right eMockScene1,
     testCase "Ensure Successfully Places Cue Appends" $
       placeCueInScene mockScene2 cueGroup2 @?= Right eMockScene2
+  ]
+
+findDupTests :: TestTree
+findDupTests = testGroup "Find Duplicates" $
+  [
+    testCase "Empty List" $ findDups "" @?= "",
+    testCase "One Duplicate" $ findDups "abca" @?= "a",
+    testCase "Many Duplicates" $ findDups "ababc" @?= "ab",
+    testCase "Many Many Duplicates" $ findDups "abc6788671003" @?= "6780"
   ]
 
 reflectTests f = map (\(a, e, comment) -> testCase (genLabel comment a) $ f a @?= Right e) where
