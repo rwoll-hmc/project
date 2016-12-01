@@ -41,3 +41,13 @@ findDups = snd . foldr (\l a@(seen, dups) -> if l `notElem` seen
                                              else if l `notElem` dups
                                                then (seen, l:dups)
                                                else (seen, dups)) ([],[])
+
+checkDups :: Eq a => (a -> Error) -> [a] -> Either [Error] ()
+checkDups fErr ls = let dups = findDups ls in
+  if dups == [] then Right () else Left $ map fErr ls
+
+checkDupChars :: [Character] -> Either [Error] ()
+checkDupChars = checkDups DuplicateCharacterDeclaration
+
+checkDupDepts :: [Department] -> Either [Error] ()
+checkDupDepts = checkDups DuplicateDepartmentDeclaration
