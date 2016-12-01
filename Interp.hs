@@ -1,6 +1,6 @@
 module Interp where
 
-import AST (Marker(..), PromptScene(..), CueGroup(..), PromptMarker(..))
+import AST
 import qualified Utils
 
 fuzzyMatch :: Marker -- ^ Possible match
@@ -24,7 +24,8 @@ findOccurrences (PromptScene _ pms) (CueGroup m _) = filter (\pm -> fuzzyMatch (
 data Error
   = NoMatchError PromptScene CueGroup
   | AmbiguousError PromptScene CueGroup
-  deriving (Eq, Show)
+  | DuplicateCharacterDeclaration Character
+  | DuplicateDepartmentDeclaration Department deriving (Eq, Show)
 
 placeCueInScene :: PromptScene -> CueGroup -> Either Error PromptScene
 placeCueInScene ps cg = do
@@ -33,3 +34,10 @@ placeCueInScene ps cg = do
     [] -> Left $ NoMatchError ps cg
     [c] -> return $ ps { pMarkers = foldr (\l acc -> if l `elem` res then l {pCues = pCues l ++ cgCues cg}:acc else l:acc) [] (pMarkers ps)}
     _ -> Left $ AmbiguousError ps cg
+
+findDups :: Eq a => [a] -> [a]
+findDups = snd . foldr (\l a@(seen, dups) -> if l `notElem` seen
+                                             then (l:seen, dups)
+                                             else if l `notElem` dups
+                                               then (seen, l:dups)
+                                               else (seen, dups)) ([],[])
