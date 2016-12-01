@@ -7,7 +7,7 @@ import qualified Text.Parsec as Parsec
 import qualified AST -- TODO: Remove qualified imports
 import AST
 import qualified Parser
-import Interp (fuzzyMatch, isAmbiguous)
+import Interp (fuzzyMatch, isAmbiguous, placeCueInScene, Error(..))
 
 main = defaultMain tests
 
@@ -64,7 +64,7 @@ cueNumber = testGroup "Formatted Cue Number" $
   ]
 
 interpTests :: TestTree
-interpTests = testGroup "Interpreter Tests" [fuzzyMatchTests, isAmbiguousTests]
+interpTests = testGroup "Interpreter Tests" [fuzzyMatchTests, isAmbiguousTests, placeCueInSceneTests]
 
 fuzzyMatchTests :: TestTree
 fuzzyMatchTests = testGroup "Fuzzy Match Tests"
@@ -108,6 +108,18 @@ mockScene = PromptScene 47
     PromptMarker (Visual (Character "CECIL") Enter (Just 5)) []          -- ambig visual
   ]
 
+mockScene0 = PromptScene 47 [PromptMarker (Visual (Character "CECIL") Enter (Just 0)) []]
+cueGroup0 = CueGroup (Visual (Character "CECIL") Enter (Just 0)) [Cue (Department "LX") 99 Go]
+eMockScene0 = PromptScene 47 [PromptMarker (Visual (Character "CECIL") Enter (Just 0)) [Cue (Department "LX") 99 Go]]
+
+mockScene1 = PromptScene 47 [PromptMarker (Line (Character "CECIL") "Hello, world!" (Just 0)) []]
+cueGroup1 = CueGroup (Line (Character "CECIL") "ello" Nothing) [Cue (Department "LX") 99 Go]
+eMockScene1 = PromptScene 47 [PromptMarker (Line (Character "CECIL") "Hello, world!" (Just 0)) [Cue (Department "LX") 99 Go]]
+
+mockScene2 = PromptScene 47 [PromptMarker (Line (Character "CECIL") "Hello, world!" (Just 0)) [Cue (Department "SD") 99 Go]]
+cueGroup2 = CueGroup (Line (Character "CECIL") "ello" Nothing) [Cue (Department "LX") 99 Go]
+eMockScene2 = PromptScene 47 [PromptMarker (Line (Character "CECIL") "Hello, world!" (Just 0)) [Cue (Department "SD") 99 Go, Cue (Department "LX") 99 Go]]
+
 isAmbiguousTests :: TestTree
 isAmbiguousTests = testGroup "Ambiguous Checker" $
   [ testGroup "Visual" $
@@ -128,6 +140,22 @@ isAmbiguousTests = testGroup "Ambiguous Checker" $
         testCase "Unambiguous" $
           isAmbiguous mockScene (CueGroup (Line (Character "CECIL") "unique" Nothing) []) @?= False
       ]
+  ]
+
+placeCueInSceneTests :: TestTree
+placeCueInSceneTests = testGroup "Place Cue in Scene Tests" $
+  [ testCase "Place CueGroup with No Cues" $
+      placeCueInScene mockScene (CueGroup (Line (Character "CECIL") "Hello" (Just 2)) []) @?= Right mockScene,
+    testCase "Expect Error for Cue without an Existent Target" $
+      placeCueInScene mockScene (CueGroup (Line (Character "CECIL") "this isn't in the scrip" (Just 2)) []) @?= Left (NoMatchError mockScene (CueGroup (Line (Character "CECIL") "this isn't in the scrip" (Just 2)) [])),
+    testCase "Expect Error for Ambiguous Placements" $
+      placeCueInScene mockScene (CueGroup (Line (Character "CECIL") "ello" Nothing) []) @?= Left (AmbiguousError mockScene (CueGroup (Line (Character "CECIL") "ello" Nothing) [])),
+    testCase "Successfully Place Unambiguos Cue" $
+      placeCueInScene mockScene0 cueGroup0 @?= Right eMockScene0,
+    testCase "Place Ambiguous Cue" $
+      placeCueInScene mockScene1 cueGroup1 @?= Right eMockScene1,
+    testCase "Ensure Successfully Places Cue Appends" $
+      placeCueInScene mockScene2 cueGroup2 @?= Right eMockScene2
   ]
 
 reflectTests f = map (\(a, e, comment) -> testCase (genLabel comment a) $ f a @?= Right e) where
