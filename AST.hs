@@ -7,7 +7,10 @@ data Character = Character String deriving Eq
 data Action = Enter | Exit deriving Eq
 data Department = Department String deriving Eq
 data Cue = Cue { department :: Department, number :: Int, command :: Command } deriving Eq
-data CueGroup = CueGroup Marker [Cue] deriving (Eq, Show)
+data CueGroup = CueGroup {
+    cgMarker :: Marker,
+    cgCues :: [Cue]
+  } deriving (Eq, Show)
 data Marker = Visual Character Action (Maybe Int) | Line Character String (Maybe Int) deriving Eq
 data CueScene = CueScene Int [CueGroup] deriving (Eq, Show)
 data CueAct = CueAct Int [CueScene] deriving (Eq, Show)
@@ -30,17 +33,17 @@ data PromptScript = PromptScript
   { pTitle :: String
   , pCharacters :: Set.Set Character
   , pDepartments :: Set.Set Department
-  , pActs :: [PromptAct] }
+  , pActs :: [PromptAct] } deriving Eq
 
 data PromptAct = PromptAct
   { pActId :: Int
-  , pActScenes :: [PromptScene] }
+  , pActScenes :: [PromptScene] } deriving Eq
 
 data PromptScene = PromptScene
   { pSceneId :: Int
-  , pMarkers :: [PromptMarker] }
+  , pMarkers :: [PromptMarker] } deriving (Eq, Show)
 
-data PromptMarker = PromptMarker { pMarker :: Marker, pCues :: [Cue] }
+data PromptMarker = PromptMarker { pMarker :: Marker, pCues :: [Cue] } deriving (Eq, Show)
 
 instance Show Command where
   show Go = "GO"

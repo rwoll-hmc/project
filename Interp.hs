@@ -1,6 +1,6 @@
 module Interp where
 
-import AST (Marker(..), PromptScene(..), CueGroup(..), pMarkers, pMarker)
+import AST (Marker(..), PromptScene(..), CueGroup(..), PromptMarker(..))
 import qualified Utils
 
 fuzzyMatch :: Marker -- ^ Possible match
@@ -16,6 +16,20 @@ fuzzyMatch (Line _ _ Nothing) _ = error("TODO: Reimplement the data structure")
 fuzzyMatch (Visual _ _ Nothing) _ = error("TODO: Reimplement the data structure")
 
 isAmbiguous :: PromptScene -> CueGroup -> Bool
-isAmbiguous _ (CueGroup (Visual _ _ (Just _)) _) = False
-isAmbiguous _ (CueGroup (Line _ _ (Just _)) _) = False
-isAmbiguous (PromptScene _ pms) (CueGroup m _) = length (filter (\pm -> fuzzyMatch (pMarker pm) m) pms) > 1
+isAmbiguous p c = length (findOccurrences p c) > 1
+
+findOccurrences :: PromptScene -> CueGroup -> [PromptMarker]
+findOccurrences (PromptScene _ pms) (CueGroup m _) = filter (\pm -> fuzzyMatch (pMarker pm) m) pms
+
+data Error
+  = NoMatchError PromptScene CueGroup
+  | AmbiguousError PromptScene CueGroup
+  deriving (Eq, Show)
+
+placeCueInScene :: PromptScene -> CueGroup -> Either Error PromptScene
+placeCueInScene ps cg = do
+  res <- return $ findOccurrences ps cg
+  case res of
+    [] -> Left $ NoMatchError ps cg
+    [c] -> return $ ps { pMarkers = foldr (\l acc -> if l `elem` res then l {pCues = pCues l ++ cgCues cg}:acc else l:acc) [] (pMarkers ps)}
+    _ -> Left $ AmbiguousError ps cg
