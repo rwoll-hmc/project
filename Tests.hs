@@ -4,7 +4,6 @@ import Test.Tasty
 import Test.Tasty.HUnit
 
 import qualified Text.Parsec as Parsec
-import qualified AST -- TODO: Remove qualified imports
 import AST
 import qualified Parser
 import Interp
