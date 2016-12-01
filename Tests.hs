@@ -7,7 +7,8 @@ import qualified Text.Parsec as Parsec
 import qualified AST -- TODO: Remove qualified imports
 import AST
 import qualified Parser
-import Interp (fuzzyMatch, isAmbiguous, placeCueInScene, Error(..), findDups)
+import Interp
+import Data.Set as Set
 
 main = defaultMain tests
 
@@ -64,7 +65,7 @@ cueNumber = testGroup "Formatted Cue Number" $
   ]
 
 interpTests :: TestTree
-interpTests = testGroup "Interpreter Tests" [fuzzyMatchTests, isAmbiguousTests, placeCueInSceneTests, findDupTests]
+interpTests = testGroup "Interpreter Tests" [fuzzyMatchTests, isAmbiguousTests, placeCueInSceneTests, findDupTests, zeroOrErrTests, checkDupTests, checkUndeclTests]
 
 fuzzyMatchTests :: TestTree
 fuzzyMatchTests = testGroup "Fuzzy Match Tests"
@@ -167,6 +168,27 @@ findDupTests = testGroup "Find Duplicates" $
     testCase "Many Many Duplicates" $ findDups "abc6788671003" @?= "6780"
   ]
 
-reflectTests f = map (\(a, e, comment) -> testCase (genLabel comment a) $ f a @?= Right e) where
+zeroOrErrTests :: TestTree
+zeroOrErrTests = testGroup "Zero or Error"
+  [
+    testCase "No Errors" (zeroOrErr ([] :: [Int]) @?= Right ()),
+    testCase "Errors" $ zeroOrErr ["a","b","c"] @?= Left ["a","b","c"]
+  ]
+
+checkDupTests :: TestTree
+checkDupTests = testGroup "Duplicate Check Tests" $
+  [
+    testCase "No Errors" $ (checkDups id ([1,2,3] :: [Int])) @?= Right (),
+    testCase "Errors" $ checkDups (\x -> Just x) ["a","b","c", "a", "b"] @?= Left [Just "a", Just "b"]
+  ]
+
+checkUndeclTests :: TestTree
+checkUndeclTests = testGroup "Undeclared Usage" $
+  [
+    testCase "No Errors" $ checkUndecl id (Set.fromList ["a"]) ["a"] @?= Right (),
+    testCase "Errors" $ checkUndecl id (Set.fromList ["c"]) ["a", "a", "b", "c"] @?= Left ["a", "a", "b"]
+  ]
+
+reflectTests f = Prelude.map (\(a, e, comment) -> testCase (genLabel comment a) $ f a @?= Right e) where
   genLabel (Just c) _ = c
   genLabel Nothing a = a

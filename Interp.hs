@@ -2,6 +2,7 @@ module Interp where
 
 import AST
 import qualified Utils
+import Data.Set(Set, notMember)
 
 fuzzyMatch :: Marker -- ^ Possible match
            -> Marker -- ^ Search Criteria
@@ -25,7 +26,9 @@ data Error
   = NoMatchError PromptScene CueGroup
   | AmbiguousError PromptScene CueGroup
   | DuplicateCharacterDeclaration Character
-  | DuplicateDepartmentDeclaration Department deriving (Eq, Show)
+  | DuplicateDepartmentDeclaration Department
+  | UndeclaredCharacterError Character
+  | UndeclaredDepartmentError Department deriving (Eq, Show)
 
 placeCueInScene :: PromptScene -> CueGroup -> Either Error PromptScene
 placeCueInScene ps cg = do
@@ -42,12 +45,25 @@ findDups = snd . foldr (\l a@(seen, dups) -> if l `notElem` seen
                                                then (seen, l:dups)
                                                else (seen, dups)) ([],[])
 
-checkDups :: Eq a => (a -> Error) -> [a] -> Either [Error] ()
-checkDups fErr ls = let dups = findDups ls in
-  if dups == [] then Right () else Left $ map fErr ls
+checkDups :: (Eq a, Eq b) => (a -> b) -> [a] -> Either [b] ()
+checkDups fErr ls = zeroOrErr $ map fErr $ findDups ls
 
 checkDupChars :: [Character] -> Either [Error] ()
 checkDupChars = checkDups DuplicateCharacterDeclaration
 
 checkDupDepts :: [Department] -> Either [Error] ()
 checkDupDepts = checkDups DuplicateDepartmentDeclaration
+
+checkUndecl :: (Eq a, Ord a, Eq b) => (a -> b) -> Set a -> [a] -> Either [b] ()
+checkUndecl fErr decl ls =
+  let errs = foldr (\l acc -> if l `notMember` decl then fErr l:acc else acc) [] ls in
+    zeroOrErr errs
+
+checkUndeclChars :: Set Character -> [Character] -> Either [Error] ()
+checkUndeclChars decls ls = checkUndecl UndeclaredCharacterError decls ls
+
+checkUndeclDept :: Set Department -> [Department] -> Either [Error] ()
+checkUndeclDept decls ls = checkUndecl UndeclaredDepartmentError decls ls
+
+zeroOrErr :: Eq a => [a] -> Either [a] ()
+zeroOrErr ls = if length ls == 0 then Right () else Left ls
