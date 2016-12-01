@@ -4,9 +4,10 @@ import Test.Tasty
 import Test.Tasty.HUnit
 
 import qualified Text.Parsec as Parsec
-import qualified AST
+import qualified AST -- TODO: Remove qualified imports
+import AST
 import qualified Parser
-import Interp (fuzzyMatch)
+import Interp (fuzzyMatch, isAmbiguous)
 
 main = defaultMain tests
 
@@ -63,7 +64,7 @@ cueNumber = testGroup "Formatted Cue Number" $
   ]
 
 interpTests :: TestTree
-interpTests = testGroup "Interpreter Tests" [fuzzyMatchTests]
+interpTests = testGroup "Interpreter Tests" [fuzzyMatchTests, isAmbiguousTests]
 
 fuzzyMatchTests :: TestTree
 fuzzyMatchTests = testGroup "Fuzzy Match Tests"
@@ -96,6 +97,39 @@ fuzzyMatchTests = testGroup "Fuzzy Match Tests"
           fuzzyMatch (AST.Line (AST.Character "CECIL") "Hello, World!" (Just 0)) (AST.Line (AST.Character "CECIL") "no match" Nothing) @?= False
       ]
   ]
+
+mockScene = PromptScene 47
+  [
+    PromptMarker (Visual (Character "CECIL") Enter (Just 0)) [],         -- ambig. visual
+    PromptMarker (Line (Character "CECIL") "Hello, world!" (Just 1)) [], -- ambig. line on "hello"
+    PromptMarker (Line (Character "CECIL") "Hello, dsls!" (Just 2)) [],  -- ambig. line on "hello"
+    PromptMarker (Line (Character "CECIL") "unique" (Just 3)) [],        -- unique line
+    PromptMarker (Visual (Character "CECIL") Exit (Just 4)) [],          -- unique visual
+    PromptMarker (Visual (Character "CECIL") Enter (Just 5)) []          -- ambig visual
+  ]
+
+isAmbiguousTests :: TestTree
+isAmbiguousTests = testGroup "Ambiguous Checker" $
+  [ testGroup "Visual" $
+      [
+        testCase "Ambiguous with No Occurrence Specified" $
+          isAmbiguous mockScene (CueGroup (Visual (Character "CECIL") Enter Nothing) []) @?= True,
+        testCase "Ambiguity Fixed with Index" $
+            isAmbiguous mockScene (CueGroup (Visual (Character "CECIL") Enter (Just 0)) []) @?= False,
+        testCase "Unambiguous" $
+          isAmbiguous mockScene (CueGroup (Visual (Character "CECIL") Exit Nothing) []) @?= False
+      ],
+    testGroup "Line" $
+      [
+        testCase "Ambiguous with No Occurrence Specified" $
+          isAmbiguous mockScene (CueGroup (Line (Character "CECIL") "Hello" Nothing) []) @?= True,
+        testCase "Ambiguity Fixed with Index" $
+          isAmbiguous mockScene (CueGroup (Line (Character "CECIL") "Hello" (Just 2)) []) @?= False,
+        testCase "Unambiguous" $
+          isAmbiguous mockScene (CueGroup (Line (Character "CECIL") "unique" Nothing) []) @?= False
+      ]
+  ]
+
 reflectTests f = map (\(a, e, comment) -> testCase (genLabel comment a) $ f a @?= Right e) where
   genLabel (Just c) _ = c
   genLabel Nothing a = a
