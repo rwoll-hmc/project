@@ -40,7 +40,7 @@ data PromptScene = PromptScene
   { pSceneId :: Int
   , pMarkers :: [PromptMarker] }
 
-data PromptMarker = PromptMarker Marker [Cue]
+data PromptMarker = PromptMarker { pMarker :: Marker, pCues :: [Cue] }
 
 instance Show Command where
   show Go = "GO"
