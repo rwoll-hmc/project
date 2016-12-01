@@ -33,7 +33,7 @@ Act 1:
 ```
 $ git clone $REPO_URL $REPO_DIR
 $ cd $REPO_DIR
-$ cabal install parsec HaTeX
+$ cabal install parsec HaTeX ansi-terminal
 $ make
 ```
 

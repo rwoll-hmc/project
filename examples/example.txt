@@ -1,14 +1,15 @@
 Characters:
   @SARAH
   @CECIL
+  @ATHEN
 
 Departments:
   #LX
   #SD
   #BS
 
-Act 1:
-  Scene 1:
+Act 0:
+  Scene 47:
     (visual) @ATHEN:EXIT (12)
       #LX {100000} STBY
       #SD {2071231283712318} STBY

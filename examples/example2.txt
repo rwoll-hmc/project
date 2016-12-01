@@ -1,0 +1,16 @@
+Characters:
+  @SARAH
+  @CECIL
+  @ATHEN
+
+Departments:
+  #LX
+  #SD
+  #BS
+
+Act 0:
+  Scene 47:
+    (line) @CECIL:"ello" (1)
+      #LX {100000} STBY
+
+--- END ---
