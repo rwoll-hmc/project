@@ -1,6 +1,8 @@
 \> Prompt
 =========
 
+[![Build Status](https://travis-ci.org/rwoll-hmc/project.svg?branch=master)](https://travis-ci.org/rwoll-hmc/project)
+
 ## Samples
 
 ### Sample DSL Language
