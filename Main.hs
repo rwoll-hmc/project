@@ -21,48 +21,20 @@ verbose = True
 
 main :: IO ()
 main = do
-  -- TODO: Add CLI switches and custom i/o files
   c <- getContents
-
   header "Parsing Input..."
-  parsed <- (case Parsec.parse Parser.cueSheet "stdin" c of
-               (Left e)  -> hPutStrLn stderr ("Error while parsing:\n\n" ++ show e) >> exitFailure
-               (Right r) -> putStrLn (show r ++ "--- END ---") >> return r)
+  parsed <- either ((>> exitFailure) . prntErrorC "Parsing Error") return
+              (Parsec.parse Parser.cueSheet "stdin" c)
 
-  header "Checking for duplicate Character declarations..."
-  printAllErrorsAndExit $ checkDupChars $ characters parsed
-
-  header "Checking for duplicate Department declarations..."
-  printAllErrorsAndExit $ checkDupDepts $ departments parsed
-
-  (chars, depts) <- return $ collectCharsAndDepts parsed
-
-  header "Checking for undeclared Characters..."
-  printAllErrorsAndExit $ checkUndeclChars (Set.fromList $ characters parsed) chars
-
-  header "Checking for undeclared Departments..."
-  printAllErrorsAndExit $ checkUndeclDept (Set.fromList $ departments parsed) depts
-
-  header "Checking for unkown Character References..."
-  printAllErrorsAndExit $ checkForUnknownChars (pCharacters theScript) $ Set.fromList $ characters
-                                                                                          parsed
-
-  {- TODO: Check for sequential ordering of cues and logical STBY|WARN -> GO.
-     TODO: Check for undeclared scenes and acts.
-     TODO: Check for duplicated scenes and acts. -}
-  -- FIXME: remove this line after hfmt
-  header "Placing cues..."
-  printAllErrorsAndExit $ mergePSCS theScript parsed
-
-  (case mergePSCS theScript parsed of
-     (Right s) -> Renderer.main s
-     _         -> return ())
-
+  header "Transpile..."
+  parsed' <- either ((>> exitFailure) . prntErrorC "Transpiling Error") return (transpile parsed)
+  evaled <- either ((>> exitFailure) . prntErrorC "Transpiling Error") return
+              (eval theScript parsed')
+  putStrLn $ show evaled
   header "Generating documents..."
+  Renderer.main evaled
   setSGR [SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Green]
-  -- TODO: Add variable name for output.
-  putStrLn "ALL DONE! Ouput left in simple.tex"
-  -- TODO: Call process for latexmk
+  putStrLn "ALL DONE! Ouput left in script.tex"
   setSGR [Reset]
 
 verbosePrnt :: String -> IO ()
@@ -73,6 +45,13 @@ header = verbosePrnt . fmtString
 
 prntError :: String -> IO ()
 prntError = hPutStrLn stderr
+
+prntErrorC :: (Show a) => String -> a -> IO ()
+prntErrorC hdr bdy = do
+  hSetSGR stderr [SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Red]
+  prntError (hdr ++ ":")
+  hSetSGR stderr [Reset]
+  prntError $ unlines $ map ("  " ++) $ lines $ (show bdy)
 
 printAllErrorsAndExit :: (Traversable t, Show a) => (Either (t a) b) -> IO ()
 printAllErrorsAndExit s =

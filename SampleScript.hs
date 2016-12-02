@@ -1,7 +1,8 @@
 module SampleScript where
 
 import           AST
-import qualified Data.Set as Set
+import qualified Data.Map.Strict as Map
+import qualified Data.Set        as Set
 
 theScript :: PromptScript
 theScript = PromptScript
@@ -14,10 +15,12 @@ theScript = PromptScript
                  , Character "ATHEN"
                  ])
               (Set.fromList [Department "LX", Department "SD"])
-              (replicate 5 a)
+              (Map.fromList [(0, a)])
 
-a = PromptAct 0 $ replicate 2 $
-  PromptScene 47
-    [ PromptMarker (Visual (Character "CECIL") Enter $ Just 0) []
-    , PromptMarker (Line (Character "CECIL") "Hello, world!" $ Just 1) []
+a = PromptAct $ Map.fromList [(0,
+  PromptScene $ Map.fromList
+    [ (0, PromptMarker (Visual (Character "CECIL") Enter Nothing) [])
+    , (1, PromptMarker (Line (Character "CECIL") "Hello, world!" Nothing) [])
+    , (2, PromptMarker (Line (Character "CECIL") "Hello, world!" Nothing) [])
     ]
+    )]

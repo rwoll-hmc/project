@@ -1,6 +1,7 @@
 module AST where
 
-import qualified Data.Set as Set
+import qualified Data.Map.Strict as Map
+import qualified Data.Set        as Set
 
 data Command = Go
              | Stby
@@ -17,14 +18,20 @@ data Action = Enter
 data Department = Department String
   deriving Eq
 
-data Cue = Cue { department :: Department, number :: Int, command :: Command }
+data Cue =
+       Cue
+         { department :: Department
+         , number     :: Int
+         , command    :: Command
+         , comment    :: Maybe String
+         }
   deriving Eq
 
 data CueGroup = CueGroup { cgMarker :: Marker, cgCues :: [Cue] }
   deriving (Eq, Show)
 
-data Marker = Visual Character Action (Maybe Int)
-            | Line Character String (Maybe Int)
+data Marker = Visual { mChar :: Character, mAction :: Action, mIdx :: (Maybe Int) }
+            | Line { mChar :: Character, mLine :: String, mIdx :: (Maybe Int) }
   deriving Eq
 
 data CueScene = CueScene { csIndex :: Int, csGroups :: [CueGroup] }
@@ -41,19 +48,22 @@ data CueSheet =
          }
   deriving Eq
 
+data PromptIndex = PromptIndex CueAct CueScene PromptMarker
+  deriving (Eq, Show)
+
 data PromptScript =
        PromptScript
          { pTitle       :: String
          , pCharacters  :: Set.Set Character
          , pDepartments :: Set.Set Department
-         , pActs        :: [PromptAct]
+         , pActs        :: Map.Map Int PromptAct
          }
   deriving (Eq, Show)
 
-data PromptAct = PromptAct { pActId :: Int, pActScenes :: [PromptScene] }
+data PromptAct = PromptAct { pActScenes :: Map.Map Int PromptScene }
   deriving (Eq, Show)
 
-data PromptScene = PromptScene { pSceneId :: Int, pMarkers :: [PromptMarker] }
+data PromptScene = PromptScene { pMarkers :: Map.Map Int PromptMarker }
   deriving (Eq, Show)
 
 data PromptMarker = PromptMarker { pMarker :: Marker, pCues :: [Cue] }
@@ -75,7 +85,7 @@ instance Show Department where
   show (Department dp) = '#' : dp
 
 instance Show Cue where
-  show (Cue dp i cmd) = show dp ++ " {" ++ show i ++ "} " ++ show cmd
+  show (Cue dp i cmd _) = show dp ++ " {" ++ show i ++ "} " ++ show cmd
 
 showDisamb (Just i) = "(" ++ show i ++ ")"
 showDisamb Nothing = "(-)"

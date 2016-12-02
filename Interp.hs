@@ -1,149 +1,156 @@
 module Interp where
 
 import           AST
-import           Data.Foldable    (foldrM)
+import           Control.Monad
+import           Data.Foldable    (foldlM)
+import           Data.Map.Strict  (Map, filterWithKey, findWithDefault,
+                                   mapAccum, mapAccumWithKey)
+import qualified Data.Map.Strict  as Map
 import           Data.Set         (Set, difference, elems, empty, insert,
                                    notMember)
 import           Data.Traversable (mapM)
 import qualified Utils
 
-fuzzyMatch :: Marker -- ^ Possible match
-           -> Marker -- ^ Search Criteria
-           -> Bool   -- ^ True if fuzzy match, False otherwise.
-fuzzyMatch (Visual _ _ _) (Line _ _ _) = False
-fuzzyMatch (Line _ _ _) (Visual _ _ _) = False
-fuzzyMatch (Line c0 l0 (Just i0)) (Line c1 l1 Nothing) = c0 == c1 && Utils.substring l1 l0
-fuzzyMatch (Line c0 l0 (Just i0)) (Line c1 l1 (Just i1)) = c0 == c1 &&
-                                                           i0 == i1 &&
-                                                           Utils.substring l1 l0
-fuzzyMatch (Visual c0 a0 (Just i0)) (Visual c1 a1 Nothing) = c0 == c1 && a0 == a1
-fuzzyMatch v0@(Visual _ _ (Just _)) v1@(Visual _ _ (Just _)) = v0 == v1
-fuzzyMatch (Line _ _ Nothing) _ = error ("TODO: Reimplement the data structure")
-fuzzyMatch (Visual _ _ Nothing) _ = error ("TODO: Reimplement the data structure")
+transpile :: CueSheet -> Either Error PromptScript
+transpile cs = do
+  declChars <- safeListToSet DuplicateCharacterDeclaration (characters cs)
+  declDepts <- safeListToSet DuplicateDepartmentDeclaration (departments cs)
+  foldlM insertAct (PromptScript "Untitled" declChars declDepts Map.empty) (acts cs)
 
-isAmbiguous :: PromptScene -> CueGroup -> Bool
-isAmbiguous p c = length (findOccurrences p c) > 1
+insertAct :: PromptScript -> CueAct -> Either Error PromptScript
+insertAct ps ca@(CueAct i scs) = do
+  ensureStrictGtInsert (\_ -> OutOfOrderOrDuplicateActError ca) i (pActs ps)
+  foldlM (insertScene i) ps scs
 
-findOccurrences :: PromptScene -> CueGroup -> [PromptMarker]
-findOccurrences (PromptScene _ pms) (CueGroup m _) = filter (\pm -> fuzzyMatch (pMarker pm) m) pms
+insertScene :: Int -> PromptScript -> CueScene -> Either Error PromptScript
+insertScene aIdx ps sc@(CueScene i cgs) = do
+  ensureStrictGtInsert (\_ -> OutOfOrderOrDuplicateSceneError sc) i
+    (pActScenes $ findWithDefault (PromptAct Map.empty) aIdx (pActs ps))
+  foldlM (insertCueGroups aIdx i) ps cgs
 
-data Error = NoMatchError PromptScene CueGroup
-           | AmbiguousError PromptScene CueGroup
+eval :: PromptScript -> PromptScript -> Either [Error] PromptScript
+eval prompt cuesheet =
+  let (errs, prompt') = mapAccumWithKey (processAct cuesheet) [] (pActs prompt)
+  in if null errs
+       then Right $ prompt { pActs = prompt' }
+       else Left errs
+
+processAct :: PromptScript -> [Error] -> Int -> PromptAct -> ([Error], PromptAct)
+processAct cuesheet errs0 actIdx (PromptAct scenes) =
+  let (errs, scenes') = mapAccumWithKey (processScene cuesheet actIdx) [] scenes
+  in if null errs
+       then (errs0, PromptAct scenes')
+       else (errs0 ++ errs, PromptAct scenes')
+
+processScene :: PromptScript            -- ^ cuehseet
+             -> Int                     -- ^ act index
+             -> [Error]                 -- ^ accumulating errors
+             -> Int                     -- ^ scene index
+             -> PromptScene             -- ^ original scene
+             -> ([Error], PromptScene)  -- ^ results
+processScene cuesheet actIdx errs0 scIdx (PromptScene markers) =
+  -- cms ::= any relavent markers from cue sheet
+  let cms = pMarkers $ findWithDefault (PromptScene Map.empty) scIdx $ pActScenes $ findWithDefault
+                                                                                      (PromptAct
+                                                                                         Map.empty)
+                                                                                      actIdx
+                                                                                      (pActs
+                                                                                         cuesheet)
+  in let (errs, markers') = fst $ mapAccum resolveMarker ([], markers) cms
+     in (errs0 ++ errs, PromptScene markers')
+
+resolveMarker :: ([Error], Map.Map Int PromptMarker) -> PromptMarker -> (([Error], Map.Map Int PromptMarker), Map.Map Int PromptMarker)
+resolveMarker (errs0, m0) mFromCueSheet@(PromptMarker _ cues) =
+  let res = filterWithKey (fuzzyMatch mFromCueSheet) m0
+  in if null res
+       then ((errs0 ++ [NoMatchError mFromCueSheet], m0), m0) -- TODO: check return???
+       else if Map.size res == 1
+              then ((errs0, Map.adjust
+                              (\p@(PromptMarker _ cs) -> p { pCues = cs ++ cues })
+                              (head $ Map.keys res)
+                              m0), m0)
+              else ((errs0 ++ [AmbiguousError mFromCueSheet $ Map.elems res], m0), m0)
+
+insertCueGroups :: Int -> Int -> PromptScript -> CueGroup -> Either Error PromptScript
+insertCueGroups aIdx scIdx ps (CueGroup m cues) = do
+  -- check character well-scoped
+  (let char = mChar m
+   in if char `notMember` pCharacters ps
+        then Left (UndeclaredCharacterError char)
+        else Right ())
+  -- check department all well scoped
+  foldM_
+    (\() (Cue d _ _ _) -> if d `notMember` pDepartments ps
+                            then Left (UndeclaredDepartmentError d)
+                            else Right ())
+    ()
+    cues
+  -- all checks pass, let's add it!
+  insertPromptMarker aIdx scIdx (PromptMarker m cues) ps
+
+insertPromptMarker :: Int -> Int -> PromptMarker -> PromptScript -> Either e PromptScript
+insertPromptMarker aIdx scIdx m ps      -- TODO: Clean up this function; no need for the verbosity or the
+                                        -- do
+ = do
+  theScenes <- return (pActScenes $ findWithDefault (PromptAct Map.empty) aIdx (pActs ps))
+  theMarkrs <- return (pMarkers $ findWithDefault (PromptScene Map.empty) scIdx theScenes)
+  theMarkrs' <- return $ Map.insert (genKey theMarkrs) m theMarkrs
+  theScene' <- return $ PromptScene theMarkrs'
+  theAct' <- return $ PromptAct $ Map.insert scIdx theScene' theScenes
+  theActs' <- return $ Map.insert aIdx theAct' (pActs ps)
+  return $ ps { pActs = theActs' }
+
+genKey :: (Enum k, Bounded k) => Map.Map k v -> k
+genKey m
+  | null m = minBound
+  | otherwise = succ $ fst (Map.findMax m)
+
+-- | Safely convert a list of elements to a set, complaining if there are any
+--   duplicates.
+safeListToSet :: (Ord a, Traversable t) => (a -> e) -> t a -> Either e (Set a)
+safeListToSet eF = foldlM (flip handlePossibleDup) empty
+  where
+    handlePossibleDup e es = if e `elem` es
+                               then Left (eF e)
+                               else Right (e `insert` es)
+
+-- | Check to see if the item attempting to be inserted, is strictly greater
+--   than the highest element in the map.
+ensureStrictGtInsert :: Ord k => (k -> e) -> k -> Map k v -> Either e (Map k v)
+ensureStrictGtInsert eF i m
+  | null m = Right m
+  | otherwise = if i > fst (Map.findMax m)
+                  then Right m
+                  else Left (eF i)
+
+fuzzyMatch :: PromptMarker -- ^ Search Criteria
+           -> Int          -- ^ Marker Index
+           -> PromptMarker -- ^ Possible match
+           -> Bool         -- ^ True if fuzzy match, False otherwise.
+fuzzyMatch (PromptMarker (Visual _ _ _) _) _ (PromptMarker (Line _ _ _) _) = False
+fuzzyMatch (PromptMarker (Line _ _ _) _) _ (PromptMarker (Visual _ _ _) _) = False
+fuzzyMatch (PromptMarker (Line c1 l1 Nothing) _) _ (PromptMarker (Line c0 l0 _) _) = c0 == c1 && Utils.substring
+                                                                                                   l1
+                                                                                                   l0
+
+fuzzyMatch (PromptMarker (Line c1 l1 (Just i1)) _) i0 (PromptMarker (Line c0 l0 _) _) = c0 == c1 &&
+                                                                                        i0 == i1 &&
+                                                                                        Utils.substring
+                                                                                          l1
+                                                                                          l0
+fuzzyMatch (PromptMarker (Visual c1 a1 Nothing) _) _ (PromptMarker (Visual c0 a0 _) _) = c0 == c1 && a0 == a1
+fuzzyMatch (PromptMarker v1@(Visual _ _ (Just _)) _) i0 (PromptMarker (Visual c0 a0 _) _) = (Visual
+                                                                                               c0
+                                                                                               a0 $ Just
+                                                                                                      i0) == v1
+
+data Error = NoMatchError PromptMarker
+           | AmbiguousError PromptMarker [PromptMarker]
            | DuplicateCharacterDeclaration Character
            | DuplicateDepartmentDeclaration Department
            | UndeclaredCharacterError Character
            | UndeclaredDepartmentError Department
            | UnkownTargetCharacterError Character
+           | OutOfOrderOrDuplicateActError CueAct
+           | OutOfOrderOrDuplicateSceneError CueScene
   deriving (Eq, Show)
-
--- HACK: This is um......less than good. A refactoring of the data structures
---       is advised, but for now this (inefficient) tree-merging code will do.
-mergePSCS :: PromptScript -> CueSheet -> Either [Error] PromptScript
-mergePSCS ps cs = do
-  psActs <- return $ pActs ps
-  csActs <- return $ acts cs
-  foldrM (\csAct ps -> mergeCSActPromptScript csAct ps) ps csActs
-
-  where
-    mergeCSActPromptScript :: CueAct -> PromptScript -> Either [Error] PromptScript
-    mergeCSActPromptScript csAct ps = do
-      updatedActs <- foldrM
-                       (\pAct acc -> if pActId pAct == cueActIdx csAct
-                                       then
-                                       -- TODO: Factor out to helper.
-                                       updateScenes (pActScenes pAct) (cueActScenes csAct) >>= (\updatedScenes -> return $ pAct { pActScenes = updatedScenes } : acc)
-                                       else return $ pAct : acc)
-                       []
-                       (pActs ps) :: Either [Error] [PromptAct]
-      return $ ps { pActs = updatedActs }
-
-    updateScenes :: [PromptScene] -> [CueScene] -> Either [Error] [PromptScene]
-    updateScenes pss css = Data.Traversable.mapM
-                             (\pScene -> do
-                                t <- return $ filter (\(CueScene i _) -> i == pSceneId pScene) css
-                                if length t == 0
-                                  then return pScene
-                                  else placeCuesInScene pScene (head t))
-                             pss
-
-placeCuesInScene :: PromptScene -> CueScene -> Either [Error] PromptScene
-placeCuesInScene sc cgs = (case foldr insertOne (sc, []) (csGroups cgs) of
-                             (sc', []) -> Right sc'
-                             (_, errs) -> Left errs)
-  where
-    insertOne :: CueGroup -> (PromptScene, [Error]) -> (PromptScene, [Error])
-    insertOne cg (sc, errs) =
-      case placeCueInScene sc cg of
-        (Left e)    -> (sc, e : errs)
-        (Right sc') -> (sc', errs)
-
-placeCueInScene :: PromptScene -> CueGroup -> Either Error PromptScene
-placeCueInScene ps cg = do
-  res <- return $ findOccurrences ps cg
-  case res of
-    [] -> Left $ NoMatchError ps cg
-    [c] -> return $ ps { pMarkers = foldr
-                                      (\l acc -> if l `elem` res
-                                                   then l { pCues = pCues l ++ cgCues cg } : acc
-                                                   else l : acc)
-                                      []
-                                      (pMarkers ps) }
-    _ -> Left $ AmbiguousError ps cg
-
-findDups :: Eq a => [a] -> [a]
-findDups = snd . foldr
-                   (\l a@(seen, dups) -> if l `notElem` seen
-                                           then (l : seen, dups)
-                                           else if l `notElem` dups
-                                                  then (seen, l : dups)
-                                                  else (seen, dups))
-                   ([], [])
-
-checkDups :: (Eq a, Eq b) => (a -> b) -> [a] -> Either [b] ()
-checkDups fErr ls = zeroOrErr $ map fErr $ findDups ls
-
-checkDupChars :: [Character] -> Either [Error] ()
-checkDupChars = checkDups DuplicateCharacterDeclaration
-
-checkDupDepts :: [Department] -> Either [Error] ()
-checkDupDepts = checkDups DuplicateDepartmentDeclaration
-
-checkUndecl :: (Eq a, Ord a, Eq b) => (a -> b) -> Set a -> [a] -> Either [b] ()
-checkUndecl fErr decl ls =
-  let errs = foldr
-               (\l acc -> if l `notMember` decl
-                            then fErr l : acc
-                            else acc)
-               []
-               ls
-  in zeroOrErr errs
-
-checkUndeclChars :: Set Character -> [Character] -> Either [Error] ()
-checkUndeclChars decls ls = checkUndecl UndeclaredCharacterError decls ls
-
-checkUndeclDept :: Set Department -> [Department] -> Either [Error] ()
-checkUndeclDept decls ls = checkUndecl UndeclaredDepartmentError decls ls
-
-zeroOrErr :: Eq a => [a] -> Either [a] ()
-zeroOrErr ls = if length ls == 0
-                 then Right ()
-                 else Left ls
-
-collectDepts :: CueScene -> [Department]
-collectDepts (CueScene _ gs) = map department $ concatMap cgCues gs
-
-collectChars :: CueScene -> [Character]
-collectChars (CueScene _ gs) = map collectChar gs
-
-collectCharsAndDepts :: CueSheet -> ([Character], [Department])
-collectCharsAndDepts s = foldr
-                           (\l (cs, ds) -> (collectChars l ++ cs, collectDepts l ++ ds))
-                           ([], [])
-                           (concatMap cueActScenes $ acts s)
-
-checkForUnknownChars :: Set Character -> Set Character -> Either [Error] ()
-checkForUnknownChars act exp = zeroOrErr $ map UnkownTargetCharacterError $ elems $ exp `difference` act
-
-collectChar :: CueGroup -> Character
-collectChar (CueGroup (Line c _ _) _) = c
-collectChar (CueGroup (Visual c _ _) _) = c
