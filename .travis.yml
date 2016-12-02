@@ -1,0 +1,14 @@
+# cabal is automatically installed in this Travis environment, so we ought to
+# eventually use it
+language: haskell
+
+ghc: 8.0.1
+
+# TODO: Fix this to be in a cabal configuration for better dependcies and an
+#       overall more appropriate build pattern
+install:
+  - cabal install matrix tasty tasty-hunit
+  - cabal install parsec && cabal install HaTeX
+
+script:
+  make test
