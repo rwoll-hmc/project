@@ -58,7 +58,7 @@ mergePSCS ps cs = do
       return $ ps { pActs = updatedActs }
 
     updateScenes :: [PromptScene] -> [CueScene] -> Either [Error] [PromptScene]
-    updateScenes pss css = mapM
+    updateScenes pss css = Data.Traversable.mapM
                              (\pScene -> do
                                 t <- return $ filter (\(CueScene i _) -> i == pSceneId pScene) css
                                 if length t == 0
