@@ -4,6 +4,7 @@ module Renderer where
 
 import           AST
 import           Control.Monad
+import           Data.Map.Strict       (toList)
 import qualified Data.Set              as Set
 import           Text.LaTeX
 import           Text.LaTeX.Base.Class
@@ -20,6 +21,7 @@ main theScript = execLaTeXT simple >>= renderFile "script.tex"
 
     thePreamble :: Monad m => LaTeXT_ m
     thePreamble = do
+      -- error "ARGH"
       documentclass [] article
       usepackage
         [ "top=1.5cm"
@@ -39,21 +41,21 @@ main theScript = execLaTeXT simple >>= renderFile "script.tex"
 
     theBody :: Monad m => LaTeXT_ m
     theBody = do
-      center $ textbf $ large3 $ fromString $ pTitle theScript -- add Title
+      center $ textbf $ large3 $ fromString $ pTitle theScript
       formatScript theScript
 
     formatScript :: Monad m => PromptScript -> LaTeXT_ m
     formatScript script = do
-      mapM_ formatAct (pActs script)
+      mapM_ formatAct (toList $ pActs script)
 
-    formatAct :: Monad m => PromptAct -> LaTeXT_ m
-    formatAct act = do
-      center $ large2 $ textbf $ fromString $ ("ACT " ++ show (pActId act))
-      mapM_ formatScene (pActScenes act)
+    formatAct :: Monad m => (Int, PromptAct) -> LaTeXT_ m
+    formatAct (i, act) = do
+      center $ large2 $ textbf $ fromString $ ("ACT " ++ show i)
+      mapM_ formatScene (toList $ pActScenes act)
 
-    formatScene :: Monad m => PromptScene -> LaTeXT_ m
-    formatScene scene = do
-      center $ large $ textbf $ fromString $ ("Scene " ++ show (pSceneId scene))
+    formatScene :: Monad m => (Int, PromptScene) -> LaTeXT_ m
+    formatScene (i, scene) = do
+      center $ large $ textbf $ fromString $ ("Scene " ++ show i)
       mapM_ formatMarker (pMarkers scene)
 
     formatMarker :: Monad m => PromptMarker -> LaTeXT_ m
@@ -71,5 +73,21 @@ main theScript = execLaTeXT simple >>= renderFile "script.tex"
       ""
     addCueNotes cs = do
       raw "\\marginnote{"
-      mapM_ (\c -> (texttt $ fromString $ show c ++ " TODO") <> newline) cs
+      mapM_ prettyCue cs
       raw "}"
+
+    prettyCue :: Monad m => Cue -> LaTeXT_ m
+    prettyCue (Cue d i cmd cmt) = do
+      (texttt
+         ((fromString $ show d)
+          <> (fromString $ " {" ++ show i ++ "} ")
+          <> (comm1 "color" $ selColor cmd)
+          <> (fromString $ show cmd)))
+      " "
+      textit $ fromString $ maybe "" id cmt
+      newline
+
+      where
+        selColor Go = "green"
+        selColor Stby = "blue"
+        selColor Warn = "yellow"

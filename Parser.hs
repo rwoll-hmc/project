@@ -37,7 +37,10 @@ cueNumber = Parsec.char '{' *> (int) <* Parsec.char '}'
 
 cue :: Parsec.Parsec String () AST.Cue
 cue = indent 3 $
-  AST.Cue <$> (department <* Parsec.char ' ') <*> (cueNumber <* Parsec.char ' ') <*> command
+  AST.Cue <$> (department <* Parsec.char ' ')
+          <*> (cueNumber <* Parsec.char ' ')
+          <*> command
+          <*> Parsec.optionMaybe (Parsec.char ' ' *> quotedString)
 
 action :: Parsec.Parsec String () AST.Action
 action = Parsec.try (Parsec.string "ENTR" *> pure AST.Enter)
@@ -54,19 +57,20 @@ quotedString = quote *>
     quote = Parsec.char '"'
 
 visualCueGroupMarker :: Parsec.Parsec String () AST.Marker
-visualCueGroupMarker = AST.Visual <$> (parens (Parsec.string "visual")
-                                       *> Parsec.char ' '
-                                       *> character
-                                       <* Parsec.char ':')
-                                  <*> action
-                                  <*> Parsec.optionMaybe (Parsec.char ' ' *> parens (int))
+visualCueGroupMarker = Parsec.try $ AST.Visual <$> (parens (Parsec.string "visual")
+                                                    *> Parsec.char ' '
+                                                    *> character
+                                                    <* Parsec.char ':')
+                                               <*> action
+                                               <*> Parsec.optionMaybe
+                                                     (Parsec.char ' ' *> parens (int))
 
 lineCueGroupMarker :: Parsec.Parsec String () AST.Marker
 lineCueGroupMarker =
-  AST.Line <$> (parens (Parsec.string "line")
-                *> Parsec.char ' ' *> character <* Parsec.char ':')
-           <*> quotedString
-           <*> Parsec.optionMaybe (Parsec.char ' ' *> parens (int))
+  Parsec.try $ AST.Line <$> (parens (Parsec.string "line")
+                             *> Parsec.char ' ' *> character <* Parsec.char ':')
+                        <*> quotedString
+                        <*> Parsec.optionMaybe (Parsec.char ' ' *> parens (int))
 
 cueGroup :: Parsec.Parsec String () AST.CueGroup
 cueGroup = Parsec.try
