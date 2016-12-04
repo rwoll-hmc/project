@@ -4,11 +4,12 @@ install:
   - cabal --version
   - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
   - travis_retry cabal update
-  - cabal install matrix tasty tasty-hunit
-  - cabal install parsec && cabal install HaTeX
+  - cabal sandbox init
+  - cabal --enable-tests configure
+  - cabal --require-sandbox install
 
 script:
-  make test
+  cabal --require-sandbox test
 
 matrix:
   include:
