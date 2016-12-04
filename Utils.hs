@@ -20,3 +20,9 @@ prefix :: String -- ^ Possible prefix.
 prefix [] ys = True
 prefix (x:xs) [] = False
 prefix (x:xs) (y:ys) = (x == y) && prefix xs ys
+
+-- | Format a into a line of `=` symbols totalling 80 characters.
+fmtString s = unlines [divider, padText s, divider]
+  where
+    divider = replicate 80 '='
+    padText t = "==== " ++ t ++ " " ++ replicate (76 - length s - 2) '='

@@ -11,11 +11,7 @@ import           System.Console.ANSI
 import           System.Exit
 import           System.IO
 import qualified Text.Parsec         as Parsec
-
-fmtString s = unlines [divider, padText s, divider]
-  where
-    divider = replicate 80 '='
-    padText t = "==== " ++ t ++ " " ++ replicate (76 - length s - 2) '='
+import qualified Utils
 
 verbose = True
 
@@ -41,7 +37,7 @@ verbosePrnt :: String -> IO ()
 verbosePrnt s = when verbose $ putStrLn s
 
 header :: String -> IO ()
-header = verbosePrnt . fmtString
+header = verbosePrnt . Utils.fmtString
 
 prntError :: String -> IO ()
 prntError = hPutStrLn stderr
