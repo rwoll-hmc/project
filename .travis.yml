@@ -5,8 +5,8 @@ install:
   - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
   - travis_retry cabal update
   - cabal sandbox init
-  - cabal --enable-tests configure
   - cabal --require-sandbox install
+  - cabal --enable-tests configure
 
 script:
   cabal --require-sandbox test
