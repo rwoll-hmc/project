@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+-- | LaTeX rendering utilities.
 module Renderer where
 
 import           AST
@@ -9,8 +10,7 @@ import qualified Data.Set              as Set
 import           Text.LaTeX
 import           Text.LaTeX.Base.Class
 
--- TODO: Add variable output destination. TODO: Add renderers for tabled cue sheet: (1) department
--- level, (2) global
+-- | Render an IR `PromptScript` into a LaTeX file.
 main :: PromptScript -> IO ()
 main theScript = execLaTeXT simple >>= renderFile "script.tex"
   where
