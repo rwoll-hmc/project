@@ -1,3 +1,4 @@
+-- | Command line tool to process the DSL files.
 module Main where
 
 import           AST
@@ -13,8 +14,10 @@ import           System.IO
 import qualified Text.Parsec         as Parsec
 import qualified Utils
 
+-- | Level of verbosity of output.
 verbose = True
 
+-- | Process input file and out a LaTeX doc.
 main :: IO ()
 main = do
   c <- getContents
@@ -33,15 +36,19 @@ main = do
   putStrLn "ALL DONE! Ouput left in script.tex"
   setSGR [Reset]
 
+-- | Prints a string to stdout when verbose mode on.
 verbosePrnt :: String -> IO ()
 verbosePrnt s = when verbose $ putStrLn s
 
+-- | Generates a header line.
 header :: String -> IO ()
 header = verbosePrnt . Utils.fmtString
 
+-- | Prints a string to sterr.
 prntError :: String -> IO ()
 prntError = hPutStrLn stderr
 
+-- | Pretty print (with colors) an error message to stderr.
 prntErrorC :: (Show a) => String -> a -> IO ()
 prntErrorC hdr bdy = do
   hSetSGR stderr [SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Red]
@@ -49,6 +56,7 @@ prntErrorC hdr bdy = do
   hSetSGR stderr [Reset]
   prntError $ unlines $ map ("  " ++) $ lines $ (show bdy)
 
+-- | Print all errors and exit.
 printAllErrorsAndExit :: (Traversable t, Show a) => (Either (t a) b) -> IO ()
 printAllErrorsAndExit s =
   case s of
