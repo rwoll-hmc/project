@@ -63,7 +63,6 @@ cabal.sandbox.config
 cabal.project.local
 .HTF/
 gp
-test
 
 # Created by https://www.gitignore.io/api/latex
 
