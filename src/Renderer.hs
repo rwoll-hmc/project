@@ -64,9 +64,9 @@ main theScript = execLaTeXT simple >>= renderFile "script.tex"
     formatMarker (PromptMarker (Visual (Character c) a _) cs) = do
       center (addCueNotes cs <> comm1 "hl" (textit $ fromString (c ++ " : " ++ show a)))
     formatMarker (PromptMarker (Line (Character c) l _) []) = do
-      flushleft (textbf (fromString (c ++ ": ")) <> newline <> indent <> fromString l)
+      flushleft (textbf (fromString (c ++ ": ")) <> fromString l)
     formatMarker (PromptMarker (Line (Character c) l _) cs) = do
-      flushleft (addCueNotes cs <> comm1 "hl" (textbf (fromString (c ++ ": ")) <> newline <> indent <> fromString l))
+      flushleft (addCueNotes cs <> comm1 "hl" (textbf (fromString (c ++ ": ")) <> fromString l))
 
     addCueNotes :: Monad m => [Cue] -> LaTeXT_ m
     addCueNotes [] = do
