@@ -20,8 +20,8 @@ import qualified Data.Set        as Set
 -- | A sample script derived from Hamlet.
 
 -- | The characters in the play.
-theChars = Set.fromList [Character "GUARDS_ATTENDENTS",Character "GRAVEDIGGER_COMPANION",Character "MESSENGER_TWO",Character "LAERTES",Character "BARNARDO",Character "VOLTEMAND",Character "GUILDENSTERN",Character "HAMLET",Character "GRAVEDIGGER",Character "GERTRUDE",Character "ATTENDANTS_ONE",Character "PROLOGUE_PLAYER",Character "FORTINBRAS_SOLDIERS",Character "PLAYERS",Character "PLAYER_ZERO",Character "MESSENGER_ONE",Character "MARCELLUS",Character "FORTINBRAS",Character "CORNELIUS",Character "REYNALDO",Character "OPHELIA",Character "CLAUDIUS",Character "OSRIC",Character "KING_PLAYER",Character "ATTENDANTS_ZERO",Character "ATTENDANT_ZERO",Character "SAILOR_ZERO",Character "HORATIO",Character "ROSENCRANTZ",Character "SAILORS",Character "DOCTOR",Character "CAPTAIN_FORTINBRAS_SOLDIERS",Character "ATTENDANT_TWO",Character "AMBASSADORS",Character "QUEEN_PLAYER",Character "ATTENDANTS",Character "PLAYER_ONE",Character "THE_GHOST",Character "FRANCISCO",Character "LAERTES_FOLLOWER",Character "POLONIUS",Character "LUCIANUS_PLAYER",]
-()
+theChars = Set.fromList [Character "GUARDS_ATTENDENTS",Character "GRAVEDIGGER_COMPANION",Character "MESSENGER_TWO",Character "LAERTES",Character "BARNARDO",Character "VOLTEMAND",Character "GUILDENSTERN",Character "HAMLET",Character "GRAVEDIGGER",Character "GERTRUDE",Character "ATTENDANTS_ONE",Character "PROLOGUE_PLAYER",Character "FORTINBRAS_SOLDIERS",Character "PLAYERS",Character "PLAYER_ZERO",Character "MESSENGER_ONE",Character "MARCELLUS",Character "FORTINBRAS",Character "CORNELIUS",Character "REYNALDO",Character "OPHELIA",Character "CLAUDIUS",Character "OSRIC",Character "KING_PLAYER",Character "ATTENDANTS_ZERO",Character "ATTENDANT_ZERO",Character "SAILOR_ZERO",Character "HORATIO",Character "ROSENCRANTZ",Character "SAILORS",Character "DOCTOR",Character "CAPTAIN_FORTINBRAS_SOLDIERS",Character "ATTENDANT_TWO",Character "AMBASSADORS",Character "QUEEN_PLAYER",Character "ATTENDANTS",Character "PLAYER_ONE",Character "THE_GHOST",Character "FRANCISCO",Character "LAERTES_FOLLOWER",Character "POLONIUS",Character "LUCIANUS_PLAYER"]
+
 -- | Digitized script.
 theScript = PromptScript "Hamlet" theChars Set.empty $ Map.fromList
   [
@@ -4110,7 +4110,7 @@ theScript = PromptScript "Hamlet" theChars Set.empty $ Map.fromList
         (4034, PromptMarker (Visual (Character "AMBASSADORS") Exit Nothing) []),
         (4035, PromptMarker (Visual (Character "OSRIC") Exit Nothing) []),
         (4036, PromptMarker (Visual (Character "ATTENDANTS") Exit Nothing) []),
-        (4037, PromptMarker (Visual (Character "FORTINBRAS_SOLDIERS") Exit Nothing) []),
-      ]),
-    ]),
+        (4037, PromptMarker (Visual (Character "FORTINBRAS_SOLDIERS") Exit Nothing) [])
+      ])
+    ])
   ]
