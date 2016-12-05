@@ -25,7 +25,7 @@ parens p = Parsec.char '(' *> p <* Parsec.char ')'
 
 -- | Parse a character name. (e.g. `@ME`)
 character :: Parsec.Parsec String () AST.Character
-character = AST.Character <$> (Parsec.char '@' *> Parsec.many1 Parsec.upper)
+character = AST.Character <$> (Parsec.char '@' *> Parsec.many1 (Parsec.upper <|> Parsec.char '_'))
 
 -- | Parse a block of characters.
 characters :: Parsec.Parsec String () [AST.Character]
