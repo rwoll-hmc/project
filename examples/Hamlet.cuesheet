@@ -1,0 +1,28 @@
+Characters:
+  @BARNARDO
+  @POLONIUS
+  @FRANCISCO
+
+Departments:
+  #LX
+  #SD
+  #BS
+
+Act 1:
+  Scene 1:
+    (line) @BARNARDO:"Who's there?"
+      #LX {1} STBY "t"
+      #SD {1} GO "comment 2"
+      #BS {1} WARN
+
+    (line) @FRANCISCO:"Not a mouse stirring."
+      #LX {1} GO
+
+Act 2:
+  Scene 1:
+    (line) @POLONIUS:"Give him this money"
+      #LX {2} STBY "this is a comment on this cue"
+      #SD {2} GO "comment 2"
+      #BS {2} WARN
+
+--- END ---
