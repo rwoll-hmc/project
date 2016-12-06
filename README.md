@@ -3,9 +3,60 @@
 
 [![Build Status](https://travis-ci.org/rwoll-hmc/project.svg?branch=master)](https://travis-ci.org/rwoll-hmc/project)
 
-## Samples
+## About
 
-### Sample DSL Language
+\> Prompt (*greater prompt*) is a domain specific language (DSL) for easily
+expressing and controlling cue placements in a theatrical script or [prompt
+book][promptbook].
+
+This project has been completed as [coursework for Domain Specific Languages][hmc-class]
+at [Harvey Mudd College][hmc] taught by [Professor Ben Wiedermann][prof].
+
+## Language Details
+
+### Quick Sample
+
+The below photo illustrates the DSL on the right, and the output of the program
+on the left:
+
+![example](/exampleRendering.png)
+
+### Outline of a > Prompt Cue Sheet
+
+Each cue sheet should begin with a __character declaration block__ like below:
+
+```
+Characters:
+  @SARAH
+  @CECIL
+```
+
+The word `Characters:` should be flush with the left side of the file and each
+character should be listed below __indented with 2 spaces__. The characters name
+must start with the `@` symbol and only contain uppercase alphabetical characters
+(`[A-Z]`)
+or underscores (`_`).
+
+> __NOTE__: You do not need to declare every character that appears in the script you
+> are annotating; you simply need to declare any character you refer to within
+> your cues.
+
+After the characters block, __a newline must appear__ before the __departments
+declaration block__:
+
+```
+Departments:
+  #LX
+  #SD
+  #BS
+```
+
+The word `Departments:` should be flush with the left side of the file and each
+department should be listed below __indented with 2 spaces__. The departments name
+must start with the `#` symbol and only contain uppercase alphabetical characters
+(`[A-Z]`).
+
+:construction: More docs coming soon...
 
 ```
 Characters:
@@ -26,9 +77,6 @@ Act 1:
     (visual) @ATHEN:ENTR
       #LX {2222} WARN
 ```
-### Sample Rendering
-
-![example](/exampleRendering.png)
 
 ## Setup
 
@@ -83,3 +131,7 @@ $ cat examples/example.txt | $REPO_DIR/dist/build/greater-prompt/greater-prompt
 
 [hp]: https://www.haskell.org/downloads
 [cabal]: https://www.haskell.org/cabal/
+[promptbook]: https://en.wikipedia.org/wiki/Prompt_book
+[hmc-class]: https://hmc-cs111-spring2016.github.io/
+[hmc]: https://www.cs.hmc.edu/
+[prof]: https://www.cs.hmc.edu/~benw/
