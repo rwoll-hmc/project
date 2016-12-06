@@ -78,6 +78,73 @@ Act 1:
       #LX {2222} WARN
 ```
 
+## Errors
+
+### `AmbiguousError`
+
+__Example__:
+
+```
+Processing Error:
+  [AmbiguousError] The following marker has too many possible options:
+
+    PromptMarker {pMarker = (line) @BARNARDO:"h", pCues = [#LX {1} STBY "t",#SD {1} GO "comment 2",#BS {1} WARN]}
+
+  Here are all the possible matches:
+
+    PromptMarker {pMarker = (line) @BARNARDO:"Who's there?", pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:"Long live the King!", pCues = []}
+    .
+    .
+    .
+    PromptMarker {pMarker = (line) @BARNARDO:"'Tis here.", pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:"It was about to speak when the cock crew.", pCues = []}
+
+
+  Please disambiguate the placement by providing an index or specifying more of a line:
+        (visual) @CECIL:ENTR (99)
+     OR
+        (line) @CECIL:"more words here"
+```
+
+__Details__:
+
+:construction:
+
+### `NoMatchError`
+
+__Example__:
+
+```
+Processing Error:
+  [NoMatchError] The following marker could not be placed:
+
+    (visual) @HAMLET:ENTR
+
+  Perhaps you spelled something incorrectly or have used the wrong index.
+```
+
+__Details__:
+
+:construction:
+
+### `NoMatchError`
+
+__Example__:
+
+```
+Processing Error:
+  [NoMatchError] The following marker could not be placed:
+
+    (visual) @HAMLET:ENTR
+
+  Perhaps you spelled something incorrectly or have used the wrong index.
+```
+
+__Details__:
+
+:construction:
+
 ## Setup
 
 ### Installing Haskell Platform
