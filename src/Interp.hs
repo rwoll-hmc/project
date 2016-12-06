@@ -1,7 +1,6 @@
 -- | Interpreter for the DSL to generate `PromptScript`'s.
 module Interp where
 
-import qualified Text.Parsec         as Parsec
 import           AST
 import           Control.Monad
 import           Data.Foldable    (foldlM)
@@ -11,8 +10,9 @@ import qualified Data.Map.Strict  as Map
 import           Data.Set         (Set, difference, elems, empty, insert,
                                    notMember)
 import           Data.Traversable (mapM)
+import           Errors
+import qualified Text.Parsec      as Parsec
 import qualified Utils
-import Errors
 
 -- | Compile a `CueSheet` into a `PromptScript` safely.
 transpile :: CueSheet -> Either Error PromptScript

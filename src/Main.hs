@@ -4,7 +4,9 @@ module Main where
 import           AST
 import           Control.Applicative
 import           Control.Monad
+import           Control.Monad            (unless)
 import qualified Data.Set                 as Set
+import           Errors
 import           Interp
 import qualified Parser
 import qualified Renderer
@@ -13,21 +15,21 @@ import           System.Console.ANSI
 import           System.Console.ArgParser
 import           System.Exit
 import           System.IO
+import           System.Process
 import qualified Text.Parsec              as Parsec
 import qualified Utils
-import Errors
 
 -- | Encapsulation of all command line options and switches.
-data CLIArgs = CLIArgs { infile :: String, outfile :: String, silent :: Bool, latex :: Bool }
+data CLIArgs = CLIArgs { infile :: String, outfile :: String, silent :: Bool, latexOff :: Bool }
   deriving Show
 
 -- | `cliParser` parses command-line options for the program.
 cliParser :: ParserSpec CLIArgs
 cliParser = CLIArgs
-  `parsedBy` optPos   "-"           "infile"       `Descr` "Source to input file. By default this is stdin."
-  `andBy`    optPos   "script.tex"  "outfile"      `Descr` "Destination to output file. By default stdout."
-  `andBy`    boolFlag               "silent"       `Descr`  "Turn off the verbosity"
-  `andBy`    boolFlag               "latex-off"    `Descr` "Turns off automatic call to latexmk"
+            `parsedBy` optPos "-" "infile" `Descr` "Source to input file. By default this is stdin."
+            `andBy` optPos "script.tex" "outfile" `Descr` "Destination to output file. By default script.tex"
+            `andBy` boolFlag "silent" `Descr` "Turn off the verbosity"
+            `andBy` boolFlag "latex-off" `Descr` "Turns off automatic call to latexmk"
 
 -- | Parse the command line input and run the logic of the program.
 main :: IO ()
@@ -36,8 +38,9 @@ main = withParseResult cliParser runner
 -- | Run the logic of the program.
 runner :: CLIArgs -> IO ()
 runner s = do
-
-  c <- if infile s == "-" then getContents else readFile $ infile s
+  c <- if infile s == "-"
+         then getContents
+         else readFile $ infile s
   parsed <- either ((>> exitFailure) . prntErrorC "Parsing Error") return
               (Parsec.parse Parser.cueSheet (infile s) c)
   parsed' <- either ((>> exitFailure) . prntErrorC "Compiling Error") return (transpile parsed)
@@ -47,9 +50,14 @@ runner s = do
   Renderer.main (outfile s) evaled
 
   setSGR [SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Green]
-  putStrLn $ "ALL DONE! Ouput left in " ++ outfile s
+  putStrLn $ "Ouput left in " ++ outfile s
+  setSGR [SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Yellow]
+  putStrLn "Generating PDF. This may hang; if it does, interrupt and run again."
   setSGR [Reset]
+  unless (latexOff s) (createProcess ((proc "latexmk" ["-silent", "-pdf", outfile s]){ std_out = Inherit, std_err = Inherit }) *> return ())
+  return ()
 
+-- | Print to stderr.
 prntError :: String -> IO ()
 prntError = hPutStrLn stderr
 
