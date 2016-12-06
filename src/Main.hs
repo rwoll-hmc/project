@@ -38,23 +38,29 @@ main = withParseResult cliParser runner
 -- | Run the logic of the program.
 runner :: CLIArgs -> IO ()
 runner s = do
+  unless (silent s) (putStrLn "==== Reading in file...")
   c <- if infile s == "-"
          then getContents
          else readFile $ infile s
+
+  unless (silent s) (putStrLn "==== Parsing...")
   parsed <- either ((>> exitFailure) . prntErrorC "Parsing Error") return
               (Parsec.parse Parser.cueSheet (infile s) c)
+
+  unless (silent s) (putStrLn "==== Compiling...")
   parsed' <- either ((>> exitFailure) . prntErrorC "Compiling Error") return (transpile parsed)
   evaled <- either ((>> exitFailure) . prntErrorC "Processing Error") return
               (eval theScript parsed')
 
+  unless (silent s) (putStrLn "==== Rendering...")
   Renderer.main (outfile s) evaled
 
   setSGR [SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Green]
-  putStrLn $ "Ouput left in " ++ outfile s
+  unless (silent s) $ putStrLn $ "Ouput left in " ++ outfile s
   setSGR [SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Yellow]
-  putStrLn "Generating PDF. This may hang; if it does, interrupt and run again."
+  when (not (latexOff s) && not (silent s)) $ putStrLn "Generating PDF...This may hang; if it does, interrupt and run again."
   setSGR [Reset]
-  unless (latexOff s) (createProcess ((proc "latexmk" ["-silent", "-pdf", outfile s]){ std_out = Inherit, std_err = Inherit }) *> return ())
+  unless (latexOff s) (createProcess ((proc "latexmk" ["-silent", "-pdf", "-shell-escape", outfile s]){ std_out = Inherit, std_err = Inherit }) *> return ())
   return ()
 
 -- | Print to stderr.
