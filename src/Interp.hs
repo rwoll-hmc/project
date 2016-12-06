@@ -1,6 +1,7 @@
 -- | Interpreter for the DSL to generate `PromptScript`'s.
 module Interp where
 
+import qualified Text.Parsec         as Parsec
 import           AST
 import           Control.Monad
 import           Data.Foldable    (foldlM)
@@ -11,6 +12,7 @@ import           Data.Set         (Set, difference, elems, empty, insert,
                                    notMember)
 import           Data.Traversable (mapM)
 import qualified Utils
+import Errors
 
 -- | Compile a `CueSheet` into a `PromptScript` safely.
 transpile :: CueSheet -> Either Error PromptScript
@@ -168,15 +170,3 @@ fuzzyMatch (PromptMarker (Visual c1 a1 Nothing) _) _ (PromptMarker (Visual c0 a0
   c0 == c1 && a0 == a1
 fuzzyMatch (PromptMarker v1@(Visual _ _ (Just _)) _) i0 (PromptMarker (Visual c0 a0 _) _) =
   (Visual c0 a0 $ Just i0) == v1
-
--- | Possible program errors.
-data Error = NoMatchError PromptMarker
-           | AmbiguousError PromptMarker [PromptMarker]
-           | DuplicateCharacterDeclaration Character
-           | DuplicateDepartmentDeclaration Department
-           | UndeclaredCharacterError Character
-           | UndeclaredDepartmentError Department
-           | UnkownTargetCharacterError Character
-           | OutOfOrderOrDuplicateActError CueAct
-           | OutOfOrderOrDuplicateSceneError CueScene
-  deriving (Eq, Show)

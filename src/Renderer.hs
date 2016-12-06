@@ -11,8 +11,8 @@ import           Text.LaTeX
 import           Text.LaTeX.Base.Class
 
 -- | Render an IR `PromptScript` into a LaTeX file.
-main :: PromptScript -> IO ()
-main theScript = execLaTeXT simple >>= renderFile "script.tex"
+main :: String -> PromptScript -> IO ()
+main outfile theScript = execLaTeXT simple >>= renderFile outfile
   where
     simple :: Monad m => LaTeXT_ m
     simple = do

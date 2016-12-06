@@ -2,66 +2,61 @@
 module Main where
 
 import           AST
+import           Control.Applicative
 import           Control.Monad
-import qualified Data.Set            as Set
+import qualified Data.Set                 as Set
 import           Interp
 import qualified Parser
 import qualified Renderer
 import           SampleScript
 import           System.Console.ANSI
+import           System.Console.ArgParser
 import           System.Exit
 import           System.IO
-import qualified Text.Parsec         as Parsec
+import qualified Text.Parsec              as Parsec
 import qualified Utils
+import Errors
 
--- | Level of verbosity of output.
-verbose = True
+-- | Encapsulation of all command line options and switches.
+data CLIArgs = CLIArgs { infile :: String, outfile :: String, silent :: Bool, latex :: Bool }
+  deriving Show
 
--- | Process input file and out a LaTeX doc.
+-- | `cliParser` parses command-line options for the program.
+cliParser :: ParserSpec CLIArgs
+cliParser = CLIArgs
+  `parsedBy` optPos   "-"           "infile"       `Descr` "Source to input file. By default this is stdin."
+  `andBy`    optPos   "script.tex"  "outfile"      `Descr` "Destination to output file. By default stdout."
+  `andBy`    boolFlag               "silent"       `Descr`  "Turn off the verbosity"
+  `andBy`    boolFlag               "latex-off"    `Descr` "Turns off automatic call to latexmk"
+
+-- | Parse the command line input and run the logic of the program.
 main :: IO ()
-main = do
-  c <- getContents
-  header "Parsing Input..."
-  parsed <- either ((>> exitFailure) . prntErrorC "Parsing Error") return
-              (Parsec.parse Parser.cueSheet "stdin" c)
+main = withParseResult cliParser runner
 
-  header "Transpile..."
-  parsed' <- either ((>> exitFailure) . prntErrorC "Transpiling Error") return (transpile parsed)
-  evaled <- either ((>> exitFailure) . prntErrorC "Transpiling Error") return
+-- | Run the logic of the program.
+runner :: CLIArgs -> IO ()
+runner s = do
+
+  c <- if infile s == "-" then getContents else readFile $ infile s
+  parsed <- either ((>> exitFailure) . prntErrorC "Parsing Error") return
+              (Parsec.parse Parser.cueSheet (infile s) c)
+  parsed' <- either ((>> exitFailure) . prntErrorC "Compiling Error") return (transpile parsed)
+  evaled <- either ((>> exitFailure) . prntErrorC "Processing Error") return
               (eval theScript parsed')
-  putStrLn $ show evaled
-  header "Generating documents..."
-  Renderer.main evaled
+
+  Renderer.main (outfile s) evaled
+
   setSGR [SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Green]
-  putStrLn "ALL DONE! Ouput left in script.tex"
+  putStrLn $ "ALL DONE! Ouput left in " ++ outfile s
   setSGR [Reset]
 
--- | Prints a string to stdout when verbose mode on.
-verbosePrnt :: String -> IO ()
-verbosePrnt s = when verbose $ putStrLn s
-
--- | Generates a header line.
-header :: String -> IO ()
-header = verbosePrnt . Utils.fmtString
-
--- | Prints a string to sterr.
 prntError :: String -> IO ()
 prntError = hPutStrLn stderr
 
 -- | Pretty print (with colors) an error message to stderr.
-prntErrorC :: (Show a) => String -> a -> IO ()
+prntErrorC :: (PrettyError a) => String -> a -> IO ()
 prntErrorC hdr bdy = do
   hSetSGR stderr [SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Red]
   prntError (hdr ++ ":")
   hSetSGR stderr [Reset]
-  prntError $ unlines $ map ("  " ++) $ lines $ (show bdy)
-
--- | Print all errors and exit.
-printAllErrorsAndExit :: (Traversable t, Show a) => (Either (t a) b) -> IO ()
-printAllErrorsAndExit s =
-  case s of
-    (Left errs) -> mapM (prntError . show) errs >> do
-                     setSGR [SetConsoleIntensity BoldIntensity, SetColor Foreground Vivid Red]
-                     putStrLn "FAILURE"
-                     setSGR [Reset] >> exitFailure
-    _ -> return ()
+  prntError $ unlines $ map ("  " ++) $ lines $ (prettyError bdy)
