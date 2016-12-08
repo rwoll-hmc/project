@@ -11,10 +11,16 @@
         "title": "Installation",
         "sections": [
           {
-            "title": "Installing Dependencies"
+            "title": "Installing Dependencies",
+            "source": "docs/installation/DEPENDENCIES.md",
+            "url": "installation/DEPENDENCIES.html",
+            "slug": "installationdependencies"
           },
           {
-            "title": "CLI Setup"
+            "title": "CLI Setup",
+            "source": "docs/installation/CLI.md",
+            "url": "installation/CLI.html",
+            "slug": "installationcli"
           }
         ]
       },
@@ -22,13 +28,22 @@
         "title": "Usage",
         "sections": [
           {
-            "title": "Cue Sheet Composition"
+            "title": "Cue Sheet Composition",
+            "source": "docs/usage/CUE_SHEET_COMPOSITION.md",
+            "url": "usage/CUE_SHEET_COMPOSITION.html",
+            "slug": "usagecue_sheet_composition"
           },
           {
-            "title": "Cue Sheet Running"
+            "title": "Cue Sheet Running",
+            "source": "docs/usage/CUE_SHEET_RUNNING.md",
+            "url": "usage/CUE_SHEET_RUNNING.html",
+            "slug": "usagecue_sheet_running"
           },
           {
-            "title": "PDF Generation"
+            "title": "PDF Generation",
+            "source": "docs/usage/PDF_GENERATION.md",
+            "url": "usage/PDF_GENERATION.html",
+            "slug": "usagepdf_generation"
           }
         ]
       },
@@ -36,10 +51,16 @@
         "title": "Errors",
         "sections": [
           {
-            "title": "What the @%^!?"
+            "title": "What the @%^!?",
+            "source": "docs/errors/INTRO.md",
+            "url": "errors/INTRO.html",
+            "slug": "errorsintro"
           },
           {
-            "title": "Errors Explained"
+            "title": "Errors Explained",
+            "source": "docs/errors/ERRORS.md",
+            "url": "errors/ERRORS.html",
+            "slug": "errorserrors"
           }
         ]
       },
@@ -47,19 +68,34 @@
         "title": "Design Principles",
         "sections": [
           {
-            "title": "Introduction"
+            "title": "Introduction",
+            "source": "docs/design/INTRO.md",
+            "url": "design/INTRO.html",
+            "slug": "designintro"
           },
           {
-            "title": "Language Design Details"
+            "title": "Language Design Details",
+            "source": "docs/design/LANGUAGE_DESIGN_DETAILS.md",
+            "url": "design/LANGUAGE_DESIGN_DETAILS.html",
+            "slug": "designlanguage_design_details"
           },
           {
-            "title": "Example Programs"
+            "title": "Example Programs",
+            "source": "docs/design/EXAMPLE_PROGRAMS.md",
+            "url": "design/EXAMPLE_PROGRAMS.html",
+            "slug": "designexample_programs"
           },
           {
-            "title": "Language Implementation"
+            "title": "Language Implementation",
+            "source": "docs/design/LANGUAGE_IMPLEMENTATION.md",
+            "url": "design/LANGUAGE_IMPLEMENTATION.html",
+            "slug": "designlanguage_implementation"
           },
           {
-            "title": "Evaluation"
+            "title": "Evaluation",
+            "source": "docs/design/EVALUATION.md",
+            "url": "design/EVALUATION.html",
+            "slug": "designevaluation"
           }
         ]
       }
@@ -71,10 +107,94 @@
       "title": "greater-prompt",
       "pageTitle": "greater-prompt",
       "slug": "index"
+    },
+    "installation/DEPENDENCIES.html": {
+      "source": "docs/installation/DEPENDENCIES.md",
+      "title": "Installing Dependencies - greater-prompt",
+      "pageTitle": "Installing Dependencies",
+      "slug": "installationdependencies"
+    },
+    "installation/CLI.html": {
+      "source": "docs/installation/CLI.md",
+      "title": "CLI Setup - greater-prompt",
+      "pageTitle": "CLI Setup",
+      "slug": "installationcli"
+    },
+    "usage/CUE_SHEET_COMPOSITION.html": {
+      "source": "docs/usage/CUE_SHEET_COMPOSITION.md",
+      "title": "Cue Sheet Composition - greater-prompt",
+      "pageTitle": "Cue Sheet Composition",
+      "slug": "usagecue_sheet_composition"
+    },
+    "usage/CUE_SHEET_RUNNING.html": {
+      "source": "docs/usage/CUE_SHEET_RUNNING.md",
+      "title": "Cue Sheet Running - greater-prompt",
+      "pageTitle": "Cue Sheet Running",
+      "slug": "usagecue_sheet_running"
+    },
+    "usage/PDF_GENERATION.html": {
+      "source": "docs/usage/PDF_GENERATION.md",
+      "title": "PDF Generation - greater-prompt",
+      "pageTitle": "PDF Generation",
+      "slug": "usagepdf_generation"
+    },
+    "errors/INTRO.html": {
+      "source": "docs/errors/INTRO.md",
+      "title": "What the @%^!? - greater-prompt",
+      "pageTitle": "What the @%^!?",
+      "slug": "errorsintro"
+    },
+    "errors/ERRORS.html": {
+      "source": "docs/errors/ERRORS.md",
+      "title": "Errors Explained - greater-prompt",
+      "pageTitle": "Errors Explained",
+      "slug": "errorserrors"
+    },
+    "design/INTRO.html": {
+      "source": "docs/design/INTRO.md",
+      "title": "Introduction - greater-prompt",
+      "pageTitle": "Introduction",
+      "slug": "designintro"
+    },
+    "design/LANGUAGE_DESIGN_DETAILS.html": {
+      "source": "docs/design/LANGUAGE_DESIGN_DETAILS.md",
+      "title": "Language Design Details - greater-prompt",
+      "pageTitle": "Language Design Details",
+      "slug": "designlanguage_design_details"
+    },
+    "design/EXAMPLE_PROGRAMS.html": {
+      "source": "docs/design/EXAMPLE_PROGRAMS.md",
+      "title": "Example Programs - greater-prompt",
+      "pageTitle": "Example Programs",
+      "slug": "designexample_programs"
+    },
+    "design/LANGUAGE_IMPLEMENTATION.html": {
+      "source": "docs/design/LANGUAGE_IMPLEMENTATION.md",
+      "title": "Language Implementation - greater-prompt",
+      "pageTitle": "Language Implementation",
+      "slug": "designlanguage_implementation"
+    },
+    "design/EVALUATION.html": {
+      "source": "docs/design/EVALUATION.md",
+      "title": "Evaluation - greater-prompt",
+      "pageTitle": "Evaluation",
+      "slug": "designevaluation"
     }
   },
   "sources": {
     "README.md": "index.html",
+    "docs/installation/DEPENDENCIES.md": "installation/DEPENDENCIES.html",
+    "docs/installation/CLI.md": "installation/CLI.html",
+    "docs/usage/CUE_SHEET_COMPOSITION.md": "usage/CUE_SHEET_COMPOSITION.html",
+    "docs/usage/CUE_SHEET_RUNNING.md": "usage/CUE_SHEET_RUNNING.html",
+    "docs/usage/PDF_GENERATION.md": "usage/PDF_GENERATION.html",
+    "docs/errors/INTRO.md": "errors/INTRO.html",
+    "docs/errors/ERRORS.md": "errors/ERRORS.html",
+    "docs/design/INTRO.md": "design/INTRO.html",
+    "docs/design/LANGUAGE_DESIGN_DETAILS.md": "design/LANGUAGE_DESIGN_DETAILS.html",
+    "docs/design/EXAMPLE_PROGRAMS.md": "design/EXAMPLE_PROGRAMS.html",
+    "docs/design/LANGUAGE_IMPLEMENTATION.md": "design/LANGUAGE_IMPLEMENTATION.html",
+    "docs/design/EVALUATION.md": "design/EVALUATION.html",
     "docs/docpress.json": "docpress.json",
     "docs/assets/custom.css": "assets/custom.css",
     "docs/images/exampleRendering.png": "images/exampleRendering.png"
