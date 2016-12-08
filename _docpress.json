@@ -1,0 +1,82 @@
+{
+  "toc": {
+    "sections": [
+      {
+        "title": "greater-prompt",
+        "source": "README.md",
+        "url": "index.html",
+        "slug": "index"
+      },
+      {
+        "title": "Installation",
+        "sections": [
+          {
+            "title": "Installing Dependencies"
+          },
+          {
+            "title": "CLI Setup"
+          }
+        ]
+      },
+      {
+        "title": "Usage",
+        "sections": [
+          {
+            "title": "Cue Sheet Composition"
+          },
+          {
+            "title": "Cue Sheet Running"
+          },
+          {
+            "title": "PDF Generation"
+          }
+        ]
+      },
+      {
+        "title": "Errors",
+        "sections": [
+          {
+            "title": "What the @%^!?"
+          },
+          {
+            "title": "Errors Explained"
+          }
+        ]
+      },
+      {
+        "title": "Design Principles",
+        "sections": [
+          {
+            "title": "Introduction"
+          },
+          {
+            "title": "Language Design Details"
+          },
+          {
+            "title": "Example Programs"
+          },
+          {
+            "title": "Language Implementation"
+          },
+          {
+            "title": "Evaluation"
+          }
+        ]
+      }
+    ]
+  },
+  "index": {
+    "index.html": {
+      "source": "README.md",
+      "title": "greater-prompt",
+      "pageTitle": "greater-prompt",
+      "slug": "index"
+    }
+  },
+  "sources": {
+    "README.md": "index.html",
+    "docs/docpress.json": "docpress.json",
+    "docs/assets/custom.css": "assets/custom.css",
+    "docs/images/exampleRendering.png": "images/exampleRendering.png"
+  }
+}

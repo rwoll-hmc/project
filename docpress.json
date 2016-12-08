@@ -1,0 +1,17 @@
+{
+  "docs": "docs",
+  "github": "rwoll-hmc/project",
+  "markdown": {
+    "plugins": {
+      "emoji": {},
+      "decorate": {}
+    }
+  },
+  "plugins": {
+    "docpress-core": {},
+    "docpress-base": {}
+  },
+  "css": [
+    "docs/assets/custom.css"
+  ]
+}
