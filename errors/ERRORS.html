@@ -39,6 +39,28 @@
                 <li class="menu-item -level-2"><a class="link title  link-errorsintro" href="../errors/INTRO.html">What the @%^!?</a>
                 </li>
                 <li class="menu-item -level-2"><a class="link title -active link-errorserrors" href="../errors/ERRORS.html">Errors Explained</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a class="hlink link-parsing-errors" href="#parsing-errors">Parsing Errors</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-nomatcherror" href="#nomatcherror">`NoMatchError`</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-ambiguouserror" href="#ambiguouserror">`AmbiguousError`</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-duplicatecharacterdeclaration" href="#duplicatecharacterdeclaration">`DuplicateCharacterDeclaration`</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-duplicatedepartmentdeclaration" href="#duplicatedepartmentdeclaration">`DuplicateDepartmentDeclaration`</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-undeclaredcharactererror" href="#undeclaredcharactererror">`UndeclaredCharacterError`</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-undeclareddepartmenterror" href="#undeclareddepartmenterror">`UndeclaredDepartmentError`</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-unkowntargetcharactererror" href="#unkowntargetcharactererror">`UnkownTargetCharacterError`</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-outoforderorduplicateacterror" href="#outoforderorduplicateacterror">`OutOfOrderOrDuplicateActError`</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-outoforderorduplicatesceneerror" href="#outoforderorduplicatesceneerror">`OutOfOrderOrDuplicateSceneError`</a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </li>
@@ -66,6 +88,121 @@
           </div>
         </div>
         <div class="markdown-body"><h1 id="errors">Errors</h1>
+<h2 id="parsing-errors">Parsing Errors</h2>
+<p><strong>Example Trace</strong>:</p>
+<p><strong>Possible Causes</strong>:</p>
+<p><strong>Possible Fixes</strong>:</p>
+<h2 id="nomatcherror"><code>NoMatchError</code></h2>
+<p><strong>Example Trace</strong>:</p>
+<pre><code>Processing Error:
+  [NoMatchError] The following marker could not be placed:
+
+    (line) @BARNARDO:&quot;I never say this...&quot;
+
+  Perhaps you spelled something incorrectly or have used the wrong index.
+</code></pre>
+<p><strong>Possible Causes</strong>:</p>
+<p><strong>Possible Fixes</strong>:</p>
+<h2 id="ambiguouserror"><code>AmbiguousError</code></h2>
+<p><strong>Example Trace</strong>:</p>
+<pre><code>Processing Error:
+  [AmbiguousError] The following marker has too many possible options:
+
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;h&quot;, pCues = [#LX {1} STBY &quot;t&quot;,#SD {1} GO &quot;comment 2&quot;,#BS {1} WARN]}
+
+  Here are all the possible matches:
+
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Who&apos;s there?&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Long live the King!&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;&apos;Tis now struck twelve. Get thee to bed, Francisco.&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Have you had quiet guard?&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Well, good night.&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;The rivals of my watch, bid them make haste.&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Say, what, is Horatio there?&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;I have seen nothing.&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Sit down awhile,&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;That are so fortified against our story,&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;What we have two nights seen.&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Last night of all,&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;When yond same star that&apos;s westward from the pole&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Had made his course t&apos; illume that part of heaven&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Where now it burns, Marcellus and myself,&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;The bell then beating one\8212&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;In the same figure like the King that&apos;s dead.&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Looks he not like the King? Mark it, Horatio.&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Is not this something more than fantasy?&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;What think you on &apos;t?&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;I think it be no other but e&apos;en so.&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Well may it sort that this portentous figure&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;Comes arm\232d through our watch so like the king&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;That was and is the question of these wars.&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;&apos;Tis here.&quot;, pCues = []}
+    PromptMarker {pMarker = (line) @BARNARDO:&quot;It was about to speak when the cock crew.&quot;, pCues = []}
+
+
+  Please disambiguate the placement by providing an index or specifying more of a line:
+        (visual) @CECIL:ENTR (99)
+     OR
+        (line) @CECIL:&quot;more words here&quot;
+</code></pre>
+<p><strong>Possible Causes</strong>:</p>
+<p><strong>Possible Fixes</strong>:</p>
+<h2 id="duplicatecharacterdeclaration"><code>DuplicateCharacterDeclaration</code></h2>
+<p><strong>Example Trace</strong>:</p>
+<pre><code>Compiling Error:
+  [DuplicateCharacterDeclaration] The following character is defined twice:
+
+    @BARNARDO
+
+  Delete the extra occurences in your &apos;Characters&apos; declaration block.
+</code></pre>
+<p><strong>Possible Causes</strong>:</p>
+<p><strong>Possible Fixes</strong>:</p>
+<h2 id="duplicatedepartmentdeclaration"><code>DuplicateDepartmentDeclaration</code></h2>
+<p><strong>Example Trace</strong>:</p>
+<pre><code>Compiling Error:
+  [DuplicateDepartmentDeclaration] The following character is defined twice:
+
+    #LX
+
+  Delete the extra occurences in your &apos;Departments&apos; declaration block.
+</code></pre>
+<p><strong>Possible Causes</strong>:</p>
+<p><strong>Possible Fixes</strong>:</p>
+<h2 id="undeclaredcharactererror"><code>UndeclaredCharacterError</code></h2>
+<p><strong>Example Trace</strong>:</p>
+<pre><code>Compiling Error:
+  [UndeclaredCharacterError] The following character was referenced in a cue, but not defined:
+
+    @HAMLET
+
+  Perhaps it is a typo? If not, please declare the character in the &apos;Characters&apos; block.
+</code></pre>
+<p><strong>Possible Causes</strong>:</p>
+<p><strong>Possible Fixes</strong>:</p>
+<h2 id="undeclareddepartmenterror"><code>UndeclaredDepartmentError</code></h2>
+<p><strong>Example Trace</strong>:</p>
+<pre><code>Compiling Error:
+  [UndeclaredDepartmentError] The following department was referenced in a cue, but not defined:
+
+    #TYPO
+
+  Perhaps it is a typo? If not, please declare the department in the &apos;Departments&apos; block.
+</code></pre>
+<p><strong>Possible Causes</strong>:</p>
+<p><strong>Possible Fixes</strong>:</p>
+<h2 id="unkowntargetcharactererror"><code>UnkownTargetCharacterError</code></h2>
+<p><strong>Example Trace</strong>:</p>
+<p><strong>Possible Causes</strong>:</p>
+<p><strong>Possible Fixes</strong>:</p>
+<h2 id="outoforderorduplicateacterror"><code>OutOfOrderOrDuplicateActError</code></h2>
+<p><strong>Example Trace</strong>:</p>
+<p><strong>Possible Causes</strong>:</p>
+<p><strong>Possible Fixes</strong>:</p>
+<h2 id="outoforderorduplicatesceneerror"><code>OutOfOrderOrDuplicateSceneError</code></h2>
+<p><strong>Example Trace</strong>:</p>
+<p><strong>Possible Causes</strong>:</p>
+<p><strong>Possible Fixes</strong>:</p>
 
         </div>
         <div class="footer-nav">

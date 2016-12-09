@@ -14,13 +14,61 @@
             "title": "Installing Dependencies",
             "source": "docs/installation/DEPENDENCIES.md",
             "url": "installation/DEPENDENCIES.html",
-            "slug": "installationdependencies"
+            "slug": "installationdependencies",
+            "headings": [
+              {
+                "title": "Haskell Platform and Cabal",
+                "depth": 2,
+                "id": "haskell-platform-and-cabal",
+                "headings": [
+                  {
+                    "title": "macOS: Homebrew",
+                    "depth": 3,
+                    "id": "macos:-homebrew"
+                  },
+                  {
+                    "title": "Alternative Haskell and Cabal Installs",
+                    "depth": 3,
+                    "id": "alternative-haskell-and-cabal-installs"
+                  }
+                ]
+              },
+              {
+                "title": "(optional) `latexmk`",
+                "depth": 2,
+                "id": "(optional)-latexmk",
+                "headings": [
+                  {
+                    "title": "macOS: Homebrew",
+                    "depth": 3,
+                    "id": "macos:-homebrew"
+                  },
+                  {
+                    "title": "Alternative `latexmk` Installs",
+                    "depth": 3,
+                    "id": "alternative-latexmk-installs"
+                  }
+                ]
+              }
+            ]
           },
           {
             "title": "CLI Setup",
             "source": "docs/installation/CLI.md",
             "url": "installation/CLI.html",
-            "slug": "installationcli"
+            "slug": "installationcli",
+            "headings": [
+              {
+                "title": "Installing",
+                "depth": 2,
+                "id": "installing"
+              },
+              {
+                "title": "Checking the Installation",
+                "depth": 2,
+                "id": "checking-the-installation"
+              }
+            ]
           }
         ]
       },
@@ -31,7 +79,61 @@
             "title": "Cue Sheet Composition",
             "source": "docs/usage/CUE_SHEET_COMPOSITION.md",
             "url": "usage/CUE_SHEET_COMPOSITION.html",
-            "slug": "usagecue_sheet_composition"
+            "slug": "usagecue_sheet_composition",
+            "headings": [
+              {
+                "title": "Intro",
+                "depth": 2,
+                "id": "intro"
+              },
+              {
+                "title": "Whitespace Sensitivity",
+                "depth": 2,
+                "id": "whitespace-sensitivity"
+              },
+              {
+                "title": "Anatomy of a Cue Sheet",
+                "depth": 2,
+                "id": "anatomy-of-a-cue-sheet",
+                "headings": [
+                  {
+                    "title": "Character(s) Declaration Block",
+                    "depth": 3,
+                    "id": "character(s)-declaration-block"
+                  },
+                  {
+                    "title": "Department(s) Declaration Block",
+                    "depth": 3,
+                    "id": "department(s)-declaration-block"
+                  },
+                  {
+                    "title": "Act Declaration Block(s)",
+                    "depth": 3,
+                    "id": "act-declaration-block(s)"
+                  },
+                  {
+                    "title": "Scene Declaration Block(s)",
+                    "depth": 3,
+                    "id": "scene-declaration-block(s)"
+                  },
+                  {
+                    "title": "Cue Group Declaration(s)",
+                    "depth": 3,
+                    "id": "cue-group-declaration(s)"
+                  },
+                  {
+                    "title": "Cue Declaration(s)",
+                    "depth": 3,
+                    "id": "cue-declaration(s)"
+                  },
+                  {
+                    "title": "End Block",
+                    "depth": 3,
+                    "id": "end-block"
+                  }
+                ]
+              }
+            ]
           },
           {
             "title": "Cue Sheet Running",
@@ -60,7 +162,59 @@
             "title": "Errors Explained",
             "source": "docs/errors/ERRORS.md",
             "url": "errors/ERRORS.html",
-            "slug": "errorserrors"
+            "slug": "errorserrors",
+            "headings": [
+              {
+                "title": "Parsing Errors",
+                "depth": 2,
+                "id": "parsing-errors"
+              },
+              {
+                "title": "`NoMatchError`",
+                "depth": 2,
+                "id": "nomatcherror"
+              },
+              {
+                "title": "`AmbiguousError`",
+                "depth": 2,
+                "id": "ambiguouserror"
+              },
+              {
+                "title": "`DuplicateCharacterDeclaration`",
+                "depth": 2,
+                "id": "duplicatecharacterdeclaration"
+              },
+              {
+                "title": "`DuplicateDepartmentDeclaration`",
+                "depth": 2,
+                "id": "duplicatedepartmentdeclaration"
+              },
+              {
+                "title": "`UndeclaredCharacterError`",
+                "depth": 2,
+                "id": "undeclaredcharactererror"
+              },
+              {
+                "title": "`UndeclaredDepartmentError`",
+                "depth": 2,
+                "id": "undeclareddepartmenterror"
+              },
+              {
+                "title": "`UnkownTargetCharacterError`",
+                "depth": 2,
+                "id": "unkowntargetcharactererror"
+              },
+              {
+                "title": "`OutOfOrderOrDuplicateActError`",
+                "depth": 2,
+                "id": "outoforderorduplicateacterror"
+              },
+              {
+                "title": "`OutOfOrderOrDuplicateSceneError`",
+                "depth": 2,
+                "id": "outoforderorduplicatesceneerror"
+              }
+            ]
           }
         ]
       },
@@ -112,19 +266,121 @@
       "source": "docs/installation/DEPENDENCIES.md",
       "title": "Installing Dependencies - greater-prompt",
       "pageTitle": "Installing Dependencies",
-      "slug": "installationdependencies"
+      "slug": "installationdependencies",
+      "headings": [
+        {
+          "title": "Haskell Platform and Cabal",
+          "depth": 2,
+          "id": "haskell-platform-and-cabal",
+          "headings": [
+            {
+              "title": "macOS: Homebrew",
+              "depth": 3,
+              "id": "macos:-homebrew"
+            },
+            {
+              "title": "Alternative Haskell and Cabal Installs",
+              "depth": 3,
+              "id": "alternative-haskell-and-cabal-installs"
+            }
+          ]
+        },
+        {
+          "title": "(optional) `latexmk`",
+          "depth": 2,
+          "id": "(optional)-latexmk",
+          "headings": [
+            {
+              "title": "macOS: Homebrew",
+              "depth": 3,
+              "id": "macos:-homebrew"
+            },
+            {
+              "title": "Alternative `latexmk` Installs",
+              "depth": 3,
+              "id": "alternative-latexmk-installs"
+            }
+          ]
+        }
+      ]
     },
     "installation/CLI.html": {
       "source": "docs/installation/CLI.md",
       "title": "CLI Setup - greater-prompt",
       "pageTitle": "CLI Setup",
-      "slug": "installationcli"
+      "slug": "installationcli",
+      "headings": [
+        {
+          "title": "Installing",
+          "depth": 2,
+          "id": "installing"
+        },
+        {
+          "title": "Checking the Installation",
+          "depth": 2,
+          "id": "checking-the-installation"
+        }
+      ]
     },
     "usage/CUE_SHEET_COMPOSITION.html": {
       "source": "docs/usage/CUE_SHEET_COMPOSITION.md",
       "title": "Cue Sheet Composition - greater-prompt",
       "pageTitle": "Cue Sheet Composition",
-      "slug": "usagecue_sheet_composition"
+      "slug": "usagecue_sheet_composition",
+      "headings": [
+        {
+          "title": "Intro",
+          "depth": 2,
+          "id": "intro"
+        },
+        {
+          "title": "Whitespace Sensitivity",
+          "depth": 2,
+          "id": "whitespace-sensitivity"
+        },
+        {
+          "title": "Anatomy of a Cue Sheet",
+          "depth": 2,
+          "id": "anatomy-of-a-cue-sheet",
+          "headings": [
+            {
+              "title": "Character(s) Declaration Block",
+              "depth": 3,
+              "id": "character(s)-declaration-block"
+            },
+            {
+              "title": "Department(s) Declaration Block",
+              "depth": 3,
+              "id": "department(s)-declaration-block"
+            },
+            {
+              "title": "Act Declaration Block(s)",
+              "depth": 3,
+              "id": "act-declaration-block(s)"
+            },
+            {
+              "title": "Scene Declaration Block(s)",
+              "depth": 3,
+              "id": "scene-declaration-block(s)"
+            },
+            {
+              "title": "Cue Group Declaration(s)",
+              "depth": 3,
+              "id": "cue-group-declaration(s)"
+            },
+            {
+              "title": "Cue Declaration(s)",
+              "depth": 3,
+              "id": "cue-declaration(s)"
+            },
+            {
+              "title": "End Block",
+              "depth": 3,
+              "id": "end-block"
+            }
+          ]
+        }
+      ]
     },
     "usage/CUE_SHEET_RUNNING.html": {
       "source": "docs/usage/CUE_SHEET_RUNNING.md",
@@ -148,7 +404,59 @@
       "source": "docs/errors/ERRORS.md",
       "title": "Errors Explained - greater-prompt",
       "pageTitle": "Errors Explained",
-      "slug": "errorserrors"
+      "slug": "errorserrors",
+      "headings": [
+        {
+          "title": "Parsing Errors",
+          "depth": 2,
+          "id": "parsing-errors"
+        },
+        {
+          "title": "`NoMatchError`",
+          "depth": 2,
+          "id": "nomatcherror"
+        },
+        {
+          "title": "`AmbiguousError`",
+          "depth": 2,
+          "id": "ambiguouserror"
+        },
+        {
+          "title": "`DuplicateCharacterDeclaration`",
+          "depth": 2,
+          "id": "duplicatecharacterdeclaration"
+        },
+        {
+          "title": "`DuplicateDepartmentDeclaration`",
+          "depth": 2,
+          "id": "duplicatedepartmentdeclaration"
+        },
+        {
+          "title": "`UndeclaredCharacterError`",
+          "depth": 2,
+          "id": "undeclaredcharactererror"
+        },
+        {
+          "title": "`UndeclaredDepartmentError`",
+          "depth": 2,
+          "id": "undeclareddepartmenterror"
+        },
+        {
+          "title": "`UnkownTargetCharacterError`",
+          "depth": 2,
+          "id": "unkowntargetcharactererror"
+        },
+        {
+          "title": "`OutOfOrderOrDuplicateActError`",
+          "depth": 2,
+          "id": "outoforderorduplicateacterror"
+        },
+        {
+          "title": "`OutOfOrderOrDuplicateSceneError`",
+          "depth": 2,
+          "id": "outoforderorduplicatesceneerror"
+        }
+      ]
     },
     "design/INTRO.html": {
       "source": "docs/design/INTRO.md",

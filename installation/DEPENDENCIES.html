@@ -19,6 +19,24 @@
             <li class="menu-item -level-1 -parent"><span class="title">Installation</span>
               <ul class="submenu">
                 <li class="menu-item -level-2"><a class="link title -active link-installationdependencies" href="../installation/DEPENDENCIES.html">Installing Dependencies</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a class="hlink link-haskell-platform-and-cabal" href="#haskell-platform-and-cabal">Haskell Platform and Cabal</a>
+                      <ul class="heading-list -depth-2">
+                        <li class="heading-item -depth-3"><a class="hlink link-macos:-homebrew" href="#macos:-homebrew">macOS: Homebrew</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-alternative-haskell-and-cabal-installs" href="#alternative-haskell-and-cabal-installs">Alternative Haskell and Cabal Installs</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-(optional)-latexmk" href="#(optional)-latexmk">(optional) `latexmk`</a>
+                      <ul class="heading-list -depth-2">
+                        <li class="heading-item -depth-3"><a class="hlink link-macos:-homebrew" href="#macos:-homebrew">macOS: Homebrew</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-alternative-latexmk-installs" href="#alternative-latexmk-installs">Alternative `latexmk` Installs</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </li>
                 <li class="menu-item -level-2"><a class="link title  link-installationcli" href="../installation/CLI.html">CLI Setup</a>
                 </li>
@@ -66,6 +84,36 @@
           </div>
         </div>
         <div class="markdown-body"><h1 id="installing-dependencies">Installing Dependencies</h1>
+<h2 id="haskell-platform-and-cabal">Haskell Platform and Cabal</h2>
+<p>The main dependency of &gt; Prompt is the programming language <a href="https://www.haskell.org/">Haskell</a>
+and a common Haskell build tool called <a href="https://www.haskell.org/cabal/">Cabal</a>.
+Both can be acquired with a standard installation of the Haskell build platform.</p>
+<h3 id="macos:-homebrew">macOS: Homebrew</h3>
+<p>If you have <a href="http://brew.sh/">Homebrew</a> installed on your Mac, simply install
+the Haskell platform by typing:</p>
+<pre><code>$ brew cask install haskell-platform
+</code></pre>
+<h3 id="alternative-haskell-and-cabal-installs">Alternative Haskell and Cabal Installs</h3>
+<p>If Homebrew isn&apos;t an option, I suggest following the guides on the Haskell
+website: <a href="https://www.haskell.org/downloads">Haskell Downloads</a>.</p>
+<h2 id="(optional)-latexmk">(optional) <code>latexmk</code></h2>
+<p>If you would like to visualize your cue placements in a PDF copy of the script,
+you will need to install <code>latexmk</code> and have it on your <code>PATH</code>.</p>
+<blockquote>
+<p>&#x1F440; Since installing LaTeX and its dependencies are often an involved
+process, the CLI for the program has a <code>--latex-off</code> flag. You won&apos;t be able
+to visualize the output, but you will get a <code>.tex</code> file that you can render
+at a later time. Regardless, the program will let you know if you&apos;ve written
+a compiling program.</p>
+</blockquote>
+<h3 id="macos:-homebrew">macOS: Homebrew</h3>
+<p>If you have Homebrew installed on your Mac, simply install the <code>latexmk</code> as
+bundled with <code>mactex</code> by typing:</p>
+<pre><code>$ brew cask install mactex
+</code></pre>
+<h3 id="alternative-latexmk-installs">Alternative <code>latexmk</code> Installs</h3>
+<p>Check to see if an installation exists with your preferred package manager or
+online.</p>
 
         </div>
         <div class="footer-nav">

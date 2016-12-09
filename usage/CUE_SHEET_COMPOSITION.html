@@ -27,6 +27,30 @@
             <li class="menu-item -level-1 -parent"><span class="title">Usage</span>
               <ul class="submenu">
                 <li class="menu-item -level-2"><a class="link title -active link-usagecue_sheet_composition" href="../usage/CUE_SHEET_COMPOSITION.html">Cue Sheet Composition</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a class="hlink link-intro" href="#intro">Intro</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-whitespace-sensitivity" href="#whitespace-sensitivity">Whitespace Sensitivity</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-anatomy-of-a-cue-sheet" href="#anatomy-of-a-cue-sheet">Anatomy of a Cue Sheet</a>
+                      <ul class="heading-list -depth-2">
+                        <li class="heading-item -depth-3"><a class="hlink link-character(s)-declaration-block" href="#character(s)-declaration-block">Character(s) Declaration Block</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-department(s)-declaration-block" href="#department(s)-declaration-block">Department(s) Declaration Block</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-act-declaration-block(s)" href="#act-declaration-block(s)">Act Declaration Block(s)</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-scene-declaration-block(s)" href="#scene-declaration-block(s)">Scene Declaration Block(s)</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-cue-group-declaration(s)" href="#cue-group-declaration(s)">Cue Group Declaration(s)</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-cue-declaration(s)" href="#cue-declaration(s)">Cue Declaration(s)</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-end-block" href="#end-block">End Block</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </li>
                 <li class="menu-item -level-2"><a class="link title  link-usagecue_sheet_running" href="../usage/CUE_SHEET_RUNNING.html">Cue Sheet Running</a>
                 </li>
@@ -66,6 +90,99 @@
           </div>
         </div>
         <div class="markdown-body"><h1 id="cue-sheet-composition">Cue Sheet Composition</h1>
+<h2 id="intro">Intro</h2>
+<p>In order to use &gt; Prompt, you simply compose cue sheets in a text file. The
+&gt; Prompt language and syntax is meant to make it easy to specify where cues
+should be placed in a script without the need to overspecify.</p>
+<h2 id="whitespace-sensitivity">Whitespace Sensitivity</h2>
+<h2 id="anatomy-of-a-cue-sheet">Anatomy of a Cue Sheet</h2>
+<ul>
+<li><a href="#character(s)-declaration-block"><strong>Character(s) Declaration Block</strong></a>:<br>
+Declare any characters that appear in the script that you will reference throughout
+your cues. (e.g. <code>@HAMLET</code>, <code>@POLONIUS</code>, etc.)</li>
+<li><a href="#department(s)-declaration-block"><strong>Department(s) Declaration Block</strong></a>:<br>
+Declare any departments you may reference in your cues like lights, sound, etc.
+(e.g. <code>#LX</code>, <code>#SD</code>, <code>#BACKSTAGE</code>, etc.)</li>
+<li><a href="#act-declaration-block(s)"><strong>Act Declaration Block(s)</strong></a>:<br>
+Add declarations for any acts in the script that have scenes with cues.
+<ul>
+<li><a href="#scene-declaration-block(s)"><strong>Scene Declaration Block(s)</strong></a>:<br>
+Add declarations for any scenes in the script that have cue points in them.
+<ul>
+<li><a href="#cue-group-declaration(s)"><strong>Cue Group Declaration(s)</strong></a>:<br>
+Specify where in the scene a group of cues should be called: either at a
+line or an entrance/exit.
+<ul>
+<li><a href="#cue-declaration(s)"><strong>Cue Declaration(s)</strong></a>:<br>
+Specify the actual cues to be called on a department level.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#end-block"><strong>End Block and Notes</strong></a></li>
+</ul>
+<h3 id="character(s)-declaration-block">Character(s) Declaration Block</h3>
+<p>The character declaration block should be the first block to appear in your file.
+The word <code>Characters:</code> should appear on the first line flush with left side
+of the page. On a new line each, the name of a character should appear <strong>indented
+with 2 spaces</strong>, beginning with a <code>@</code>, and only containing upper case letters <code>A-Z</code>
+as well as underscores (<code>_</code>).</p>
+<pre><code>Characters:
+  @HAMLET
+  @POLONIUS
+</code></pre>
+<blockquote>
+<p>&#x1F440; You do not need to declare all the characters in the script; however,
+you must declare any character you reference in a cue placement. This is done
+to avoid typos.</p>
+</blockquote>
+<p><strong>After the block of characters, you must have one blank newline.</strong></p>
+<h3 id="department(s)-declaration-block">Department(s) Declaration Block</h3>
+<p>The department declaration block should be the second block to appear in your file.
+The word <code>Departments:</code> should appear flush with left side
+of the page. On a new line each, the name of a department should appear <strong>indented
+with 2 spaces</strong>, beginning with a <code>#</code>, and only containing upper case letters <code>A-Z</code>
+as well as underscores (<code>_</code>).</p>
+<pre><code>Departments:
+  #LX
+  #SD
+  #BACKSTAGE
+  #SPOT_I
+  #SPOT_II
+</code></pre>
+<blockquote>
+<p>&#x26A0;&#xFE0F; Although <code>#SPOT_I</code> and <code>#SPOT_II</code> may be considered part of the
+lighting department (<code>#LX</code>), it is good practice to declare them as separate
+departments, if they will be receiving cues different from one another they
+should be declared separately.</p>
+</blockquote>
+<p><strong>After the block of characters, you must have one blank newline.</strong></p>
+<h3 id="act-declaration-block(s)">Act Declaration Block(s)</h3>
+<p>Next, you should declare any acts that will have cues. For each <code>Act n:</code> where
+<code>n</code> is some integer should appear flush left in the file:</p>
+<pre><code>Act 1:
+Act 30:
+</code></pre>
+<blockquote>
+<p>&#x26A0;&#xFE0F; You must not declare an act unless it will have scenes with cues.</p>
+</blockquote>
+<h3 id="scene-declaration-block(s)">Scene Declaration Block(s)</h3>
+<p>Next, for each scene that will have cues within an act, you should add a line
+indented with 2 spaces containing <code>Scene n:</code> where <code>n</code> is some integer:</p>
+<pre><code>Act 1:
+  Scene 1:
+  Scene 2:
+Act 30:
+  Scene 47:
+</code></pre>
+<blockquote>
+<p>&#x26A0;&#xFE0F; You must not declare a scene unless it will have cues.</p>
+</blockquote>
+<h3 id="cue-group-declaration(s)">Cue Group Declaration(s)</h3>
+<h3 id="cue-declaration(s)">Cue Declaration(s)</h3>
+<h3 id="end-block">End Block</h3>
 
         </div>
         <div class="footer-nav">
