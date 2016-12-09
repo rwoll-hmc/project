@@ -9,6 +9,18 @@ should be placed in a script without the need to overspecify.
 
 ## Whitespace Sensitivity
 
+\> Prompt is an extremely whitespace sensitive language by design. In order to
+ensure best formatting practices by users and to ensure that raw cue sheet text
+files are easy to read by a human, you must have newlines in exact locations and
+use proper indentation as outlined below. ***The only place that whitespace is
+ignored is at the end of the line.***
+
+Yes, this does make it slightly harder to write at first, but the rules are
+straightforward as you'll see below.
+
+> :eyes: In an ideal version of this project, we would make available a formatting
+> tool that would take a flexibly spaced language and autoformat it.
+
 ## Anatomy of a Cue Sheet
 
 * [__Character(s) Declaration Block__](#character(s)-declaration-block):  
@@ -104,3 +116,7 @@ Act 30:
 ### Cue Declaration(s)
 
 ### End Block
+
+The file must and with `--- END ---` flush with the left side of the page. Anything
+after the `--- END ---` marker will be ignored, so feel free to leave comments
+or notes to yourself after this line!
