@@ -37,6 +37,16 @@ insertScene aIdx ps sc@(CueScene i cgs) = do
     (pActScenes $ findWithDefault (PromptAct Map.empty) aIdx (pActs ps))
   foldlM (insertCueGroups aIdx i) ps cgs
 
+-- | Check unkown characters.
+checkUnkownCharacters :: PromptScript      -- ^ Script
+                      -> PromptScript      -- ^ Cue Sheet
+                      -> Either [Error] () -- ^ Result
+checkUnkownCharacters s p = do
+  declChars <- return $ pCharacters p
+  knownChars <- return $ pCharacters s
+  errs <- return $ foldr (\l errs -> Errors.UnkownTargetCharacterError l:errs) [] (difference declChars knownChars)
+  if null errs then return () else Left errs
+
 -- | Merge a prompt script with a cuesheet.
 eval :: PromptScript                -- ^ The prompt script, possibly already marked up.
      -> PromptScript                -- ^ The compiled cuesheet.

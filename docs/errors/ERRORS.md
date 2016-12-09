@@ -5,9 +5,22 @@ Errors
 
 __Example Trace__:  
 
+```
+Parsing Error:
+  "examples/Hamlet.cuesheet" (line 5, column 1):
+  unexpected "D"
+  expecting "  " or lf new-line
+```
+
 __Possible Causes__:  
 
+This likely means you forgot a newline somewhere or forgot to give the block
+the right amount of indentation.
+
 __Possible Fixes__:  
+
+Make sure there is a newline after every unit block. Look at the example to see
+where newlines and indentions appear.
 
 ## `NoMatchError`
 
@@ -24,7 +37,14 @@ Processing Error:
 
 __Possible Causes__:  
 
+The cue group you specified did not have any matching line in the script. Perhaps
+the character you specified never says those words or makes the entrance/exit.
+A more likely alternative, is that you've mistyped a word in the quoted line.
+
 __Possible Fixes__:  
+
+* Double check the character says/does what you think they do in the script.
+* Check that all words are spelled correctly and are exactly one line.
 
 ## `AmbiguousError`
 
@@ -53,7 +73,14 @@ Processing Error:
 
 __Possible Causes__:  
 
+A cue group has many matches within a scene. > Prompt will give this error if
+there is more than one possible placement within a scene of the specified cue.
+It will enumerate ALL possible placements so you may pick one.
+
 __Possible Fixes__:  
+
+Add more context to disambiguate the placement by either providing more words
+from the line or adding a parenthesised index after the cue group.
 
 ## `DuplicateCharacterDeclaration`
 
@@ -70,7 +97,18 @@ Compiling Error:
 
 __Possible Causes__:  
 
+You declared a character more the once:
+
+```
+Characters:
+  @HAMLET
+  @POLONIUS
+  @HAMLET
+```
+
 __Possible Fixes__:  
+
+Delete any duplicate occurences.
 
 ## `DuplicateDepartmentDeclaration`
 
@@ -87,7 +125,18 @@ Compiling Error:
 
 __Possible Causes__:  
 
+Similar to above, except with departments:
+
+```
+Departments:
+  #LX
+  #SD
+  #LX
+```
+
 __Possible Fixes__:  
+
+Delete any duplicate occurences.
 
 ## `UndeclaredCharacterError`
 
@@ -104,7 +153,20 @@ Compiling Error:
 
 __Possible Causes__:  
 
+You tried to refer to a character that you forgot to declare or you made a typo
+when specifying their name.
+
 __Possible Fixes__:  
+
+Add the character to the declaration list:
+
+```
+Characters:
+  @POLONIUS
+  @HAMLET
+```
+
+or check for a typo!
 
 ## `UndeclaredDepartmentError`
 
@@ -119,9 +181,13 @@ Compiling Error:
   Perhaps it is a typo? If not, please declare the department in the 'Departments' block.
 ```
 
-__Possible Causes__:  
+__Possible Causes__:
 
-__Possible Fixes__:  
+Analogous to above.
+
+__Possible Fixes__:
+
+Analogous to above.  
 
 ## `UnkownTargetCharacterError`
 

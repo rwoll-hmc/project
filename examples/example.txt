@@ -8,35 +8,20 @@ Departments:
   #SD
   #BS
 
-Act 0:
-  Scene 47:
-    (visual) @ATHEN:EXIT (12)
-      #LX {100000} STBY
-      #SD {2071231283712318} STBY
-
-    (visual) @ATHEN:ENTR
-      #LX {2222} WARN
-
-  Scene 99999:
-    (visual) @ATHEN:ENTR
-      #LX {100000} GO
-
-    (visual) @ATHEN:ENTR
-      #LX {2222} GO
-
-Act 567890:
+Act 1:
   Scene 1:
-    (visual) @ATHEN:ENTR
-      #LX {100000} GO
+    (line) @CECIL:"i never said this"
+      #TYPO {47} STBY
 
-    (line) @ATHEN:"asd" (123)
-      #LX {2222} GO
+    (line) @HAMLET:"i never said this"
+      #LX {47} STBY
 
-  Scene 99999:
-    (visual) @ATHEN:ENTR
-      #LX {100000} GO
+    (visual) @HAMLET:ENTR
+      #LX {47} STBY
 
-    (visual) @ATHEN:ENTR
-      #LX {47474} GO
+Act 2:
+  Scene 12:
+    (line) @HAMLET:"i never said this"
+      #LX {47} STBY
 
 --- END ---

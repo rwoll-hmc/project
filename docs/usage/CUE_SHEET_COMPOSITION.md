@@ -113,10 +113,130 @@ Act 30:
 
 ### Cue Group Declaration(s)
 
+A cue group is a natural grouping of individual cues that implies that any child
+cues should be called together at some point in the script. In the current version
+of the language implementation a cue group can be either a line or a visual
+entrance/exit of a character:
+
+#### Line Cue Group
+
+Indented 2 spaces from the `Scene n:` block taking the form of:
+
+```
+(line) @CHAR_NAME:"part of the line"
+```
+
+where the quoted text should be enough text to uniquely identify the placement
+within the scene. In other words, if `@HAMLET` says "Hello!" 5 times throughout
+the scene you can disambiguate the placement by using more words from that line.
+
+In the case where adding more words is not sufficient to disambiguate the placement,
+you can add an index in parenthesis after the line (see below) which is the lines
+index number within a scene:
+
+```
+(line) @CHAR_NAME:"part of the line" (47)
+```
+
+> :warning: Index style disambiguations should be used only when it is
+> absolutely necessary! Prefer to add more words.
+
+#### Visual Line Group
+
+Indented 2 spaces from the `Scene n:` block taking the form of:
+
+```
+(visual) @CHAR_NAME:ENTR
+```
+
+for an entrance. If the cue should be placed at an exit, substitute `ENTR` for
+`EXIT`. Like line groups, visual entrance placements can be disambiguated with
+indices:
+
+```
+(visual) @CHAR_NAME:ENTR (47)
+```
+
+Index disambiguations should only be used when necessary. (The compiler will tell
+to use one if needed).
+
+
 ### Cue Declaration(s)
+
+Under each [cue group](#cue-group-declaration(s)) you should place the actual
+cues that should be called to each department. Each should appear on a newline.
+Following the last cue, you should insert a blank newline before adding the next
+group.
+
+The format is as follows:
+
+```
+#DEPARTMENT {n} GO "Optional comment....."
+```
+
+where `DEPARTMENT` can be replaced by a department you have declared, `n` is some
+integer identifying the cue number (this is up to you); `GO` can be substituted
+with `STBY` (standby), or `WARN` if you'd like to specify an alternate type of cue.
+Optionally, you can also include a comment enclosed in `"`s. For example, a warning
+cue might look like this:
+
+```
+#LX {47} WARN "@HAMLET about to enter stage left"
+```
+
+If you do not have a comment, ommit the quotes:
+
+
+```
+#LX {47} WARN
+```
+
+You may have as many cues (1 per department) assigned with a cue group:
+
+```
+(visual) @HAMLET:ENTR
+  #LX {10} STBY
+  #SD {99} GO "wait a half a beat"
+  #BS {97} WARN
+```
 
 ### End Block
 
 The file must and with `--- END ---` flush with the left side of the page. Anything
 after the `--- END ---` marker will be ignored, so feel free to leave comments
 or notes to yourself after this line!
+
+## Quick Example
+
+Here is all of the above together:
+
+```
+Characters:
+  @BARNARDO
+  @POLONIUS
+  @FRANCISCO
+
+Departments:
+  #LX
+  #SD
+  #BS
+
+Act 1:
+  Scene 1:
+    (line) @BARNARDO:"Who's there?"
+      #LX {1} STBY "t"
+      #SD {1} GO "comment 2"
+      #BS {1} WARN
+
+    (line) @FRANCISCO:"Not a mouse stirring."
+      #LX {1} GO
+
+Act 2:
+  Scene 1:
+    (line) @POLONIUS:"Give him this money"
+      #LX {2} STBY "this is a comment on this cue"
+      #SD {2} GO "comment 2"
+      #BS {2} WARN
+
+--- END ---
+```

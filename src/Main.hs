@@ -49,6 +49,7 @@ runner s = do
 
   unless (silent s) (putStrLn "==== Compiling...")
   parsed' <- either ((>> exitFailure) . prntErrorC "Compiling Error") return (transpile parsed)
+  _ <- either ((>> exitFailure) . prntErrorC "Compiling Error") return (checkUnkownCharacters theScript parsed')
   evaled <- either ((>> exitFailure) . prntErrorC "Processing Error") return
               (eval theScript parsed')
 
