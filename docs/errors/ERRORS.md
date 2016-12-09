@@ -193,22 +193,66 @@ Analogous to above.
 
 __Example Trace__:  
 
+```
+Compiling Error:
+  [UnkownTargetCharacterError] The following character was referenced in a the cuesheet,
+                               but does not appear in the target script:
+
+    @NONEXISTENT
+
+  Perhaps it is a typo? If so, please change the character declaration and all references.
+```
+
 __Possible Causes__:  
 
+You correctly declared a character and used it in the cue sheet, but the character
+doesn't exist in the destination script.
+
 __Possible Fixes__:  
+
+Check the spelling and look at the character list of the destination script. Use
+the names as declared in the destination script.
 
 ## `OutOfOrderOrDuplicateActError`
 
 __Example Trace__:  
 
+```
+Compiling Error:
+  [OutOfOrderOrDuplicateActError] The following act was declared out of order or twice:
+
+    Act 1
+
+  Please check the numbering.
+```
+
 __Possible Causes__:  
 
+The `Act 1` declaration came after `Act 2` or another later act. Or you declared
+`Act 1` twice.
+
 __Possible Fixes__:  
+
+If you have duplicated occurrences, simply merge the two together. Otherwise,
+reorder so that acts appear in numerical ascending order.
 
 ## `OutOfOrderOrDuplicateSceneError`
 
 __Example Trace__:  
 
+```
+Compiling Error:
+  [OutOfOrderOrDuplicateSceneError] The following scene was declared out of order or twice:
+
+    Scene 1
+
+  Please check the numbering.
+```
+
 __Possible Causes__:  
 
+Analogous to above.
+
 __Possible Fixes__:  
+
+Analagous to above.  
