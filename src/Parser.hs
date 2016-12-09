@@ -33,7 +33,7 @@ characters = indent 0 (Parsec.string "Characters:") *> Parsec.many1 (indent 1 ch
 
 -- | Parse a department. (e.g. `#LX`)
 department :: Parsec.Parsec String () AST.Department
-department = AST.Department <$> (Parsec.char '#' *> Parsec.many1 Parsec.upper)
+department = AST.Department <$> (Parsec.char '#' *> Parsec.many1 (Parsec.upper <|> Parsec.char '_'))
 
 -- | Parse a block of departments.
 departments :: Parsec.Parsec String () [AST.Department]
@@ -64,7 +64,7 @@ action = Parsec.try (Parsec.string "ENTR" *> pure AST.Enter)
 
 -- | Parse a quoted string (with some limited characters)
 quotedString :: Parsec.Parsec String () String
-quotedString = quote *>
+quotedString = Parsec.try $ quote *>
                Parsec.many (Parsec.oneOf allowedExtras <|> Parsec.alphaNum)
                <* quote
   where
