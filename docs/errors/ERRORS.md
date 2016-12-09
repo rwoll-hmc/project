@@ -39,30 +39,9 @@ Processing Error:
   Here are all the possible matches:
 
     PromptMarker {pMarker = (line) @BARNARDO:"Who's there?", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Long live the King!", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"'Tis now struck twelve. Get thee to bed, Francisco.", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Have you had quiet guard?", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Well, good night.", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"The rivals of my watch, bid them make haste.", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Say, what, is Horatio there?", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"I have seen nothing.", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Sit down awhile,", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"That are so fortified against our story,", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"What we have two nights seen.", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Last night of all,", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"When yond same star that's westward from the pole", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Had made his course t' illume that part of heaven", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Where now it burns, Marcellus and myself,", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"The bell then beating one\8212", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"In the same figure like the King that's dead.", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Looks he not like the King? Mark it, Horatio.", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Is not this something more than fantasy?", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"What think you on 't?", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"I think it be no other but e'en so.", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Well may it sort that this portentous figure", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"Comes arm\232d through our watch so like the king", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"That was and is the question of these wars.", pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:"'Tis here.", pCues = []}
+    .
+    .
+    .
     PromptMarker {pMarker = (line) @BARNARDO:"It was about to speak when the cock crew.", pCues = []}
 
 
