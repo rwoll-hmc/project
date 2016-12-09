@@ -1,17 +1,17 @@
 * [greater-prompt](../README.md)
 * Installation
-  * Installing Dependencies
-  * CLI Setup
+  * [Installing Dependencies](installation/DEPENDENCIES.md)
+  * [CLI Setup](installation/CLI.md)
 * Usage
-  * Cue Sheet Composition
-  * Cue Sheet Running
-  * PDF Generation
+  * [Cue Sheet Composition](usage/CUE_SHEET_COMPOSITION.md)
+  * [Cue Sheet Running](usage/CUE_SHEET_RUNNING.md)
+  * [PDF Generation](usage/PDF_GENERATION.md)
 * Errors
-  * What the @%^!?
-  * Errors Explained
+  * [What the @%^!?](errors/INTRO.md)
+  * [Errors Explained](errors/ERRORS.md)
 * Design Principles
-  * Introduction
-  * Language Design Details
-  * Example Programs
-  * Language Implementation
-  * Evaluation
+  * [Introduction](design/INTRO.md)
+  * [Language Design Details](design/LANGUAGE_DESIGN_DETAILS.md)
+  * [Example Programs](design/EXAMPLE_PROGRAMS.md)
+  * [Language Implementation](design/LANGUAGE_IMPLEMENTATION.md)
+  * [Evaluation](design/EVALUATION.md)
