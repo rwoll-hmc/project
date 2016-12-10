@@ -238,5 +238,12 @@ Act 2:
       #SD {2} GO "comment 2"
       #BS {2} WARN
 
+    Scene 2:
+      (line) @POLONIUS:"Give him this money"
+        #LX {3} STBY "this is a comment on this cue"
+        #SD {3} GO "comment 2"
+        #BS {3} WARN
+
+
 --- END ---
 ```
