@@ -1,0 +1,21 @@
+Characters:
+  @BARNARDO
+  @MARCELLUS
+  @FRANCISCO
+
+Departments:
+  #LX_BOARD
+  #SD_BOARD
+  #SP_OPRTR
+
+Act 1:
+  Scene 1:
+    (visual) @BARNARDO:ENTR
+      #LX_BOARD {1} GO
+      #SD_BOARD {1} GO
+      #SP_OPRTR {1} STBY "@BARNARDO ENTR SL"
+
+    (line) @BARNARDO:"Who's there" (2)
+      #SP_OPRTR {1} GO
+
+--- END ---
