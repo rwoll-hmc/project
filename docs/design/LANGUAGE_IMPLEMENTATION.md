@@ -77,3 +77,13 @@ The `PromptScript` data structure has three purposes:
   1. Encode original, unannotated script: [src/SampleScript.hs](https://github.com/rwoll-hmc/project/blob/master/src/SampleScript.hs)
   2. Encode the cue sheet after initial compilation.
   3. Encode the final annotated script.
+
+### Cue Resolution Logic
+
+Writing the logic that uniquely places a cue in the script was the most challenging
+since it involved traversing and merging two tree data structures and searching
+through them. Deciding what qualifies a cue as uniquely placed was also an involved
+thought process: should cues be uniquely placed relative to one another, globally within
+a scene, or the entire script. Currently, most designers give enough information
+so it is unique at the page level, but without any notion of pages (by design, for better or worse),
+I decided to make things unique on the scene level.
