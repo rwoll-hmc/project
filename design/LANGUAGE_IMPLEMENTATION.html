@@ -51,6 +51,24 @@
                 <li class="menu-item -level-2"><a class="link title  link-designexample_programs" href="../design/EXAMPLE_PROGRAMS.html">Example Programs</a>
                 </li>
                 <li class="menu-item -level-2"><a class="link title -active link-designlanguage_implementation" href="../design/LANGUAGE_IMPLEMENTATION.html">Language Implementation</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a class="hlink link-host-language" href="#host-language">Host Language</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-running-a-program" href="#running-a-program">Running a Program</a>
+                      <ul class="heading-list -depth-2">
+                        <li class="heading-item -depth-3"><a class="hlink link-parsing" href="#parsing">Parsing</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-handling-errors" href="#handling-errors">Handling Errors</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-cuescript-data-structure" href="#cuescript-data-structure">`CueScript` Data Structure</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-promptscript-data-structure" href="#promptscript-data-structure">`PromptScript` Data Structure</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-cue-resolution-logic" href="#cue-resolution-logic">Cue Resolution Logic</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </li>
                 <li class="menu-item -level-2"><a class="link title  link-designevaluation" href="../design/EVALUATION.html">Evaluation</a>
                 </li>
@@ -66,27 +84,76 @@
           </div>
         </div>
         <div class="markdown-body"><h1 id="language-implementation">Language Implementation</h1>
-<p>Describe your implementation. In
-particular, answer the following questions:</p>
-<ul>
-<li>What host language did you use (i.e., in what language did you
-implement your DSL)? Why did you choose this host language (i.e.,
-why is it well-suited for your language design)?</li>
-<li>Is yours an external or an internal DSL (or some combination thereof)? Why
-is that the right design?</li>
-<li>Provide an overview of the architecture of your language: front, middle, and
-back-end, along with any technologies used to implement these components.</li>
-<li>&quot;Parsing&quot;: How does your DSL take a user program and turn it into
-something that can be executed? How do the data and control
-structures of your DSL connect to the underlying semantic model?</li>
-<li>Intermediate representation: What data structure(s) in the host language do
-you use to represent a program in your DSL?</li>
-<li>Execution: How did you implement the computational model? Describe
-the structure of your code and any special programming techniques
-you used to implement your language. In particular, how do the
-semantics of your host language differ from the semantics of your
-DSL?</li>
-</ul>
+<h2 id="host-language">Host Language</h2>
+<p>The current implementation of &gt; Prompt is in Haskell, an awesome functional
+programming language feature a very nice typing system&#x2014;a key factor in my
+decision to use it. I wanted to pick a language that, through type-checking, could
+help me refactor my work at a later point if I decided to work on the project
+again. I also chose this language because I had only used it for academic assignments
+so far and had the desire to test my ability to design a more substantial
+program in it as well as get familiar with its build tools like cabal and its
+documentation (as well as other external packages).</p>
+<p>Since my language is an external DSL, I knew parsing would come in to play and
+having worked with parser combinators before and more specifically Parsec, which
+is the helpful library behind my parser, I thought it would be a good idea to<br>
+use Haskell.</p>
+<p>While there are many interesting and well implemented internal DSLs in Haskell
+and other host languages, I really wanted to make greater prompt customized to my
+original syntax design; therefore, creating an external DSL (as opposed to an internal one)
+came naturally. I did not want to make the user type extra characters or worry
+about getting foreign stack traces from another language. Although Haskell is great,
+the error messages it gives can be frightening&#x2014;especially to someone who
+has never programmed that may be interested in using my DSL.</p>
+<h2 id="running-a-program">Running a Program</h2>
+<p>At a high level, when a program runs the parser inputs the data into a list
+based data structure that corresponds exactly to the user input. Next, this data
+is traversed and converted into another more efficient intermediate implementation
+that guarantees uniqueness in the data. If duplicated data is found, errors are
+displayed to the user and this process ceases. Once in this secondary form, the data
+is merged with a similar data structure (internally they are the same) that captures
+the script. Together, the script and the cue sheet become the prompt script.
+Finally, if all cues can be merged and resolved uniquely, then the output is
+put through a renderer which outputs raw text into a LaTeX file that can then
+be rendered into a PDF.</p>
+<p>If you look through <a href="https://github.com/rwoll-hmc/project/blob/master/src/Main.hs"><code>src/Main.hs</code></a>,
+each line roughly corresponds to a step in this process.</p>
+<h3 id="parsing">Parsing</h3>
+<p>For my DSL, I have used parser combinators to handle the parsing. Unfortunately,
+using this technique (as opposed to generators), the parsing code is less readable
+as a consequence of me not breaking up the parsers into small enough units and
+the grammar being sufficiently complex.</p>
+<h3 id="handling-errors">Handling Errors</h3>
+<p>All errors are handled monadically. Essentially, with each function, I have decided
+either to quit early when an error is encountered or if doing an operation over
+multiple scenes, I opted to collect the errors into a list before cutting out
+of the program. Monadic programming is common in functional paradigms.</p>
+<h3 id="cuescript-data-structure"><code>CueScript</code> Data Structure</h3>
+<p>The <code>CueScript</code> data structure is a list-based tree representing the acts, their
+scenes, the scenes cue groups, and the cue groups cues. Traversing this data structure
+involves many folds and, while complex (and often inefficient) to work with, has
+1-to-1 encoding of the user input since it both preserves duplication and order.</p>
+<p>This 1-to-1ness allowed me to give more accurate user feedback on a program before
+transforming the representation into a more easily traversable and workable
+map-based implementation.</p>
+<h3 id="promptscript-data-structure"><code>PromptScript</code> Data Structure</h3>
+<p>The <code>PromptScript</code> data structure is analogous to the <code>CueScript</code> data structure,
+except it uses maps internally instead of lists. Therefore, numbering information
+is moved up a level as keys in the map. This presented a challenge, although
+<code>mapAccumWithKey</code> came in handy.</p>
+<p>The <code>PromptScript</code> data structure has three purposes:</p>
+<ol>
+<li>Encode original, unannotated script: <a href="https://github.com/rwoll-hmc/project/blob/master/src/SampleScript.hs">src/SampleScript.hs</a></li>
+<li>Encode the cue sheet after initial compilation.</li>
+<li>Encode the final annotated script.</li>
+</ol>
+<h3 id="cue-resolution-logic">Cue Resolution Logic</h3>
+<p>Writing the logic that uniquely places a cue in the script was the most challenging
+since it involved traversing and merging two tree data structures and searching
+through them. Deciding what qualifies a cue as uniquely placed was also an involved
+thought process: should cues be uniquely placed relative to one another, globally within
+a scene, or the entire script. Currently, most designers give enough information
+so it is unique at the page level, but without any notion of pages (by design, for better or worse),
+I decided to make things unique on the scene level.</p>
 
         </div>
         <div class="footer-nav">

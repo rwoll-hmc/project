@@ -50,6 +50,8 @@
                         </li>
                       </ul>
                     </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-quick-example" href="#quick-example">Quick Example</a>
+                    </li>
                   </ul>
                 </li>
                 <li class="menu-item -level-2"><a class="link title  link-usagecue_sheet_running" href="../usage/CUE_SHEET_RUNNING.html">Cue Sheet Running</a>
@@ -95,6 +97,17 @@
 &gt; Prompt language and syntax is meant to make it easy to specify where cues
 should be placed in a script without the need to overspecify.</p>
 <h2 id="whitespace-sensitivity">Whitespace Sensitivity</h2>
+<p>&gt; Prompt is an extremely whitespace sensitive language by design. In order to
+ensure best formatting practices by users and to ensure that raw cue sheet text
+files are easy to read by a human, you must have newlines in exact locations and
+use proper indentation as outlined below. <strong><em>The only place that whitespace is
+ignored is at the end of the line.</em></strong></p>
+<p>Yes, this does make it slightly harder to write at first, but the rules are
+straightforward as you&apos;ll see below.</p>
+<blockquote>
+<p>&#x1F440; In an ideal version of this project, we would make available a formatting
+tool that would take a flexibly spaced language and autoformat it.</p>
+</blockquote>
 <h2 id="anatomy-of-a-cue-sheet">Anatomy of a Cue Sheet</h2>
 <ul>
 <li><a href="#character(s)-declaration-block"><strong>Character(s) Declaration Block</strong></a>:<br>
@@ -181,8 +194,103 @@ Act 30:
 <p>&#x26A0;&#xFE0F; You must not declare a scene unless it will have cues.</p>
 </blockquote>
 <h3 id="cue-group-declaration(s)">Cue Group Declaration(s)</h3>
+<p>A cue group is a natural grouping of individual cues that implies that any child
+cues should be called together at some point in the script. In the current version
+of the language implementation a cue group can be either a line or a visual
+entrance/exit of a character:</p>
+<h4 id="line-cue-group">Line Cue Group</h4>
+<p>Indented 2 spaces from the <code>Scene n:</code> block taking the form of:</p>
+<pre><code>(line) @CHAR_NAME:&quot;part of the line&quot;
+</code></pre>
+<p>where the quoted text should be enough text to uniquely identify the placement
+within the scene. In other words, if <code>@HAMLET</code> says &quot;Hello!&quot; 5 times throughout
+the scene you can disambiguate the placement by using more words from that line.</p>
+<p>In the case where adding more words is not sufficient to disambiguate the placement,
+you can add an index in parenthesis after the line (see below) which is the lines
+index number within a scene:</p>
+<pre><code>(line) @CHAR_NAME:&quot;part of the line&quot; (47)
+</code></pre>
+<blockquote>
+<p>&#x26A0;&#xFE0F; Index style disambiguations should be used only when it is
+absolutely necessary! Prefer to add more words.</p>
+</blockquote>
+<h4 id="visual-line-group">Visual Line Group</h4>
+<p>Indented 2 spaces from the <code>Scene n:</code> block taking the form of:</p>
+<pre><code>(visual) @CHAR_NAME:ENTR
+</code></pre>
+<p>for an entrance. If the cue should be placed at an exit, substitute <code>ENTR</code> for
+<code>EXIT</code>. Like line groups, visual entrance placements can be disambiguated with
+indices:</p>
+<pre><code>(visual) @CHAR_NAME:ENTR (47)
+</code></pre>
+<p>Index disambiguations should only be used when necessary. (The compiler will tell
+to use one if needed).</p>
 <h3 id="cue-declaration(s)">Cue Declaration(s)</h3>
+<p>Under each <a href="#cue-group-declaration(s)">cue group</a> you should place the actual
+cues that should be called to each department. Each should appear on a newline.
+Following the last cue, you should insert a blank newline before adding the next
+group.</p>
+<p>The format is as follows:</p>
+<pre><code>#DEPARTMENT {n} GO &quot;Optional comment.....&quot;
+</code></pre>
+<p>where <code>DEPARTMENT</code> can be replaced by a department you have declared, <code>n</code> is some
+integer identifying the cue number (this is up to you); <code>GO</code> can be substituted
+with <code>STBY</code> (standby), or <code>WARN</code> if you&apos;d like to specify an alternate type of cue.
+Optionally, you can also include a comment enclosed in <code>&quot;</code>s. For example, a warning
+cue might look like this:</p>
+<pre><code>#LX {47} WARN &quot;@HAMLET about to enter stage left&quot;
+</code></pre>
+<p>If you do not have a comment, ommit the quotes:</p>
+<pre><code>#LX {47} WARN
+</code></pre>
+<p>You may have as many cues (1 per department) assigned with a cue group:</p>
+<pre><code>(visual) @HAMLET:ENTR
+  #LX {10} STBY
+  #SD {99} GO &quot;wait a half a beat&quot;
+  #BS {97} WARN
+</code></pre>
 <h3 id="end-block">End Block</h3>
+<p>The file must and with <code>--- END ---</code> flush with the left side of the page. Anything
+after the <code>--- END ---</code> marker will be ignored, so feel free to leave comments
+or notes to yourself after this line!</p>
+<h2 id="quick-example">Quick Example</h2>
+<p>Here is all of the above together:</p>
+<pre><code>Characters:
+  @BARNARDO
+  @POLONIUS
+  @FRANCISCO
+
+Departments:
+  #LX
+  #SD
+  #BS
+
+Act 1:
+  Scene 1:
+    (line) @BARNARDO:&quot;Who&apos;s there?&quot;
+      #LX {1} STBY &quot;t&quot;
+      #SD {1} GO &quot;comment 2&quot;
+      #BS {1} WARN
+
+    (line) @FRANCISCO:&quot;Not a mouse stirring.&quot;
+      #LX {1} GO
+
+Act 2:
+  Scene 1:
+    (line) @POLONIUS:&quot;Give him this money&quot;
+      #LX {2} STBY &quot;this is a comment on this cue&quot;
+      #SD {2} GO &quot;comment 2&quot;
+      #BS {2} WARN
+
+    Scene 2:
+      (line) @POLONIUS:&quot;Give him this money&quot;
+        #LX {3} STBY &quot;this is a comment on this cue&quot;
+        #SD {3} GO &quot;comment 2&quot;
+        #BS {3} WARN
+
+
+--- END ---
+</code></pre>
 
         </div>
         <div class="footer-nav">

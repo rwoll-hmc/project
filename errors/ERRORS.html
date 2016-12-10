@@ -40,6 +40,8 @@
                 </li>
                 <li class="menu-item -level-2"><a class="link title -active link-errorserrors" href="../errors/ERRORS.html">Errors Explained</a>
                   <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a class="hlink link-toc" href="#toc">TOC</a>
+                    </li>
                     <li class="heading-item -depth-2"><a class="hlink link-parsing-errors" href="#parsing-errors">Parsing Errors</a>
                     </li>
                     <li class="heading-item -depth-2"><a class="hlink link-nomatcherror" href="#nomatcherror">`NoMatchError`</a>
@@ -88,10 +90,32 @@
           </div>
         </div>
         <div class="markdown-body"><h1 id="errors">Errors</h1>
+<h2 id="toc">TOC</h2>
+<ul>
+<li><a href="#parsing-errors">Parsing Errors</a></li>
+<li><a href="#nomatcherror"><code>NoMatchError</code></a></li>
+<li><a href="#ambiguouserror"><code>AmbiguousError</code></a></li>
+<li><a href="#duplicatecharacterdeclaration"><code>DuplicateCharacterDeclaration</code></a></li>
+<li><a href="#duplicatedepartmentdeclaration"><code>DuplicateDepartmentDeclaration</code></a></li>
+<li><a href="#undeclaredcharactererror"><code>UndeclaredCharacterError</code></a></li>
+<li><a href="#undeclareddepartmenterror"><code>UndeclaredDepartmentError</code></a></li>
+<li><a href="#unkowntargetcharactererror"><code>UnkownTargetCharacterError</code></a></li>
+<li><a href="#outoforderorduplicateacterror"><code>OutOfOrderOrDuplicateActError</code></a></li>
+<li><a href="#outoforderorduplicatesceneerror"><code>OutOfOrderOrDuplicateSceneError</code></a></li>
+</ul>
 <h2 id="parsing-errors">Parsing Errors</h2>
 <p><strong>Example Trace</strong>:</p>
+<pre><code>Parsing Error:
+  &quot;examples/Hamlet.cuesheet&quot; (line 5, column 1):
+  unexpected &quot;D&quot;
+  expecting &quot;  &quot; or lf new-line
+</code></pre>
 <p><strong>Possible Causes</strong>:</p>
+<p>This likely means you forgot a newline somewhere or forgot to give the block
+the right amount of indentation.</p>
 <p><strong>Possible Fixes</strong>:</p>
+<p>Make sure there is a newline after every unit block. Look at the example to see
+where newlines and indentions appear.</p>
 <h2 id="nomatcherror"><code>NoMatchError</code></h2>
 <p><strong>Example Trace</strong>:</p>
 <pre><code>Processing Error:
@@ -102,7 +126,14 @@
   Perhaps you spelled something incorrectly or have used the wrong index.
 </code></pre>
 <p><strong>Possible Causes</strong>:</p>
+<p>The cue group you specified did not have any matching line in the script. Perhaps
+the character you specified never says those words or makes the entrance/exit.
+A more likely alternative, is that you&apos;ve mistyped a word in the quoted line.</p>
 <p><strong>Possible Fixes</strong>:</p>
+<ul>
+<li>Double check the character says/does what you think they do in the script.</li>
+<li>Check that all words are spelled correctly and are exactly one line.</li>
+</ul>
 <h2 id="ambiguouserror"><code>AmbiguousError</code></h2>
 <p><strong>Example Trace</strong>:</p>
 <pre><code>Processing Error:
@@ -113,30 +144,9 @@
   Here are all the possible matches:
 
     PromptMarker {pMarker = (line) @BARNARDO:&quot;Who&apos;s there?&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Long live the King!&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;&apos;Tis now struck twelve. Get thee to bed, Francisco.&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Have you had quiet guard?&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Well, good night.&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;The rivals of my watch, bid them make haste.&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Say, what, is Horatio there?&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;I have seen nothing.&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Sit down awhile,&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;That are so fortified against our story,&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;What we have two nights seen.&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Last night of all,&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;When yond same star that&apos;s westward from the pole&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Had made his course t&apos; illume that part of heaven&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Where now it burns, Marcellus and myself,&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;The bell then beating one\8212&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;In the same figure like the King that&apos;s dead.&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Looks he not like the King? Mark it, Horatio.&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Is not this something more than fantasy?&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;What think you on &apos;t?&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;I think it be no other but e&apos;en so.&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Well may it sort that this portentous figure&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;Comes arm\232d through our watch so like the king&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;That was and is the question of these wars.&quot;, pCues = []}
-    PromptMarker {pMarker = (line) @BARNARDO:&quot;&apos;Tis here.&quot;, pCues = []}
+    .
+    .
+    .
     PromptMarker {pMarker = (line) @BARNARDO:&quot;It was about to speak when the cock crew.&quot;, pCues = []}
 
 
@@ -146,7 +156,12 @@
         (line) @CECIL:&quot;more words here&quot;
 </code></pre>
 <p><strong>Possible Causes</strong>:</p>
+<p>A cue group has many matches within a scene. &gt; Prompt will give this error if
+there is more than one possible placement within a scene of the specified cue.
+It will enumerate ALL possible placements so you may pick one.</p>
 <p><strong>Possible Fixes</strong>:</p>
+<p>Add more context to disambiguate the placement by either providing more words
+from the line or adding a parenthesised index after the cue group.</p>
 <h2 id="duplicatecharacterdeclaration"><code>DuplicateCharacterDeclaration</code></h2>
 <p><strong>Example Trace</strong>:</p>
 <pre><code>Compiling Error:
@@ -157,7 +172,14 @@
   Delete the extra occurences in your &apos;Characters&apos; declaration block.
 </code></pre>
 <p><strong>Possible Causes</strong>:</p>
+<p>You declared a character more the once:</p>
+<pre><code>Characters:
+  @HAMLET
+  @POLONIUS
+  @HAMLET
+</code></pre>
 <p><strong>Possible Fixes</strong>:</p>
+<p>Delete any duplicate occurences.</p>
 <h2 id="duplicatedepartmentdeclaration"><code>DuplicateDepartmentDeclaration</code></h2>
 <p><strong>Example Trace</strong>:</p>
 <pre><code>Compiling Error:
@@ -168,7 +190,14 @@
   Delete the extra occurences in your &apos;Departments&apos; declaration block.
 </code></pre>
 <p><strong>Possible Causes</strong>:</p>
+<p>Similar to above, except with departments:</p>
+<pre><code>Departments:
+  #LX
+  #SD
+  #LX
+</code></pre>
 <p><strong>Possible Fixes</strong>:</p>
+<p>Delete any duplicate occurences.</p>
 <h2 id="undeclaredcharactererror"><code>UndeclaredCharacterError</code></h2>
 <p><strong>Example Trace</strong>:</p>
 <pre><code>Compiling Error:
@@ -179,7 +208,15 @@
   Perhaps it is a typo? If not, please declare the character in the &apos;Characters&apos; block.
 </code></pre>
 <p><strong>Possible Causes</strong>:</p>
+<p>You tried to refer to a character that you forgot to declare or you made a typo
+when specifying their name.</p>
 <p><strong>Possible Fixes</strong>:</p>
+<p>Add the character to the declaration list:</p>
+<pre><code>Characters:
+  @POLONIUS
+  @HAMLET
+</code></pre>
+<p>or check for a typo!</p>
 <h2 id="undeclareddepartmenterror"><code>UndeclaredDepartmentError</code></h2>
 <p><strong>Example Trace</strong>:</p>
 <pre><code>Compiling Error:
@@ -190,19 +227,53 @@
   Perhaps it is a typo? If not, please declare the department in the &apos;Departments&apos; block.
 </code></pre>
 <p><strong>Possible Causes</strong>:</p>
+<p>Analogous to above.</p>
 <p><strong>Possible Fixes</strong>:</p>
+<p>Analogous to above.</p>
 <h2 id="unkowntargetcharactererror"><code>UnkownTargetCharacterError</code></h2>
 <p><strong>Example Trace</strong>:</p>
+<pre><code>Compiling Error:
+  [UnkownTargetCharacterError] The following character was referenced in a the cuesheet,
+                               but does not appear in the target script:
+
+    @NONEXISTENT
+
+  Perhaps it is a typo? If so, please change the character declaration and all references.
+</code></pre>
 <p><strong>Possible Causes</strong>:</p>
+<p>You correctly declared a character and used it in the cue sheet, but the character
+doesn&apos;t exist in the destination script.</p>
 <p><strong>Possible Fixes</strong>:</p>
+<p>Check the spelling and look at the character list of the destination script. Use
+the names as declared in the destination script.</p>
 <h2 id="outoforderorduplicateacterror"><code>OutOfOrderOrDuplicateActError</code></h2>
 <p><strong>Example Trace</strong>:</p>
+<pre><code>Compiling Error:
+  [OutOfOrderOrDuplicateActError] The following act was declared out of order or twice:
+
+    Act 1
+
+  Please check the numbering.
+</code></pre>
 <p><strong>Possible Causes</strong>:</p>
+<p>The <code>Act 1</code> declaration came after <code>Act 2</code> or another later act. Or you declared
+<code>Act 1</code> twice.</p>
 <p><strong>Possible Fixes</strong>:</p>
+<p>If you have duplicated occurrences, simply merge the two together. Otherwise,
+reorder so that acts appear in numerical ascending order.</p>
 <h2 id="outoforderorduplicatesceneerror"><code>OutOfOrderOrDuplicateSceneError</code></h2>
 <p><strong>Example Trace</strong>:</p>
+<pre><code>Compiling Error:
+  [OutOfOrderOrDuplicateSceneError] The following scene was declared out of order or twice:
+
+    Scene 1
+
+  Please check the numbering.
+</code></pre>
 <p><strong>Possible Causes</strong>:</p>
+<p>Analogous to above.</p>
 <p><strong>Possible Fixes</strong>:</p>
+<p>Analagous to above.</p>
 
         </div>
         <div class="footer-nav">

@@ -45,6 +45,30 @@
             <li class="menu-item -level-1 -parent"><span class="title">Design Principles</span>
               <ul class="submenu">
                 <li class="menu-item -level-2"><a class="link title -active link-designintro" href="../design/INTRO.html">Introduction</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a class="hlink link-motivation" href="#motivation">Motivation</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-personal-motivation" href="#personal-motivation">Personal Motivation</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-what's-a-prompt-book" href="#what's-a-prompt-book">What's a Prompt Book?</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-benefits" href="#benefits">Benefits</a>
+                      <ul class="heading-list -depth-2">
+                        <li class="heading-item -depth-3"><a class="hlink link-best-practices" href="#best-practices">Best Practices</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-save-time" href="#save-time">Save Time</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-no-more-excel-sheets" href="#no-more-excel-sheets">No More Excel Sheets</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-easy-to-learn" href="#easy-to-learn">Easy to Learn</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-color-coded-pdfs" href="#color-coded-pdfs">Color Coded PDFs</a>
+                        </li>
+                        <li class="heading-item -depth-3"><a class="hlink link-fast" href="#fast">Fast</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </li>
                 <li class="menu-item -level-2"><a class="link title  link-designlanguage_design_details" href="../design/LANGUAGE_DESIGN_DETAILS.html">Language Design Details</a>
                 </li>
@@ -66,9 +90,169 @@
           </div>
         </div>
         <div class="markdown-body"><h1 id="introduction">Introduction</h1>
-<p>Describe your domain and motivate the need for a DSL
-(i.e., how could domain-experts use and benefit from a DSL?). What is the
-essence of your language, and why is it a good language for this domain?</p>
+<h2 id="motivation">Motivation</h2>
+<p>The <strong>&gt; Prompt</strong> Domain Specific Language was created to simplify the otherwise
+arduous and error prone process of adding cue annotations to scripts&#x2014;an
+essential task every stage manager completes for <strong>live theater productions</strong>.</p>
+<p>Traditionally, this task involves aggregating multiple loosely structure cue
+sheets from several designers and, with a ruler and pencil, adding annotations
+in the margins in a script indicating when certain cues are to be called during
+a performance. The below image shows the result of this process when done
+traditionally:</p>
+<p><img src="http://www.theatrecrafts.com/pages/wp-content/uploads/2016/02/promptbook.jpg" alt=""></p>
+<p>In the above example, you can see the stage manger user standard PDF software to
+add the annotations digitally. Currently, this is as state of the art as it gets.
+Well, at least until <strong>&gt; Prompt</strong> was created! &#x1F603;.</p>
+<p>Now, we can take a document that looks like this:</p>
+<pre><code>Characters:
+  @BARNARDO
+  @POLONIUS
+  @FRANCISCO
+  @NONEXISTENT
+
+Departments:
+  #LX
+  #SD
+  #BS
+
+Act 1:
+  Scene 1:
+    (line) @BARNARDO:&quot;Who&apos;s there?&quot;
+      #LX {1} STBY &quot;t&quot;
+      #SD {1} GO &quot;comment 2&quot;
+      #BS {1} WARN
+
+    (line) @FRANCISCO:&quot;Not a mouse stirring.&quot;
+      #LX {1} GO
+
+Act 2:
+  Scene 1:
+    (line) @POLONIUS:&quot;Give him this money&quot;
+      #LX {2} STBY &quot;this is a comment on this cue&quot;
+      #SD {2} GO &quot;comment 2&quot;
+      #BS {2} WARN
+
+--- END ---
+</code></pre>
+<p>and generate the annotated script in an instant:</p>
+<p><img src="https://raw.githubusercontent.com/rwoll-hmc/project/master/hamletExample.png" alt="">.</p>
+<h2 id="personal-motivation">Personal Motivation</h2>
+<p>After stage managing several large productions with many individual cue sheets
+being provided by different lighting designers, sound designers, projection
+designers, and scenic designers, I began brainstorming an alternate way to
+capture this information. Paired with a digitized script, <strong>&gt; Prompt</strong>
+serves to unify this process and make it more efficient, trackable, and enjoyable.</p>
+<h2 id="what&apos;s-a-prompt-book">What&apos;s a Prompt Book?</h2>
+<p>For live theater productions, stage managers produce and use a <em>prompt book</em>
+that includes actor blocking, lighting, sound, and scenic cues.</p>
+<p>Wikipedia nicely describes the essence of a prompt book:</p>
+<blockquote>
+<p>The prompt book, also called transcript, the bible or sometimes simply
+&quot;the book,&quot; is the copy of a production script that contains the information
+necessary to create a theatrical production from the ground up. It is a
+compilation of all blocking, business, light, speech and sound cues, lists of
+properties, drawings of the set, contact information for the cast and crew,
+and any other relevant information that might be necessary to help the
+production run smoothly and nicely.</p>
+</blockquote>
+<p>While there are many important components of the prompt book, this project
+aims to help stage manager&apos;s digitize their cue notes making them searchable,
+summarizable, and editable for not only the stage manager, but the rest of the
+production team&#x2014;including the designers who may alter cues many times
+before deciding on a final position for the cue. In the below picture, on
+the right side, you can see how these cues are traditionally recorded: in pencil
+on paper in the margin of the script:</p>
+<p><img src="https://lifeinthethe8tre.files.wordpress.com/2015/07/img_4634.jpg" alt="Prompt Book Example"></p>
+<p>During a production, <em>each</em> of the designers will create cue sheets that
+look something like:</p>
+<table>
+<thead>
+<tr>
+<th>Cue #</th>
+<th>Page #</th>
+<th>Cue Name/Description</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.5</td>
+<td>0</td>
+<td>House to Half</td>
+<td>after House closes</td>
+</tr>
+<tr>
+<td>0.75</td>
+<td>0</td>
+<td>Blackout</td>
+<td>5 second follow</td>
+</tr>
+<tr>
+<td>&#x2026;</td>
+<td>&#x2026;</td>
+<td>&#x2026;</td>
+<td>&#x2026;</td>
+</tr>
+<tr>
+<td>247.0</td>
+<td>86</td>
+<td>Blackout</td>
+<td>Audrey: &quot;&#x2026;all was well.&quot;</td>
+</tr>
+</tbody>
+</table>
+<p>For a standard production there will likely exist such a cue sheet independently
+for scenic transitions, lights, and sound. The stage manager merges all the cues
+into the prompt book&apos;s script and works with the designers to move their exact
+position around as the designers watch the production rehearse.</p>
+<p>Not only is this inconvenient, but it can create a disconnect between what the
+designer thinks the cue is and what finally ends up in the prompt book; as they
+adjust cues, if they are not careful to update their respective cue sheets, the
+individual cues may be out of sync.</p>
+<h2 id="benefits">Benefits</h2>
+<p>By creating a digital and semantic way to describe cues, individual &quot;cue sheets&quot;
+can be automatically merged into a digital script and allow for edits to be
+propagated to/from the prompt book layout and the individual cue sheets. With
+a fully developed system, cues could be edited in realtime by multiple people
+and be searchable. (Support coming!) There would be no need to flip through the script to see where
+that cue at line &quot;&#x2026;all was well&quot; occurs or what it says. During a rehearsal, if
+a designer says take it back to cue 47, the stage manager would instantly be able
+to find the page saving time and page flipping. In an ideal world, a nice GUI
+would allow the stage manager and production team to easily interact with the
+script and generate individualized cue sheets. For now, a command line interface
+has been created for your convenience!</p>
+<p>Although there is no standardized cue format, <em>most</em> designers will have a
+procedural way of describing the common details of a cue (number, page, description,
+and location), so it seemed appropriate to formalize this into a DSL that could
+efficiently capture this information in a standardized way and be more useable
+and extensible for goals like cue sheet generation, distribution, syncing and
+prompt book layouting as well as searching.</p>
+<h3 id="best-practices">Best Practices</h3>
+<p>Because the cue sheet is in a standard syntax, it enforces designers to follow
+best practices and ensures that they provide enough information to uniquely
+identify where the cue should be placed in the script&#x2014;<a href="../errors/ERRORS.html">if not, the command
+line interface will give them friendly warning with tips on how to fix it!</a></p>
+<h3 id="save-time">Save Time</h3>
+<p>This will save stage managers a lot of time and save designers time from
+needing to unnecessarily have conversations with stage managers on where their
+ambiguous cue placements go.</p>
+<h3 id="no-more-excel-sheets">No More Excel Sheets</h3>
+<p>No need to use excel sheets with differing formats from designer to designer.
+<strong>&gt; Prompt</strong> adds standards to one of the most common tasks.</p>
+<h3 id="easy-to-learn">Easy to Learn</h3>
+<p>As you can see in the above example, the syntax of the language is straightforward
+and should be easy learn. It&apos;s whitespace sensitive by design, so it will keep
+your documents formatted nicely.</p>
+<h3 id="color-coded-pdfs">Color Coded PDFs</h3>
+<p>Stager manager&apos;s frequently enjoy color coding their prompt books. With <strong>&gt; Prompt</strong>
+the default creates color coded output letting you easily read the generated
+PDF.</p>
+<h3 id="fast">Fast</h3>
+<p>Need to move a bunch of cues or renumber them? Now there is no need to get out
+a big eraser or manually move a bunch of comments in a PDF. Simply adjust what
+you need in the cue sheet file and instantly render the updated copy. All the cues
+are localize in one place and the raw file with its whitespace sensitivity and
+clean syntax make it easy to read by both the computer and humans!</p>
 
         </div>
         <div class="footer-nav">

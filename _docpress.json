@@ -132,6 +132,11 @@
                     "id": "end-block"
                   }
                 ]
+              },
+              {
+                "title": "Quick Example",
+                "depth": 2,
+                "id": "quick-example"
               }
             ]
           },
@@ -139,7 +144,19 @@
             "title": "Cue Sheet Running",
             "source": "docs/usage/CUE_SHEET_RUNNING.md",
             "url": "usage/CUE_SHEET_RUNNING.html",
-            "slug": "usagecue_sheet_running"
+            "slug": "usagecue_sheet_running",
+            "headings": [
+              {
+                "title": "CLI",
+                "depth": 2,
+                "id": "cli"
+              },
+              {
+                "title": "Example",
+                "depth": 2,
+                "id": "example"
+              }
+            ]
           },
           {
             "title": "PDF Generation",
@@ -164,6 +181,11 @@
             "url": "errors/ERRORS.html",
             "slug": "errorserrors",
             "headings": [
+              {
+                "title": "TOC",
+                "depth": 2,
+                "id": "toc"
+              },
               {
                 "title": "Parsing Errors",
                 "depth": 2,
@@ -225,25 +247,172 @@
             "title": "Introduction",
             "source": "docs/design/INTRO.md",
             "url": "design/INTRO.html",
-            "slug": "designintro"
+            "slug": "designintro",
+            "headings": [
+              {
+                "title": "Motivation",
+                "depth": 2,
+                "id": "motivation"
+              },
+              {
+                "title": "Personal Motivation",
+                "depth": 2,
+                "id": "personal-motivation"
+              },
+              {
+                "title": "What's a Prompt Book?",
+                "depth": 2,
+                "id": "what's-a-prompt-book"
+              },
+              {
+                "title": "Benefits",
+                "depth": 2,
+                "id": "benefits",
+                "headings": [
+                  {
+                    "title": "Best Practices",
+                    "depth": 3,
+                    "id": "best-practices"
+                  },
+                  {
+                    "title": "Save Time",
+                    "depth": 3,
+                    "id": "save-time"
+                  },
+                  {
+                    "title": "No More Excel Sheets",
+                    "depth": 3,
+                    "id": "no-more-excel-sheets"
+                  },
+                  {
+                    "title": "Easy to Learn",
+                    "depth": 3,
+                    "id": "easy-to-learn"
+                  },
+                  {
+                    "title": "Color Coded PDFs",
+                    "depth": 3,
+                    "id": "color-coded-pdfs"
+                  },
+                  {
+                    "title": "Fast",
+                    "depth": 3,
+                    "id": "fast"
+                  }
+                ]
+              }
+            ]
           },
           {
             "title": "Language Design Details",
             "source": "docs/design/LANGUAGE_DESIGN_DETAILS.md",
             "url": "design/LANGUAGE_DESIGN_DETAILS.html",
-            "slug": "designlanguage_design_details"
+            "slug": "designlanguage_design_details",
+            "headings": [
+              {
+                "title": "Data Interpretation",
+                "depth": 2,
+                "id": "data-interpretation"
+              },
+              {
+                "title": "Syntax Design",
+                "depth": 2,
+                "id": "syntax-design"
+              },
+              {
+                "title": "CLI",
+                "depth": 2,
+                "id": "cli"
+              },
+              {
+                "title": "Control Flow",
+                "depth": 2,
+                "id": "control-flow"
+              },
+              {
+                "title": "Footnotes",
+                "depth": 2,
+                "id": "footnotes"
+              }
+            ]
           },
           {
             "title": "Example Programs",
             "source": "docs/design/EXAMPLE_PROGRAMS.md",
             "url": "design/EXAMPLE_PROGRAMS.html",
-            "slug": "designexample_programs"
+            "slug": "designexample_programs",
+            "headings": [
+              {
+                "title": "Defining Characters",
+                "depth": 2,
+                "id": "defining-characters"
+              },
+              {
+                "title": "Defining Departments",
+                "depth": 2,
+                "id": "defining-departments"
+              },
+              {
+                "title": "Adding Cues",
+                "depth": 2,
+                "id": "adding-cues"
+              },
+              {
+                "title": "Running",
+                "depth": 2,
+                "id": "running"
+              },
+              {
+                "title": "What next?",
+                "depth": 2,
+                "id": "what-next"
+              }
+            ]
           },
           {
             "title": "Language Implementation",
             "source": "docs/design/LANGUAGE_IMPLEMENTATION.md",
             "url": "design/LANGUAGE_IMPLEMENTATION.html",
-            "slug": "designlanguage_implementation"
+            "slug": "designlanguage_implementation",
+            "headings": [
+              {
+                "title": "Host Language",
+                "depth": 2,
+                "id": "host-language"
+              },
+              {
+                "title": "Running a Program",
+                "depth": 2,
+                "id": "running-a-program",
+                "headings": [
+                  {
+                    "title": "Parsing",
+                    "depth": 3,
+                    "id": "parsing"
+                  },
+                  {
+                    "title": "Handling Errors",
+                    "depth": 3,
+                    "id": "handling-errors"
+                  },
+                  {
+                    "title": "`CueScript` Data Structure",
+                    "depth": 3,
+                    "id": "cuescript-data-structure"
+                  },
+                  {
+                    "title": "`PromptScript` Data Structure",
+                    "depth": 3,
+                    "id": "promptscript-data-structure"
+                  },
+                  {
+                    "title": "Cue Resolution Logic",
+                    "depth": 3,
+                    "id": "cue-resolution-logic"
+                  }
+                ]
+              }
+            ]
           },
           {
             "title": "Evaluation",
@@ -379,6 +548,11 @@
               "id": "end-block"
             }
           ]
+        },
+        {
+          "title": "Quick Example",
+          "depth": 2,
+          "id": "quick-example"
         }
       ]
     },
@@ -386,7 +560,19 @@
       "source": "docs/usage/CUE_SHEET_RUNNING.md",
       "title": "Cue Sheet Running - greater-prompt",
       "pageTitle": "Cue Sheet Running",
-      "slug": "usagecue_sheet_running"
+      "slug": "usagecue_sheet_running",
+      "headings": [
+        {
+          "title": "CLI",
+          "depth": 2,
+          "id": "cli"
+        },
+        {
+          "title": "Example",
+          "depth": 2,
+          "id": "example"
+        }
+      ]
     },
     "usage/PDF_GENERATION.html": {
       "source": "docs/usage/PDF_GENERATION.md",
@@ -406,6 +592,11 @@
       "pageTitle": "Errors Explained",
       "slug": "errorserrors",
       "headings": [
+        {
+          "title": "TOC",
+          "depth": 2,
+          "id": "toc"
+        },
         {
           "title": "Parsing Errors",
           "depth": 2,
@@ -462,25 +653,172 @@
       "source": "docs/design/INTRO.md",
       "title": "Introduction - greater-prompt",
       "pageTitle": "Introduction",
-      "slug": "designintro"
+      "slug": "designintro",
+      "headings": [
+        {
+          "title": "Motivation",
+          "depth": 2,
+          "id": "motivation"
+        },
+        {
+          "title": "Personal Motivation",
+          "depth": 2,
+          "id": "personal-motivation"
+        },
+        {
+          "title": "What's a Prompt Book?",
+          "depth": 2,
+          "id": "what's-a-prompt-book"
+        },
+        {
+          "title": "Benefits",
+          "depth": 2,
+          "id": "benefits",
+          "headings": [
+            {
+              "title": "Best Practices",
+              "depth": 3,
+              "id": "best-practices"
+            },
+            {
+              "title": "Save Time",
+              "depth": 3,
+              "id": "save-time"
+            },
+            {
+              "title": "No More Excel Sheets",
+              "depth": 3,
+              "id": "no-more-excel-sheets"
+            },
+            {
+              "title": "Easy to Learn",
+              "depth": 3,
+              "id": "easy-to-learn"
+            },
+            {
+              "title": "Color Coded PDFs",
+              "depth": 3,
+              "id": "color-coded-pdfs"
+            },
+            {
+              "title": "Fast",
+              "depth": 3,
+              "id": "fast"
+            }
+          ]
+        }
+      ]
     },
     "design/LANGUAGE_DESIGN_DETAILS.html": {
       "source": "docs/design/LANGUAGE_DESIGN_DETAILS.md",
       "title": "Language Design Details - greater-prompt",
       "pageTitle": "Language Design Details",
-      "slug": "designlanguage_design_details"
+      "slug": "designlanguage_design_details",
+      "headings": [
+        {
+          "title": "Data Interpretation",
+          "depth": 2,
+          "id": "data-interpretation"
+        },
+        {
+          "title": "Syntax Design",
+          "depth": 2,
+          "id": "syntax-design"
+        },
+        {
+          "title": "CLI",
+          "depth": 2,
+          "id": "cli"
+        },
+        {
+          "title": "Control Flow",
+          "depth": 2,
+          "id": "control-flow"
+        },
+        {
+          "title": "Footnotes",
+          "depth": 2,
+          "id": "footnotes"
+        }
+      ]
     },
     "design/EXAMPLE_PROGRAMS.html": {
       "source": "docs/design/EXAMPLE_PROGRAMS.md",
       "title": "Example Programs - greater-prompt",
       "pageTitle": "Example Programs",
-      "slug": "designexample_programs"
+      "slug": "designexample_programs",
+      "headings": [
+        {
+          "title": "Defining Characters",
+          "depth": 2,
+          "id": "defining-characters"
+        },
+        {
+          "title": "Defining Departments",
+          "depth": 2,
+          "id": "defining-departments"
+        },
+        {
+          "title": "Adding Cues",
+          "depth": 2,
+          "id": "adding-cues"
+        },
+        {
+          "title": "Running",
+          "depth": 2,
+          "id": "running"
+        },
+        {
+          "title": "What next?",
+          "depth": 2,
+          "id": "what-next"
+        }
+      ]
     },
     "design/LANGUAGE_IMPLEMENTATION.html": {
       "source": "docs/design/LANGUAGE_IMPLEMENTATION.md",
       "title": "Language Implementation - greater-prompt",
       "pageTitle": "Language Implementation",
-      "slug": "designlanguage_implementation"
+      "slug": "designlanguage_implementation",
+      "headings": [
+        {
+          "title": "Host Language",
+          "depth": 2,
+          "id": "host-language"
+        },
+        {
+          "title": "Running a Program",
+          "depth": 2,
+          "id": "running-a-program",
+          "headings": [
+            {
+              "title": "Parsing",
+              "depth": 3,
+              "id": "parsing"
+            },
+            {
+              "title": "Handling Errors",
+              "depth": 3,
+              "id": "handling-errors"
+            },
+            {
+              "title": "`CueScript` Data Structure",
+              "depth": 3,
+              "id": "cuescript-data-structure"
+            },
+            {
+              "title": "`PromptScript` Data Structure",
+              "depth": 3,
+              "id": "promptscript-data-structure"
+            },
+            {
+              "title": "Cue Resolution Logic",
+              "depth": 3,
+              "id": "cue-resolution-logic"
+            }
+          ]
+        }
+      ]
     },
     "design/EVALUATION.html": {
       "source": "docs/design/EVALUATION.md",

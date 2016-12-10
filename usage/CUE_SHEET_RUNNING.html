@@ -29,6 +29,12 @@
                 <li class="menu-item -level-2"><a class="link title  link-usagecue_sheet_composition" href="../usage/CUE_SHEET_COMPOSITION.html">Cue Sheet Composition</a>
                 </li>
                 <li class="menu-item -level-2"><a class="link title -active link-usagecue_sheet_running" href="../usage/CUE_SHEET_RUNNING.html">Cue Sheet Running</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a class="hlink link-cli" href="#cli">CLI</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-example" href="#example">Example</a>
+                    </li>
+                  </ul>
                 </li>
                 <li class="menu-item -level-2"><a class="link title  link-usagepdf_generation" href="../usage/PDF_GENERATION.html">PDF Generation</a>
                 </li>
@@ -66,6 +72,59 @@
           </div>
         </div>
         <div class="markdown-body"><h1 id="cue-sheet-running">Cue Sheet Running</h1>
+<h2 id="cli">CLI</h2>
+<p>To run a cue sheet, you will use the command line interface <code>greater-prompt</code>:</p>
+<pre><code>greater-prompt
+usage : greater-prompt [infile] [outfile] [-s] [-l] [-h] [--version]
+
+optional arguments:
+ infile                        Source to input file. By default
+                               this is stdin.
+ outfile                       Destination to output file. By
+                               default script.tex
+ -s, --silent                  Turn off the verbosity
+ -l, --latex-off               Turns off automatic call to
+                               latexmk
+ -h, --help                    show this help message and exit
+ --version                     print the program version and exit
+</code></pre>
+<h2 id="example">Example</h2>
+<p>Paste the following into a file named <code>Hamlet.txt</code>:</p>
+<pre><code>Characters:
+  @BARNARDO
+  @POLONIUS
+  @FRANCISCO
+
+Departments:
+  #LX
+  #SD
+  #BS
+
+Act 1:
+  Scene 1:
+    (line) @BARNARDO:&quot;Who&apos;s there?&quot;
+      #LX {1} STBY &quot;t&quot;
+      #SD {1} GO &quot;comment 2&quot;
+      #BS {1} WARN
+
+    (line) @FRANCISCO:&quot;Not a mouse stirring.&quot;
+      #LX {1} GO
+
+Act 2:
+  Scene 1:
+    (line) @POLONIUS:&quot;Give him this money&quot;
+      #LX {2} STBY &quot;this is a comment on this cue&quot;
+      #SD {2} GO &quot;comment 2&quot;
+      #BS {2} WARN
+
+--- END ---
+</code></pre>
+<p>Then run:</p>
+<pre><code>$ greater-prompt --latex-off Hamlet.txt HamletScriptAnnotated.tex
+</code></pre>
+<p>This will output a <code>.tex</code> file annotated with your cues.</p>
+<p>Play around with the language by adding more cues to the example file. Make typos
+in names and departments and have some fun getting errors. &#x1F603;</p>
 
         </div>
         <div class="footer-nav">

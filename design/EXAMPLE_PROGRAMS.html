@@ -49,6 +49,18 @@
                 <li class="menu-item -level-2"><a class="link title  link-designlanguage_design_details" href="../design/LANGUAGE_DESIGN_DETAILS.html">Language Design Details</a>
                 </li>
                 <li class="menu-item -level-2"><a class="link title -active link-designexample_programs" href="../design/EXAMPLE_PROGRAMS.html">Example Programs</a>
+                  <ul class="headings heading-list">
+                    <li class="heading-item -depth-2"><a class="hlink link-defining-characters" href="#defining-characters">Defining Characters</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-defining-departments" href="#defining-departments">Defining Departments</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-adding-cues" href="#adding-cues">Adding Cues</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-running" href="#running">Running</a>
+                    </li>
+                    <li class="heading-item -depth-2"><a class="hlink link-what-next" href="#what-next">What next?</a>
+                    </li>
+                  </ul>
                 </li>
                 <li class="menu-item -level-2"><a class="link title  link-designlanguage_implementation" href="../design/LANGUAGE_IMPLEMENTATION.html">Language Implementation</a>
                 </li>
@@ -66,10 +78,111 @@
           </div>
         </div>
         <div class="markdown-body"><h1 id="example-programs">Example Programs</h1>
-<p>Provide one or more examples that give the
-casual reader a good sense of your language. Include inputs and outputs.
-Think of this section as &quot;Tutorial By Example&quot;. You might combine this section
-with the previous one, i.e., use examples to help describe your language.</p>
+<p>In addition to the example in the <a href="https://github.com/rwoll-hmc/project/tree/master/examples">examples folder</a>
+and the one described in the <a href="../usage/CUE_SHEET_COMPOSITION.html">Cue Sheet Composition Section</a>,
+we will walk through annotating <em>Hamlet</em>:</p>
+<h2 id="defining-characters">Defining Characters</h2>
+<p>We will begin by adding the characters that we will be referencing throughout
+our cues. Since we will only be adding cues to the first few pages, we just
+need to declare <em>Barnardo</em>, <em>Francisco</em>, and <em>Marcellus</em>:</p>
+<pre><code>Characters:
+  @BARNARDO
+  @MARCELLUS
+  @FRANCISCO
+
+</code></pre>
+<h2 id="defining-departments">Defining Departments</h2>
+<p>Next we will define the departments we will be referencing. For our production,
+we have a lighting board operator (<code>#LX_BOARD</code>), a sound board operator (<code>#SD_BOARD</code>),
+as well as a spotlight operator (<code>#SP_OPRTR</code>). We can refer to them however, but
+their names should be concise:</p>
+<pre><code>Characters:
+  @BARNARDO
+  @MARCELLUS
+  @FRANCISCO
+
+Departments:
+  #LX_BOARD
+  #SD_BOARD
+  #SP_OPRTR
+
+</code></pre>
+<h2 id="adding-cues">Adding Cues</h2>
+<p>Next, we will add a group of cues that should be called when Barnardo enters at the
+top of the scene in Act 1, Scene 1. We want lights and sound to take their first
+cues and the spotlight operator to wait:</p>
+<pre><code>Characters:
+  @BARNARDO
+  @MARCELLUS
+  @FRANCISCO
+
+Departments:
+  #LX_BOARD
+  #SD_BOARD
+  #SP_OPRTR
+
+Act 1:
+  Scene 1:
+    (visual) @BARNARDO:ENTR
+      #LX_BOARD {1} GO
+      #SD_BOARD {1} GO
+      #SP_OPRTR {1} STBY &quot;@BARNARDO ENTR SL&quot;
+
+--- END ---
+</code></pre>
+<h2 id="running">Running</h2>
+<p>If we save the above to a new file, <code>example.txt</code> and run</p>
+<pre><code>$ greater-prompt example.txt
+</code></pre>
+<p>we get a <code>.tex</code> output and a <code>script.pdf</code>:</p>
+<p><img src="https://raw.githubusercontent.com/rwoll-hmc/project/master/hamletExample1.png" alt=""></p>
+<p>Congrats! We have successfully annotated a script!</p>
+<p>Now, when we need the stage manager to say <code>GO</code> for the spot
+when Barnardo says &quot;Who&apos;s there?&quot;:</p>
+<pre><code>Characters:
+  @BARNARDO
+  @MARCELLUS
+  @FRANCISCO
+
+Departments:
+  #LX_BOARD
+  #SD_BOARD
+  #SP_OPRTR
+
+Act 1:
+  Scene 1:
+    (visual) @BARNARDO:ENTR
+      #LX_BOARD {1} GO
+      #SD_BOARD {1} GO
+      #SP_OPRTR {1} STBY &quot;@BARNARDO ENTR SL&quot;
+
+    (line) @BARNARDO:&quot;Who&apos;s there&quot;
+      #SP_OPRTR {1} GO
+
+--- END ---
+</code></pre>
+<p>Running the program again, we get:</p>
+<p><img src="https://raw.githubusercontent.com/rwoll-hmc/project/master/hamletExample2.png" alt=""></p>
+<p>&#x1F440; Notice how we ommitted the <code>?</code> from the line in our specification of the
+cue placement? We can ommit as much of line as we want as long as it it unique
+within the scene. If not, we will get an error message with all the matches, that
+you can then specify further by adding more text. For example, if the only two matches
+were &quot;Who&apos;s there?&quot; and &quot;Who&apos;s there in the yard&quot;, we could simply add the &quot;?&quot; to
+disambiguate. If however, someone says a line repeatedly or makes an entrance or
+exit multiple times, throughout a scene, we can specify an index in parentheses like so:</p>
+<pre><code>(line) @BARNARDO:&quot;Who&apos;s there&quot; (2)
+  #SP_OPRTR {1} GO
+</code></pre>
+<p>where the index is the line number in the scene. (In our case, we count each
+entrance as a line!)</p>
+<blockquote>
+<p>&#x26A0;&#xFE0F; It is preferred to add more of a line than to use indices since they
+are harder for a human to resolve!</p>
+</blockquote>
+<h2 id="what-next">What next?</h2>
+<p><a href="../usage/CUE_SHEET_COMPOSITION.html">To learn more about the syntax, head to the composition page or look through the
+other examples!</a> Scroll all the way down to
+see the different type of commands as well as the appropriate levels of indentation.</p>
 
         </div>
         <div class="footer-nav">
