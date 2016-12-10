@@ -1,6 +1,19 @@
 Errors
 ======
 
+## TOC
+
+* [Parsing Errors](#parsing-errors)
+* [`NoMatchError`](#nomatcherror)
+* [`AmbiguousError`](#ambiguouserror)
+* [`DuplicateCharacterDeclaration`](#duplicatecharacterdeclaration)
+* [`DuplicateDepartmentDeclaration`](#duplicatedepartmentdeclaration)
+* [`UndeclaredCharacterError`](#undeclaredcharactererror)
+* [`UndeclaredDepartmentError`](#undeclareddepartmenterror)
+* [`UnkownTargetCharacterError`](#unkowntargetcharactererror)
+* [`OutOfOrderOrDuplicateActError`](#outoforderorduplicateacterror)
+* [`OutOfOrderOrDuplicateSceneError`](#outoforderorduplicatesceneerror)
+
 ## Parsing Errors
 
 __Example Trace__:  
