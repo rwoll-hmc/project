@@ -22,7 +22,7 @@ Domain Specific Languages][hmc-class] at [Harvey Mudd College][hmc] taught by
 [Professor Ben Wiedermann][prof].
 
 Interested in the design and process behind the project?
-[Design & Process →](README.md)
+[Design & Process →](docs/design/INTRO.md)
 
 <!--{p:.pull-box}-->
 
