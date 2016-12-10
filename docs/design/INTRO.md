@@ -1,12 +1,11 @@
 Introduction
 ============
 
-
 ## Motivation
 
 The __> Prompt__ Domain Specific Language was created to simplify the otherwise
 arduous and error prone process of adding cue annotations to scripts&mdash;an
-essential task every stage manager completes for live theater productions.
+essential task every stage manager completes for __live theater productions__.
 
 Traditionally, this task involves aggregating multiple loosely structure cue
 sheets from several designers and, with a ruler and pencil, adding annotations
@@ -59,7 +58,80 @@ and generate the annotated script in an instant:
 
 ![](https://raw.githubusercontent.com/rwoll-hmc/project/master/hamletExample.png).
 
+## Personal Motivation
+
+After stage managing several large productions with many individual cue sheets
+being provided by different lighting designers, sound designers, projection
+designers, and scenic designers, I began brainstorming an alternate way to
+capture this information. Paired with a digitized script, __> Prompt__
+serves to unify this process and make it more efficient, trackable, and enjoyable.
+
+## What's a Prompt Book?
+
+For live theater productions, stage managers produce and use a *prompt book*
+that includes actor blocking, lighting, sound, and scenic cues.
+
+Wikipedia nicely describes the essence of a prompt book:
+
+> The prompt book, also called transcript, the bible or sometimes simply
+> "the book," is the copy of a production script that contains the information
+> necessary to create a theatrical production from the ground up. It is a
+> compilation of all blocking, business, light, speech and sound cues, lists of
+> properties, drawings of the set, contact information for the cast and crew,
+> and any other relevant information that might be necessary to help the
+> production run smoothly and nicely.
+
+While there are many important components of the prompt book, this project
+aims to help stage manager's digitize their cue notes making them searchable,
+summarizable, and editable for not only the stage manager, but the rest of the
+production team&mdash;including the designers who may alter cues many times
+before deciding on a final position for the cue. In the below picture, on
+the right side, you can see how these cues are traditionally recorded: in pencil
+on paper in the margin of the script:
+
+![Prompt Book Example](https://lifeinthethe8tre.files.wordpress.com/2015/07/img_4634.jpg)
+
+During a production, *each* of the designers will create cue sheets that
+look something like:
+
+| Cue # | Page # | Cue Name/Description | Location                 |
+|-------|--------|----------------------|--------------------------|
+| 0.5   | 0      | House to Half        | after House closes       |
+| 0.75  | 0      | Blackout             | 5 second follow          |
+| …     | …      | …                    | …                        |
+| 247.0 | 86     | Blackout             | Audrey: "…all was well." |      
+
+For a standard production there will likely exist such a cue sheet independently
+for scenic transitions, lights, and sound. The stage manager merges all the cues
+into the prompt book's script and works with the designers to move their exact
+position around as the designers watch the production rehearse.
+
+Not only is this inconvenient, but it can create a disconnect between what the
+designer thinks the cue is and what finally ends up in the prompt book; as they
+adjust cues, if they are not careful to update their respective cue sheets, the
+individual cues may be out of sync.
+
 ## Benefits
+
+By creating a digital and semantic way to describe cues, individual "cue sheets"
+can be automatically merged into a digital script and allow for edits to be
+propagated to/from the prompt book layout and the individual cue sheets. With
+a fully developed system, cues could be edited in realtime by multiple people
+and be searchable. (Support coming!) There would be no need to flip through the script to see where
+that cue at line "…all was well" occurs or what it says. During a rehearsal, if
+a designer says take it back to cue 47, the stage manager would instantly be able
+to find the page saving time and page flipping. In an ideal world, a nice GUI
+would allow the stage manager and production team to easily interact with the
+script and generate individualized cue sheets. For now, a command line interface
+has been created for your convenience!
+
+Although there is no standardized cue format, *most* designers will have a
+procedural way of describing the common details of a cue (number, page, description,
+and location), so it seemed appropriate to formalize this into a DSL that could
+efficiently capture this information in a standardized way and be more useable
+and extensible for goals like cue sheet generation, distribution, syncing and
+prompt book layouting as well as searching.
+
 
 ### Best Practices
 Because the cue sheet is in a standard syntax, it enforces designers to follow
