@@ -1,28 +1,32 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 -- | `AST` encodes the different datatypes used throughout the application.
 module AST where
 
 import qualified Data.Map.Strict as Map
 import qualified Data.Set        as Set
+import Data.Aeson (ToJSON)
+import GHC.Generics (Generic)
 
 -- | Encoding of theater keywords for intruction of operators.
 data Command = Go   -- ^ Instructs operator should take instruction immediately.
              | Stby -- ^ Instructs operator to get ready and confirm ready.
              | Warn -- ^ A polite/stategic reminder for some instruction.
-  deriving Eq
+  deriving (Eq, Generic)
 
 -- | An encoding of a physical `Character` that could appear in a script, cue, etc.
 data Character = Character { charName :: String }
-  deriving Eq
+  deriving (Eq, Generic)
 
 -- | An encoding of a physical action that can be taken.
 data Action = Enter
             | Exit
-  deriving Eq
+  deriving (Eq, Generic)
 
 -- | A `Department` corresponds to a physical department in the theater.
 --   (e.g. Lights, Sound, Backstage, etc.)
 data Department = Department { deptName :: String }
-  deriving Eq
+  deriving (Eq, Generic)
 
 -- | A `Cue` is the smallest unit of action in our representation. This representation
 --   has no notion of time/placement by design and must be coupled else where (e.g `CueGroup`
@@ -34,7 +38,7 @@ data Cue =
          , command    :: Command
          , comment    :: Maybe String
          }
-  deriving Eq
+  deriving (Eq, Generic)
 
 -- | A binding of a `Marker` and list of cues to occur at that `Marker`.
 data CueGroup = CueGroup { cgMarker :: Marker, cgCues :: [Cue] }
@@ -43,7 +47,7 @@ data CueGroup = CueGroup { cgMarker :: Marker, cgCues :: [Cue] }
 -- | A `Marker` is a (possibly partial) reference to a part of a play.
 data Marker = Visual { mChar :: Character, mAction :: Action, mIdx :: (Maybe Int) }
             | Line { mChar :: Character, mLine :: String, mIdx :: (Maybe Int) }
-  deriving Eq
+  deriving (Eq, Generic)
 
 -- | Internal representation of a scene and any groups of cues that appear
 --   throughout it.
@@ -72,21 +76,21 @@ data PromptScript =
          , pDepartments :: Set.Set Department
          , pActs        :: Map.Map Int PromptAct
          }
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
 
 -- | Analagous to `CueAct` for use in `Prompt*` using a `Map` internally
 --   for easier traversals, lookups, and guarentees uniqueness.
 data PromptAct = PromptAct { pActScenes :: Map.Map Int PromptScene }
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
 
 -- | Analagous to `CueScene` for use in `Prompt*` using a `Map` internally
 --   for easier traversals, lookups, and guarentees of uniqueness.
 data PromptScene = PromptScene { pMarkers :: Map.Map Int PromptMarker }
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
 
 -- | Analogous to `CueMarker` for use in `Prompt*`.
 data PromptMarker = PromptMarker { pMarker :: Marker, pCues :: [Cue] }
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
 
 -- | Pretty print `Commands` in standard theater notation.
 instance Show Command where
@@ -143,3 +147,14 @@ instance Ord Department where
 -- | Create an ordering of `Character`s based on `String`'s `Ord`.
 instance Ord Character where
   compare (Character a) (Character b) = compare a b
+
+instance ToJSON PromptScript
+instance ToJSON PromptAct
+instance ToJSON PromptScene
+instance ToJSON PromptMarker
+instance ToJSON Department
+instance ToJSON Marker
+instance ToJSON Character
+instance ToJSON Cue
+instance ToJSON Action
+instance ToJSON Command
