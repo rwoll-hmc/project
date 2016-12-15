@@ -5,7 +5,14 @@
         "title": "greater-prompt",
         "source": "README.md",
         "url": "index.html",
-        "slug": "index"
+        "slug": "index",
+        "headings": [
+          {
+            "title": "Try It Online",
+            "depth": 2,
+            "id": "try-it-online"
+          }
+        ]
       },
       {
         "title": "Installation",
@@ -429,7 +436,14 @@
       "source": "README.md",
       "title": "greater-prompt",
       "pageTitle": "greater-prompt",
-      "slug": "index"
+      "slug": "index",
+      "headings": [
+        {
+          "title": "Try It Online",
+          "depth": 2,
+          "id": "try-it-online"
+        }
+      ]
     },
     "installation/DEPENDENCIES.html": {
       "source": "docs/installation/DEPENDENCIES.md",
@@ -843,6 +857,33 @@
     "docs/design/EVALUATION.md": "design/EVALUATION.html",
     "docs/docpress.json": "docpress.json",
     "docs/assets/custom.css": "assets/custom.css",
+    "docs/api/AST.html": "api/AST.html",
+    "docs/api/Errors.html": "api/Errors.html",
+    "docs/api/Interp.html": "api/Interp.html",
+    "docs/api/Main.html": "api/Main.html",
+    "docs/api/Parser.html": "api/Parser.html",
+    "docs/api/Renderer.html": "api/Renderer.html",
+    "docs/api/SampleScript.html": "api/SampleScript.html",
+    "docs/api/Utils.html": "api/Utils.html",
+    "docs/api/doc-index.html": "api/doc-index.html",
+    "docs/api/frames.html": "api/frames.html",
+    "docs/api/greater-prompt.haddock": "api/greater-prompt.haddock",
+    "docs/api/haddock-util.js": "api/haddock-util.js",
+    "docs/api/hslogo-16.png": "api/hslogo-16.png",
+    "docs/api/index-frames.html": "api/index-frames.html",
+    "docs/api/index.html": "api/index.html",
+    "docs/api/mini_AST.html": "api/mini_AST.html",
+    "docs/api/mini_Errors.html": "api/mini_Errors.html",
+    "docs/api/mini_Interp.html": "api/mini_Interp.html",
+    "docs/api/mini_Main.html": "api/mini_Main.html",
+    "docs/api/mini_Parser.html": "api/mini_Parser.html",
+    "docs/api/mini_Renderer.html": "api/mini_Renderer.html",
+    "docs/api/mini_SampleScript.html": "api/mini_SampleScript.html",
+    "docs/api/mini_Utils.html": "api/mini_Utils.html",
+    "docs/api/minus.gif": "api/minus.gif",
+    "docs/api/ocean.css": "api/ocean.css",
+    "docs/api/plus.gif": "api/plus.gif",
+    "docs/api/synopsis.png": "api/synopsis.png",
     "docs/images/exampleRendering.png": "images/exampleRendering.png"
   }
 }
