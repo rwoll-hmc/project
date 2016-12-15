@@ -15,12 +15,15 @@ import Network.Wai.Middleware.Static
 import Errors
 import Data.Aeson (ToJSON)
 import GHC.Generics (Generic)
-
+import System.Environment
 
 main = do
     putStrLn "Starting Server..."
-    scotty 3000 $ do
+    portNum <- lookupEnv "PORT"
+    scotty (maybe 8080 read portNum) $ do
         middleware $ staticPolicy (noDots >-> addBase "build")
+
+        get "/" $ file "./build/index.html"
 
         post "/process" $ do
           c <- body
