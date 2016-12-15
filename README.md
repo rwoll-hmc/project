@@ -17,6 +17,18 @@ book][promptbook].
 
 ---
 
+## Try It Online
+
+Want to see what the project is all about and how easy it is to write cues?
+
+Try it online:
+
+http://gp.rwoll.com
+
+> :warning: It takes a few seconds to wake up the demo! :zzz:
+
+---
+
 This project has been completed by [Ross Wollman][rwoll] as [coursework for
 Domain Specific Languages][hmc-class] at [Harvey Mudd College][hmc] taught by
 [Professor Ben Wiedermann][prof].
